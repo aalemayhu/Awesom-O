@@ -45,6 +45,11 @@ chatClient.prototype.onMessage = function onMessage(message){
         var parsed = this.parseMessage(message.data);
         if(parsed !== null){
             if(parsed.command === "PRIVMSG") {
+              // TODO: load this from the configuration
+              console.log('parsed.username='+parsed.username);
+              if (parsed.username !== "ccscanf") {
+                alert("@"+parsed.username+">"+parsed.message);
+              }
                 userPoints = localStorage.getItem(parsed.username);
 
                 if(userPoints === null){
@@ -96,7 +101,6 @@ intentional to show where each set of information is parsed. */
 // :Kappa Keepo Kappa
 
 chatClient.prototype.parseMessage = function parseMessage(rawMessage) {
-  alert(rawMessage);
     var parsedMessage = {
         message: null,
         tags: null,
