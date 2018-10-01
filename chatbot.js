@@ -95,6 +95,8 @@ chatClient.prototype.parseMessage = function parseMessage(rawMessage) {
         username: null
     };
 
+    console.log(rawMessage);
+    console.log('[0] === '+rawMessage[0]);
     if(rawMessage[0] === '@'){
         var tagIndex = rawMessage.indexOf(' '),
         userIndex = rawMessage.indexOf(' ', tagIndex + 1),

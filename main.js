@@ -70,10 +70,10 @@ function onMessage(payload) {
     // if (parsed.username === secret.USERNAMEHERE) {
     //   return
     // }
-    displayNotification('Message from @'+payload.username, payload.message, onReply)
+    displayNotification('Message from @'+payload.username, payload.message)
   } else if(payload.command === "PING") {
-      // this.webSocket.send("PONG :" + parsed.message);
-      console.log('TODO: reply');
+      chatClient.webSocket.send("PONG :" + payload.message);
+      console.log('Received PING command');
   }
 }
 
