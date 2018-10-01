@@ -18,6 +18,7 @@ function chatClient(options){
     this.password = options.password;
     this.channel = options.channel;
 
+    this.messageHandler = options.messageHandler;
     this.server = 'irc-ws.chat.twitch.tv';
     this.port = 443;
 }
@@ -36,32 +37,14 @@ chatClient.prototype.onError = function onError(message){
     console.log('Error: ' + message);
 };
 
-/* This is an example of a leaderboard scoring system. When someone sends a message to chat, we store
-   that value in local storage. It will show up when you click Populate Leaderboard in the UI.
-*/
 chatClient.prototype.onMessage = function onMessage(message){
-  console.log("onMessage() ->"+message);
-    if(message !== null){
-        console.log('Got message: '+message);
-        var parsed = this.parseMessage(message.data);
-        if(parsed !== null){
-            if(parsed.command === "PRIVMSG") {
-              // TODO: load this from the configuration
-              if (parsed.username !== "ccscanf") {
-                alert("@"+parsed.username+"> "+parsed.message);
-              }
-                userPoints = localStorage.getItem(parsed.username);
+    if(message === null){
+      return
+    }
 
-                if(userPoints === null){
-                    localStorage.setItem(parsed.username, 10);
-                }
-                else {
-                    localStorage.setItem(parsed.username, parseFloat(userPoints) + 0.25);
-                }
-            } else if(parsed.command === "PING") {
-                this.webSocket.send("PONG :" + parsed.message);
-            }
-        }
+    var parsed = this.parseMessage(message.data);
+    if(parsed !== null){
+      this.messageHandler(parsed);
     }
 };
 

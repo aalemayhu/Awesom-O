@@ -1,7 +1,8 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, ipcMain} = require('electron')
+const {app, BrowserWindow, ipcMain, Notification} = require('electron')
 
 let chatbot = require('./chatbot.js')
+// TODO: replace secret with a configuration instance
 let secret = require('./secret.js')
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -57,14 +58,36 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
+function displayNotification(title, body) {
+  const n = new Notification({ title: title, body: body, silent: true});
+  n.on('show', () => console.log('showed'));
+  n.on('click', () => console.info('clicked!!'));
+  n.show();
+}
+
+function onMessage(payload) {
+  if(payload.command === "PRIVMSG") {
+    // if (parsed.username === secret.USERNAMEHERE) {
+    //   return
+    // }
+    displayNotification('Message from @'+payload.username, payload.message, onReply)
+  } else if(payload.command === "PING") {
+      // this.webSocket.send("PONG :" + parsed.message);
+      console.log('TODO: reply');
+  }
+}
+
 function configure() {
-  console.log(chatbot);
+
   chatClient = new chatbot({
       channel: secret.CHANNELNAMEHERE,
       username: secret.USERNAMEHERE,
       password: secret.AUTHTOKENHERE,
+      messageHandler: onMessage
   });
 }
+
+// Handle renderer messages
 
 ipcMain.on('connect-bot', (event, arg) => {
     chatClient.open();
