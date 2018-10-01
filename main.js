@@ -1,5 +1,6 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcMain} = require('electron')
+
 let chatbot = require('./chatbot.js')
 let secret = require('./secret.js')
 
@@ -65,13 +66,10 @@ function configure() {
   });
 }
 
+ipcMain.on('connect-bot', (event, arg) => {
+    chatClient.open();
+})
 
-/*
-TODO: implement message handlers for connect and disconnect
-$('.connect').click(function(){
-    window.chatClient.open();
-});
-$('.disconnect').click(function(){
-    window.chatClient.close();
-});
-*/
+ipcMain.on('disconnect-bot', (event, arg) => {
+  chatClient.close();
+})

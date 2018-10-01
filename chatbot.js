@@ -11,6 +11,8 @@ or in the "license" file accompanying this file. This file is distributed on an 
     Web Socket to Twitch chat. The important part events are onopen and onmessage.
 */
 
+var WebSocket = require('ws')
+
 function chatClient(options){
     this.username = options.username;
     this.password = options.password;
@@ -79,6 +81,8 @@ chatClient.prototype.onOpen = function onOpen(){
 
 chatClient.prototype.onClose = function onClose(){
     console.log('Disconnected from the chat server.');
+    console.log("username="+this.username);
+    console.log("channel="+this.channel);
 };
 
 chatClient.prototype.close = function close(){
