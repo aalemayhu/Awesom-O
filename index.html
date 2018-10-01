@@ -2,15 +2,37 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+        <title>Leaderboards</title>
+        <script crossorigin src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="secret.js"></script>
+        <link rel="stylesheet" href="leaderboard.css">
   </head>
   <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+    <div class="button-list">
+        <button class="connect btn">Connect to chat</button>
+        <button class="disconnect btn">Disconnect from chat</button>
+    </div>
+    <script src="chatbot.js"></script>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script>
+    $(document).ready(function(){
+        $('.connect').click(function(){
+            window.chatClient.open();
+        });
+        $('.disconnect').click(function(){
+            window.chatClient.close();
+        });
+        $('.display').click(function(){
+            buildLeaderboard();
+        });
+    });
 
+    window.chatClient = new chatClient({
+        channel: '#CHANNELNAMEHERE',
+        username: 'USERNAMEHERE',
+        password: 'oauth:AUTHTOKENHERE',
+    });
+    </script>
     <script>
       // You can also require other files to run in this process
       require('./renderer.js')
