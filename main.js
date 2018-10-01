@@ -1,10 +1,13 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow} = require('electron')
 let chatbot = require('./chatbot.js')
+let secret = require('./secret.js')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
+
+let chatClient
 
 function createWindow () {
   // Create the browser window.
@@ -21,9 +24,11 @@ function createWindow () {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    // TODO: disconnect from the chat client
+    chatClient.close()
     mainWindow = null
   })
+
+  configure()
 }
 
 // This method will be called when Electron has finished
@@ -50,3 +55,23 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+function configure() {
+  console.log(chatbot);
+  chatClient = new chatbot({
+      channel: secret.CHANNELNAMEHERE,
+      username: secret.USERNAMEHERE,
+      password: secret.AUTHTOKENHERE,
+  });
+}
+
+
+/*
+TODO: implement message handlers for connect and disconnect
+$('.connect').click(function(){
+    window.chatClient.open();
+});
+$('.disconnect').click(function(){
+    window.chatClient.close();
+});
+*/

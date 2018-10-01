@@ -9,33 +9,12 @@
   </head>
   <body>
     <div class="button-list">
-        <button class="connect btn">Connect to chat</button>
-        <button class="disconnect btn">Disconnect from chat</button>
+        <button id="connect-button" class="connect btn">Connect to chat</button>
+        <button id="disconnect-button" class="disconnect btn">Disconnect from chat</button>
     </div>
-    <script src="chatbot.js"></script>
-    <script>window.$ = window.jQuery = require('jquery');</script>
-    <script>
-    $(document).ready(function(){
-        $('.connect').click(function(){
-            window.chatClient.open();
-        });
-        $('.disconnect').click(function(){
-            window.chatClient.close();
-        });
-        $('.display').click(function(){
-            buildLeaderboard();
-        });
-    });
-
-    window.chatClient = new chatClient({
-        channel: CHANNELNAMEHERE,
-        username: USERNAMEHERE,
-        password: AUTHTOKENHERE,
-    });
-    </script>
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
+      <script>
+        // You can also require other files to run in this process
+        require('./renderer.js')
+      </script>
   </body>
 </html>

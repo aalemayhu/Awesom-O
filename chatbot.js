@@ -11,8 +11,7 @@ or in the "license" file accompanying this file. This file is distributed on an 
     Web Socket to Twitch chat. The important part events are onopen and onmessage.
 */
 
-var chatClient = function chatClient(options){
-  console.log('chatClient()');
+function chatClient(options){
     this.username = options.username;
     this.password = options.password;
     this.channel = options.channel;
@@ -129,4 +128,4 @@ chatClient.prototype.parseMessage = function parseMessage(rawMessage) {
     return parsedMessage;
 }
 
-module.chatClient = chatClient;
+module.exports = chatClient;
