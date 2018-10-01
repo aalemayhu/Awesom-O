@@ -46,9 +46,8 @@ chatClient.prototype.onMessage = function onMessage(message){
         if(parsed !== null){
             if(parsed.command === "PRIVMSG") {
               // TODO: load this from the configuration
-              console.log('parsed.username='+parsed.username);
               if (parsed.username !== "ccscanf") {
-                alert("@"+parsed.username+">"+parsed.message);
+                alert("@"+parsed.username+"> "+parsed.message);
               }
                 userPoints = localStorage.getItem(parsed.username);
 
