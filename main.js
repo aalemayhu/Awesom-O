@@ -12,7 +12,11 @@ let mainWindow
 
 let chatClient
 let commandPrefix = '!'
-let knownCommands = { echo }
+let knownCommands = { echo, commands }
+var commandDescriptions = {
+  'echo': 'Print out everything after echo',
+  'commands': 'List all of the supported commands'
+}
 
 
 function createWindow () {
@@ -79,6 +83,14 @@ function echo (target, context, params) {
   }
 }
 
+// Function called when the "commands" command is issued:
+function commands (target, context, params) {
+  for (var k in commandDescriptions) {
+    const msg = k+' - '+commandDescriptions[k]
+    sendMessage(target, context, msg)
+  }
+}
+
 // Helper function to send the correct type of message:
 function sendMessage (target, context, message) {
   if (context['message-type'] === 'whisper') {
@@ -134,6 +146,9 @@ function configure() {
   chatClient.on('message', onMessageHandler)
   chatClient.on('connected', onConnectedHandler)
   chatClient.on('disconnected', onDisconnectedHandler)
+
+  // Auto connect
+  chatClient.connect()
 }
 
 // Called every time the bot connects to Twitch chat:
