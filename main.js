@@ -12,12 +12,14 @@ let mainWindow
 
 let chatClient
 let commandPrefix = '!'
-let knownCommands = { echo, commands }
+let knownCommands = { echo, commands, what, when, github }
 var commandDescriptions = {
   'echo': 'Print out everything after echo',
-  'commands': 'List all of the supported commands'
+  'commands': 'List all of the supported commands',
+  'what': 'Print out the current project',
+  'when': 'Print stream schedule',
+  'github': 'Print GitHub profile URL',
 }
-
 
 function createWindow () {
   // Create the browser window.
@@ -68,40 +70,8 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-// Commands
-
-// Function called when the "echo" command is issued:
-function echo (target, context, params) {
-  // If there's something to echo:
-  if (params.length) {
-    // Join the params into a string:
-    const msg = params.join(' ')
-    // Send it back to the correct place:
-    sendMessage(target, context, msg)
-  } else { // Nothing to echo
-    console.log(`* Nothing to echo`)
-  }
-}
-
-// Function called when the "commands" command is issued:
-function commands (target, context, params) {
-  for (var k in commandDescriptions) {
-    const msg = k+' - '+commandDescriptions[k]
-    sendMessage(target, context, msg)
-  }
-}
-
-// Helper function to send the correct type of message:
-function sendMessage (target, context, message) {
-  if (context['message-type'] === 'whisper') {
-    chatClient.whisper(target, message)
-  } else {
-    chatClient.say(target, message)
-  }
-}
-
 function displayNotification(title, body) {
-  const n = new Notification({ title: title, body: body, silent: true});
+  const n = new Notification({ title: title, body: body, silent: false});
   n.on('show', () => console.log('showed'));
   n.on('click', () => console.info('clicked!!'));
   n.show();
@@ -171,3 +141,57 @@ ipcMain.on('connect-bot', (event, arg) => {
 ipcMain.on('disconnect-bot', (event, arg) => {
   chatClient.disconnect();
 })
+
+
+// Commands
+
+// Function called when the "echo" command is issued:
+function echo (target, context, params) {
+  // If there's something to echo:
+  if (params.length) {
+    // Join the params into a string:
+    const msg = params.join(' ')
+    // Send it back to the correct place:
+    sendMessage(target, context, msg)
+  } else { // Nothing to echo
+    console.log(`* Nothing to echo`)
+  }
+}
+
+// Function called when the "commands" command is issued:
+function commands (target, context, params) {
+  for (var k in commandDescriptions) {
+    const msg = '!'+k+' - '+commandDescriptions[k]
+    sendMessage(target, context, msg)
+  }
+}
+
+// Function called when the "what" command is issued:
+function what (target, context, params) {
+  // TODO: use a configuration value for this
+  let msg = 'Twitch bot'
+  sendMessage(target, context, msg)
+}
+
+// Function called when the "when" command is issued:
+function when (target, context, params) {
+  // TODO: use a configuration value for this
+  let msg = 'From 5PM to roughly 7PM (GMT+2)'
+  sendMessage(target, context, msg)
+}
+
+// Function called when the "github" command is issued:
+function github (target, context, params) {
+  // TODO: use a configuration value for this
+  let msg = 'https://github.com/scanf'
+  sendMessage(target, context, msg)
+}
+
+// Helper function to send the correct type of message:
+function sendMessage (target, context, message) {
+  if (context['message-type'] === 'whisper') {
+    chatClient.whisper(target, message)
+  } else {
+    chatClient.say(target, message)
+  }
+}
