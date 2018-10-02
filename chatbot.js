@@ -11,7 +11,6 @@ or in the "license" file accompanying this file. This file is distributed on an 
     Web Socket to Twitch chat. The important part events are onopen and onmessage.
 */
 
-var WebSocket = require('ws')
 const tmi = require('tmi.js')
 
 function chatClient(options){
