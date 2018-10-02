@@ -10,6 +10,18 @@ let secret = require('./secret.js')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+/* commands.json
+{
+"commands": [
+  { type: "string", name: "echo", description: "Print out everything after echo"}
+]
+}
+
+## Future types
+file
+url
+*/
+
 let chatClient
 let commandPrefix = '!'
 let knownCommands = { echo, commands, what, when, github, gitlab, bashrc, help }
