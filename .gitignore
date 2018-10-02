@@ -2,3 +2,6 @@ node_modules
 
 # Twitch credentials
 secret.js
+
+# Packaging
+electron-quick-start-darwin-x64/
