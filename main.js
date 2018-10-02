@@ -10,13 +10,12 @@ let chatbot = require('./chatbot.js')
 let mainWindow
 
 /*
-TODO: Future types
-file
-url
+TODO: add flag to disable a command
+TODO: Add more types (file, url, default)
 */
+
 // "cached now" object
 let caches = {}
-
 
 let chatClient
 let commandPrefix = '!'
