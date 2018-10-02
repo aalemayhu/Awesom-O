@@ -48,14 +48,8 @@ let secret = require('./secret.js')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-/* commands.json
-{
-"commands": [
-  { type: "string", name: "echo", description: "Print out everything after echo"}
-]
-}
-
-## Future types
+/*
+TODO: Future types
 file
 url
 */
@@ -74,10 +68,24 @@ var commandDescriptions = {
   'bashrc': 'my bash profile',
 }
 
+function loadTestCommands() {
+  var commands = [
+    { type: "string", name: "echo", description: "Print out everything after echo"},
+    { type: "string", name: "what",  description: "Print out the current project"},
+    { type: "string", name: "when", description: "Print stream schedule"},
+    { type: "string", name: "github", description: "Print GitHub profile URL"},
+    { type: "string", name: "gitlab", description: "Print GitHub profile URL"},
+    { type: "string", name: "bashrc", description: "my bash profile"}
+  ]
+  fsCache.key('commands', commands)
+}
+
 function createWindow () {
 
-  // example: fsCache.key('button', 'is green'), fsCache.key('super_button', { is: 'green' })
-  fsCache.key("commands", [{ type: "string", name: "echo", description: "Print out everything after echo"}])
+  if (!caches["commands"] || caches["commands"].length > 0) {
+    console.log('commands is empty')
+    loadTestCommands()
+  }
 
 
   // Create the browser window.
