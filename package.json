@@ -1,7 +1,7 @@
 {
-  "name": "electron-quick-start",
+  "name": "Awesom-O",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Twitch bot",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
