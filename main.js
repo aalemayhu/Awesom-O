@@ -12,10 +12,11 @@ let mainWindow
 
 let chatClient
 let commandPrefix = '!'
-let knownCommands = { echo, commands, what, when, github, gitlab, bashrc }
+let knownCommands = { echo, commands, what, when, github, gitlab, bashrc, help }
 var commandDescriptions = {
   'echo': 'Print out everything after echo',
   'commands': 'List all of the supported commands',
+  'help': 'Show description for a command',
   'what': 'Print out the current project',
   'when': 'Print stream schedule',
   'github': 'Print GitHub profile URL',
@@ -162,10 +163,27 @@ function echo (target, context, params) {
 
 // Function called when the "commands" command is issued:
 async function commands (target, context, params) {
+  var msg = ""
   for (var k in commandDescriptions) {
-    const msg = '!'+k+' - '+commandDescriptions[k]
-    console.log(msg)
-    sendMessage(target, context, msg)
+    msg += '!'+k+' '
+  }
+  sendMessage(target, context, msg)
+}
+
+// Function called when the "help" command is issued:
+function help (target, context, params) {
+  if (params.length) {
+    const msg = params.join(' ')
+    for (var k in commandDescriptions) {
+      if (k != msg) {
+        continue;
+      }
+      const description = commandDescriptions[k]
+      if (description) {
+        sendMessage(target, context, '!'+k+'- '+description)
+      }
+      break;
+    }
   }
 }
 
