@@ -19,7 +19,10 @@ let caches = {}
 
 let chatClient
 let commandPrefix = '!'
-let knownCommands = { echo, commands, what, when, github, gitlab, bashrc, help }
+
+let defaultCommands = {help, commands}
+
+let knownCommands = { echo, what, when, github, gitlab, bashrc }
 var commandDescriptions = {
   'echo': 'Print out everything after echo',
   'commands': 'List all of the supported commands',
