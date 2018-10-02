@@ -2,31 +2,46 @@
 <html>
   <head>
     <meta charset="UTF-8">
-        <title>Awesom-O</title>
-        <script crossorigin src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="secret.js"></script>
-        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="main.css">
+    <title>Awesom-O</title>
+    <script src="secret.js"></script>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="./node_modules/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="main.css"/>
   </head>
   <body>
     <div class="container">
-      <button type="button" id="new-command-button" class="btn btn-primary">New command</button>
 
-      <ul class="list-group">
-        <li class="list-group-item disabled">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Morbi leo risus</li>
-        <li class="list-group-item">Porta ac consectetur ac</li>
-        <li class="list-group-item">Vestibulum at eros</li>
-      </ul>
+      <span id="new-command-button" class="table-add float-right mb-3 mr-2"><a href="#!" class="text-success"><i class="fa fa-plus fa-2x"
+         aria-hidden="true"></i></a></span>
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+      </table>
       <section>
         <button type="button" id="connect-button" class="btn btn-success">Connect to chat</button>
         <button type="button" id="disconnect-button" class="btn btn-danger">Disconnect from chat</button>
-      </section>      
+      </section>
     </div>
-      <script>
-        // You can also require other files to run in this process
-        require('./renderer.js')
-      </script>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
   </body>
 </html>
