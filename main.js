@@ -76,7 +76,7 @@ function createWindow () {
   })
 
   global.commands = caches["commands"]
-  // configure()
+  configure()
 }
 
 // This method will be called when Electron has finished
@@ -130,9 +130,11 @@ function onMessageHandler (target, context, msg, self) {
 
     // If the command is known, let's execute it:
     if (commandName in knownCommands) {
-      // Retrieve the function by its name:
       const command = knownCommands[commandName]
-      // Then call the command with parameters:
+      command(target, context, params)
+      console.log(`* Executed ${commandName} command for ${context.username}`)
+    } else if (commandName in defaultCommands) {
+      const command = defaultCommands[commandName]
       command(target, context, params)
       console.log(`* Executed ${commandName} command for ${context.username}`)
     } else {
