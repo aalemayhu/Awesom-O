@@ -4,8 +4,6 @@ var path = require('path')
 const { fsCache } = require('./electron-caches.js')
 
 let chatbot = require('./chatbot.js')
-// TODO: replace secret with a configuration instance
-let secret = require('./secret.js')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -140,18 +138,25 @@ function onMessageHandler (target, context, msg, self) {
 }
 
 function configure() {
-  chatClient = new chatbot({
-      channel: secret.CHANNELNAMEHERE,
-      username: secret.USERNAMEHERE,
-      password: secret.AUTHTOKENHERE
-  });
+  try {
+    // TODO: replace secret with a configuration instance
+    let secret = require('./secret.js')
 
-  chatClient.on('message', onMessageHandler)
-  chatClient.on('connected', onConnectedHandler)
-  chatClient.on('disconnected', onDisconnectedHandler)
+    chatClient = new chatbot({
+        channel: secret.CHANNELNAMEHERE,
+        username: secret.USERNAMEHERE,
+        password: secret.AUTHTOKENHERE
+    });
 
-  // Auto connect
-  chatClient.connect()
+    chatClient.on('message', onMessageHandler)
+    chatClient.on('connected', onConnectedHandler)
+    chatClient.on('disconnected', onDisconnectedHandler)
+
+    // Auto connect
+    chatClient.connect()
+  }  catch (err) {
+    console.log(err)
+  }
 }
 
 // Called every time the bot connects to Twitch chat:
