@@ -73,7 +73,8 @@ function createWindow () {
     mainWindow = null
   })
 
-  configure()
+  global.commands = caches["commands"]
+  // configure()
 }
 
 // This method will be called when Electron has finished
