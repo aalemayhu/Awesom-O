@@ -13,5 +13,11 @@ function disconnectBot() {
   ipcRenderer.send('disconnect-bot', 'disconnect');
 }
 
+function newCommand() {
+  console.log('new command');
+  // prompt('new command');
+}
+
 document.querySelector('#connect-button').addEventListener('click', connectBot);
 document.querySelector('#disconnect-button').addEventListener('click', disconnectBot);
+document.querySelector('#new-command-button').addEventListener('click', newCommand);

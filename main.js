@@ -161,9 +161,10 @@ function echo (target, context, params) {
 }
 
 // Function called when the "commands" command is issued:
-function commands (target, context, params) {
+async function commands (target, context, params) {
   for (var k in commandDescriptions) {
     const msg = '!'+k+' - '+commandDescriptions[k]
+    console.log(msg)
     sendMessage(target, context, msg)
   }
 }

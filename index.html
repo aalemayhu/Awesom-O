@@ -5,12 +5,24 @@
         <title>Awesom-O</title>
         <script crossorigin src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="secret.js"></script>
-        <link rel="stylesheet" href="leaderboard.css">
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="main.css">
   </head>
   <body>
-    <div class="button-list">
-        <button id="connect-button" class="connect btn">Connect to chat</button>
-        <button id="disconnect-button" class="disconnect btn">Disconnect from chat</button>
+    <div class="container">
+      <button type="button" id="new-command-button" class="btn btn-primary">New command</button>
+
+      <ul class="list-group">
+        <li class="list-group-item disabled">Cras justo odio</li>
+        <li class="list-group-item">Dapibus ac facilisis in</li>
+        <li class="list-group-item">Morbi leo risus</li>
+        <li class="list-group-item">Porta ac consectetur ac</li>
+        <li class="list-group-item">Vestibulum at eros</li>
+      </ul>
+      <section>
+        <button type="button" id="connect-button" class="btn btn-success">Connect to chat</button>
+        <button type="button" id="disconnect-button" class="btn btn-danger">Disconnect from chat</button>
+      </section>      
     </div>
       <script>
         // You can also require other files to run in this process
