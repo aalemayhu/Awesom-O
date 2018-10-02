@@ -1,44 +1,7 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain, Notification} = require('electron')
 var path = require('path')
-const fs = require('fs')
-
-const directory = app.getPath('home') // /home folder on OS X
-const cacheDirectory = `${directory}/twitch-bot-cache` // /home/twitch-bot-cache/
-const cacheDataFile = `${cacheDirectory}/data.json` // /home/twitch-bot-cache/data.json
-
-// "cached now" object
-let caches = {}
-
-// if cacheDirectory isn't available, we create it
-if (fs.existsSync(cacheDirectory) === false) {
-  fs.mkdirSync(cacheDirectory)
-}
-
-// fsCache object, contains functions, etc.
-const fsCache = {
-  key(name, value) {
-    // example: fsCache.key('button', 'is green'), fsCache.key('super_button', { is: 'green' })
-    caches[name] = value
-    // rewrites cache file with new data
-    fs.writeFileSync(cacheDataFile, JSON.stringify(caches, null, 2))
-  }
-}
-
-function readFromCache(file, callback) {
-  try {
-    // read cache file
-    const cacheContent = fs.readFileSync(
-      `${cacheDirectory}/${file}.json`,
-      'utf-8'
-    )
-
-    // run callback with file content (cached data, etc.)
-    callback(cacheContent)
-  } catch (err) {
-    console.log('Error in Cache:', err)
-  }
-}
+const { fsCache } = require('./electron-caches.js')
 
 let chatbot = require('./chatbot.js')
 // TODO: replace secret with a configuration instance
@@ -53,6 +16,9 @@ TODO: Future types
 file
 url
 */
+// "cached now" object
+let caches = {}
+
 
 let chatClient
 let commandPrefix = '!'
@@ -77,16 +43,17 @@ function loadTestCommands() {
     { type: "string", name: "gitlab", description: "Print GitHub profile URL"},
     { type: "string", name: "bashrc", description: "my bash profile"}
   ]
-  fsCache.key('commands', commands)
+  console.log('commands='+commands)
+  fsCache.save('commands', commands)
 }
 
 function createWindow () {
 
-  if (!caches["commands"] || caches["commands"].length > 0) {
+  caches = fsCache.readAll('data')
+  if (!caches["commands"] || caches["commands"].length == 0) {
     console.log('commands is empty')
     loadTestCommands()
   }
-
 
   // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600,
