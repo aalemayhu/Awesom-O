@@ -11,6 +11,9 @@ let secret = require('./secret.js')
 let mainWindow
 
 let chatClient
+let commandPrefix = '!'
+let knownCommands = { echo }
+
 
 function createWindow () {
   // Create the browser window.
@@ -61,6 +64,30 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
+// Commands
+
+// Function called when the "echo" command is issued:
+function echo (target, context, params) {
+  // If there's something to echo:
+  if (params.length) {
+    // Join the params into a string:
+    const msg = params.join(' ')
+    // Send it back to the correct place:
+    sendMessage(target, context, msg)
+  } else { // Nothing to echo
+    console.log(`* Nothing to echo`)
+  }
+}
+
+// Helper function to send the correct type of message:
+function sendMessage (target, context, message) {
+  if (context['message-type'] === 'whisper') {
+    chatClient.whisper(target, message)
+  } else {
+    chatClient.say(target, message)
+  }
+}
+
 function displayNotification(title, body) {
   const n = new Notification({ title: title, body: body, silent: true});
   n.on('show', () => console.log('showed'));
@@ -68,34 +95,64 @@ function displayNotification(title, body) {
   n.show();
 }
 
-function onMessage(payload) {
-  if(payload.command === "PRIVMSG") {
-    // if (parsed.username === secret.USERNAMEHERE) {
-    //   return
-    // }
-    displayNotification('Message from @'+payload.username, payload.message)
-  } else if(payload.command === "PING") {
-      chatClient.webSocket.send("PONG :" + payload.message);
-      console.log('Received PING command');
-  }
+function onMessageHandler (target, context, msg, self) {
+  if (self) { return } // Ignore messages from the bot
+
+  // This isn't a command since it has no prefix:
+    if (msg.substr(0, 1) !== commandPrefix) {
+      console.log(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
+      displayNotification('Message from @'+context.username, msg)
+      return
+    }
+
+    // Split the message into individual words:
+    const parse = msg.slice(1).split(' ')
+    // The command name is the first (0th) one:
+    const commandName = parse[0]
+    // The rest (if any) are the parameters:
+    const params = parse.splice(1)
+
+    // If the command is known, let's execute it:
+    if (commandName in knownCommands) {
+      // Retrieve the function by its name:
+      const command = knownCommands[commandName]
+      // Then call the command with parameters:
+      command(target, context, params)
+      console.log(`* Executed ${commandName} command for ${context.username}`)
+    } else {
+      console.log(`* Unknown command ${commandName} from ${context.username}`)
+    }
 }
 
 function configure() {
-
   chatClient = new chatbot({
       channel: secret.CHANNELNAMEHERE,
       username: secret.USERNAMEHERE,
-      password: secret.AUTHTOKENHERE,
-      messageHandler: onMessage
+      password: secret.AUTHTOKENHERE
   });
+
+  chatClient.on('message', onMessageHandler)
+  chatClient.on('connected', onConnectedHandler)
+  chatClient.on('disconnected', onDisconnectedHandler)
+}
+
+// Called every time the bot connects to Twitch chat:
+function onConnectedHandler (addr, port) {
+  console.log(`* Connected to ${addr}:${port}`)
+}
+
+// Called every time the bot disconnects from Twitch:
+function onDisconnectedHandler (reason) {
+  console.log(`Disconnected: ${reason}`)
+  // process.exit(1)
 }
 
 // Handle renderer messages
 
 ipcMain.on('connect-bot', (event, arg) => {
-    chatClient.open();
+    chatClient.connect();
 })
 
 ipcMain.on('disconnect-bot', (event, arg) => {
-  chatClient.close();
+  chatClient.disconnect();
 })
