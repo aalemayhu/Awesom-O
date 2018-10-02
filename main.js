@@ -12,13 +12,15 @@ let mainWindow
 
 let chatClient
 let commandPrefix = '!'
-let knownCommands = { echo, commands, what, when, github }
+let knownCommands = { echo, commands, what, when, github, gitlab, bashrc }
 var commandDescriptions = {
   'echo': 'Print out everything after echo',
   'commands': 'List all of the supported commands',
   'what': 'Print out the current project',
   'when': 'Print stream schedule',
   'github': 'Print GitHub profile URL',
+  'gitlab': 'Print GitHub profile URL',
+  'bashrc': 'my bash profile',
 }
 
 function createWindow () {
@@ -186,6 +188,21 @@ function github (target, context, params) {
   let msg = 'https://github.com/scanf'
   sendMessage(target, context, msg)
 }
+
+// Function called when the "gitlab" command is issued:
+function gitlab (target, context, params) {
+  // TODO: use a configuration value for this
+  let msg = 'https://gitlab.com/scanf'
+  sendMessage(target, context, msg)
+}
+
+// Function called when the "gitlab" command is issued:
+function bashrc (target, context, params) {
+  // TODO: use a configuration value for this
+  let msg = 'https://github.com/scanf/dotfiles/tree/master/shell'
+  sendMessage(target, context, msg)
+}
+
 
 // Helper function to send the correct type of message:
 function sendMessage (target, context, message) {
