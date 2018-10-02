@@ -1,12 +1,9 @@
-// Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain, Notification} = require('electron')
 var path = require('path')
 const { fsCache } = require('./electron-caches.js')
 
 let chatbot = require('./chatbot.js')
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
 /*
@@ -14,34 +11,21 @@ TODO: add flag to disable a command
 TODO: Add more types (file, url, default)
 */
 
-// "cached now" object
 let caches = {}
-
 let chatClient
 let commandPrefix = '!'
-
-let defaultCommands = {help, commands}
-
-let knownCommands = { echo, what, when, github, gitlab, bashrc }
-var commandDescriptions = {
-  'echo': 'Print out everything after echo',
-  'commands': 'List all of the supported commands',
-  'help': 'Show description for a command',
-  'what': 'Print out the current project',
-  'when': 'Print stream schedule',
-  'github': 'Print GitHub profile URL',
-  'gitlab': 'Print GitHub profile URL',
-  'bashrc': 'my bash profile',
-}
+let builtinCommands = {echo, help, commands}
 
 function loadTestCommands() {
   var commands = [
-    { type: "string", name: "echo", description: "Print out everything after echo"},
-    { type: "string", name: "what",  description: "Print out the current project"},
-    { type: "string", name: "when", description: "Print stream schedule"},
-    { type: "string", name: "github", description: "Print GitHub profile URL"},
-    { type: "string", name: "gitlab", description: "Print GitHub profile URL"},
-    { type: "string", name: "bashrc", description: "my bash profile"}
+    { type: "string", name: "what",  description: "Print out the current project", value: "Twitch bot"},
+    { type: "string", name: "when", description: "Print stream schedule", value: "From 5PM to roughly 7PM (GMT+2)"},
+    { type: "string", name: "github", description: "Print GitHub profile URL", value: "https://github.com/scanf"},
+    { type: "string", name: "gitlab", description: "Print GitHub profile URL", value: "https://gitlab.com/scanf"},
+    { type: "string", name: "bashrc", description: "my bash profile", value: "https://github.com/scanf/dotfiles/tree/master/shell"},
+    { type: "builtin", name: "echo", description: "Print out everything after echo"},
+    { type: "builtin", name: "commands", description: "List all of the supported commands"},
+    { type: "builtin", name: "help", description: "Show description for a command"},
   ]
   console.log('commands='+commands)
   fsCache.save('commands', commands)
@@ -55,22 +39,16 @@ function createWindow () {
     loadTestCommands()
   }
 
-  // Create the browser window.
   mainWindow = new BrowserWindow({width: 800, height: 600,
     icon: path.join(__dirname, 'assets/icons/png/64x64.png')
-})
+  })
 
-  // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
 
-  // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     chatClient.close()
     mainWindow = null
   })
@@ -79,30 +57,19 @@ function createWindow () {
   configure()
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', createWindow)
 
-// Quit when all windows are closed.
 app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
 app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
 
 function displayNotification(title, body) {
   const n = new Notification({ title: title, body: body, silent: false});
@@ -128,17 +95,23 @@ function onMessageHandler (target, context, msg, self) {
     // The rest (if any) are the parameters:
     const params = parse.splice(1)
 
-    // If the command is known, let's execute it:
-    if (commandName in knownCommands) {
-      const command = knownCommands[commandName]
-      command(target, context, params)
-      console.log(`* Executed ${commandName} command for ${context.username}`)
-    } else if (commandName in defaultCommands) {
-      const command = defaultCommands[commandName]
+
+    if (commandName in builtinCommands) {
+      const command = builtinCommands[commandName]
+      if (caches)
       command(target, context, params)
       console.log(`* Executed ${commandName} command for ${context.username}`)
     } else {
-      console.log(`* Unknown command ${commandName} from ${context.username}`)
+      let userCommands = caches["commands"]
+      console.log(userCommands)
+      let cmd = userCommands.find(function(e){
+        return e.name == commandName
+      })
+      if (cmd && cmd.type == "string") {
+        sendMessage(target, context, cmd.value)
+      } else {
+        console.log(`* Unknown command ${commandName} from ${context.username}`)
+      }
     }
 }
 
@@ -164,15 +137,12 @@ function configure() {
   }
 }
 
-// Called every time the bot connects to Twitch chat:
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`)
 }
 
-// Called every time the bot disconnects from Twitch:
 function onDisconnectedHandler (reason) {
   console.log(`Disconnected: ${reason}`)
-  // process.exit(1)
 }
 
 // Handle renderer messages
@@ -190,6 +160,7 @@ ipcMain.on('disconnect-bot', (event, arg) => {
 
 // Function called when the "echo" command is issued:
 function echo (target, context, params) {
+  console.log('echo(...)')
   // If there's something to echo:
   if (params.length) {
     // Join the params into a string:
@@ -202,66 +173,32 @@ function echo (target, context, params) {
 }
 
 // Function called when the "commands" command is issued:
-async function commands (target, context, params) {
+function commands (target, context, params) {
+  console.log('commands(...)')
+  let c = caches["commands"]
   var msg = ""
-  for (var k in commandDescriptions) {
-    msg += '!'+k+' '
+  for (var k in c) {
+    msg += '!'+c[k].name+' '
   }
   sendMessage(target, context, msg)
 }
 
 // Function called when the "help" command is issued:
 function help (target, context, params) {
+  console.log('help(...)')
   if (params.length) {
     const msg = params.join(' ')
-    for (var k in commandDescriptions) {
-      if (k != msg) {
+    let c = caches["commands"]
+    for (var k in c) {
+      let cmd = c[k]
+      if (cmd.name != msg) {
         continue;
       }
-      const description = commandDescriptions[k]
-      if (description) {
-        sendMessage(target, context, '!'+k+'- '+description)
-      }
+      sendMessage(target, context, '!'+cmd.name+'- '+cmd.description)
       break;
     }
   }
 }
-
-// Function called when the "what" command is issued:
-function what (target, context, params) {
-  // TODO: use a configuration value for this
-  let msg = 'Twitch bot'
-  sendMessage(target, context, msg)
-}
-
-// Function called when the "when" command is issued:
-function when (target, context, params) {
-  // TODO: use a configuration value for this
-  let msg = 'From 5PM to roughly 7PM (GMT+2)'
-  sendMessage(target, context, msg)
-}
-
-// Function called when the "github" command is issued:
-function github (target, context, params) {
-  // TODO: use a configuration value for this
-  let msg = 'https://github.com/scanf'
-  sendMessage(target, context, msg)
-}
-
-// Function called when the "gitlab" command is issued:
-function gitlab (target, context, params) {
-  // TODO: use a configuration value for this
-  let msg = 'https://gitlab.com/scanf'
-  sendMessage(target, context, msg)
-}
-
-// Function called when the "gitlab" command is issued:
-function bashrc (target, context, params) {
-  // TODO: use a configuration value for this
-  let msg = 'https://github.com/scanf/dotfiles/tree/master/shell'
-  sendMessage(target, context, msg)
-}
-
 
 // Helper function to send the correct type of message:
 function sendMessage (target, context, message) {
