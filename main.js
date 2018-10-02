@@ -49,7 +49,6 @@ function createWindow () {
   // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
-    chatClient.close()
     mainWindow = null
   })
 
