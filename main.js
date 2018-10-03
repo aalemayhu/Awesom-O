@@ -1,6 +1,7 @@
 const {app, BrowserWindow, ipcMain, Notification} = require('electron')
 var path = require('path')
 const { fsCache } = require('./electron-caches.js')
+const fs = require('fs')
 
 let chatbot = require('./chatbot.js')
 
@@ -109,6 +110,9 @@ function onMessageHandler (target, context, msg, self) {
       })
       if (cmd && cmd.type == "string") {
         sendMessage(target, context, cmd.value)
+      } else if (cmd && cmd.type == "file") {
+        let msg = fs.readFileSync(cmd.value , 'utf-8')
+        chatClient.say(target, msg)
       } else {
         console.log(`* Unknown command ${commandName} from ${context.username}`)
       }
@@ -116,7 +120,7 @@ function onMessageHandler (target, context, msg, self) {
 }
 
 function onJoinHandler (channel, username, self) {
-    if (self) { return }    
+    if (self) { return }
     let msg = 'Welcome '+username+'!'
     chatClient.say(channel, msg)
 }
