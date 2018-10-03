@@ -45,6 +45,7 @@ function newCommandSubmit() {
 
 function newCommandCancel() {
   console.log('newCommandCancel()')
+  remote.getCurrentWindow().loadFile('index.html')
 }
 
 // index.html
