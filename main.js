@@ -2,6 +2,7 @@ const {app, BrowserWindow, ipcMain, Notification} = require('electron')
 var path = require('path')
 const { fsCache } = require('./electron-caches.js')
 const fs = require('fs')
+var giveMeAJoke = require('give-me-a-joke');
 
 let chatbot = require('./chatbot.js')
 
@@ -15,7 +16,7 @@ TODO: Add more types (file, url, default)
 let caches = {}
 let chatClient
 let commandPrefix = '!'
-let builtinCommands = {echo, help, commands}
+let builtinCommands = {echo, help, commands, joke}
 
 function loadTestCommands() {
   var commands = [
@@ -29,6 +30,7 @@ function loadTestCommands() {
     { type: "builtin", name: "echo", description: "Print out everything after echo"},
     { type: "builtin", name: "commands", description: "List all of the supported commands"},
     { type: "builtin", name: "help", description: "Show description for a command"},
+    { type: "builtin", name: "joke", description: "Get a random joke ;-)"},
   ]
   console.log('commands='+commands)
   fsCache.save('commands', commands)
@@ -194,6 +196,38 @@ function echo (target, context, params) {
     console.log(`* Nothing to echo`)
   }
 }
+
+// Function called when the "joke" command is issued:
+function joke (target, context, params) {
+  // console.log('commands(...)')
+  // let c = caches["commands"]
+  // var msg = ""
+  // for (var k in c) {
+  //   msg += '!'+c[k].name+' '
+  // }
+  // sendMessage(target, context, msg)
+
+  // TODO: pick one at random
+
+  // To get a random dad joke
+  giveMeAJoke.getRandomDadJoke (function(joke) {
+      sendMessage(target, context, joke)
+  });
+
+  // To get a random Chuck Norris joke
+  // giveMeAJoke.getRandomCNJoke (function(joke) {
+  //     //=> console.log(joke);
+  // });
+  //
+  // // To get a customized joke
+  // var fn = "Jackie";
+  // var ln = "Chan";
+  // giveMeAJoke.getCustomJoke (fn, ln, function(joke) {
+  //     //=> console.log(joke);
+  // });
+
+}
+
 
 // Function called when the "commands" command is issued:
 function commands (target, context, params) {
