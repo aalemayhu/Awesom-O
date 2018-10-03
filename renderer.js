@@ -13,13 +13,6 @@ function disconnectBot() {
   ipcRenderer.send('disconnect-bot', 'disconnect');
 }
 
-function newCommand() {
-  console.log('new command');
-  // prompt('new command');
-  //
-
-}
-
 function renderCommands() {
   // Get the table
   var table = document.getElementById("commands-table");
@@ -35,12 +28,39 @@ function renderCommands() {
     let row = table.insertRow(1);
     row.insertCell(0).innerHTML = c.name
     row.insertCell(1).innerHTML = c.type
-    row.insertCell(2).innerHTML = c.description
+    row.insertCell(2).innerHTML = c.value
+    row.insertCell(3).innerHTML = c.description
   }
 }
 
-document.querySelector('#connect-button').addEventListener('click', connectBot);
-document.querySelector('#disconnect-button').addEventListener('click', disconnectBot);
-document.querySelector('#new-command-button').addEventListener('click', newCommand);
+function newCommandSubmit() {
+  var cmd = {}
+  cmd.name = document.querySelector('#command-name').value.toLowerCase();
+  let selectedIndex = document.querySelector(".custom-select").selectedIndex
+  cmd.type = document.querySelector(".custom-select")[selectedIndex].text.toLowerCase()
+  cmd.value = document.querySelector('#command-value').value;
+  cmd.description = document.querySelector('#command-description').value;
+  ipcRenderer.send('new-command', cmd);
+}
 
-renderCommands()
+function newCommandCancel() {
+  console.log('newCommandCancel()')
+}
+
+// index.html
+if (document.querySelector('#connect-button')) {
+  document.querySelector('#connect-button').addEventListener('click', connectBot);
+
+  renderCommands()
+}
+if (document.querySelector('#disconnect-button')) {
+  document.querySelector('#disconnect-button').addEventListener('click', disconnectBot);
+}
+
+// new-command.html
+if (document.querySelector('#new-command-submit')) {
+  document.querySelector('#new-command-submit').addEventListener('click', newCommandSubmit)
+}
+if (document.querySelector('#new-command-cancel')) {
+  document.querySelector('#new-command-cancel').addEventListener('click', newCommandCancel)
+}

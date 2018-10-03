@@ -5,21 +5,24 @@ const directory = app.getPath('home') // /home folder on OS X
 const cacheDirectory = `${directory}/twitch-bot-cache` // /home/twitch-bot-cache/
 const cacheDataFile = `${cacheDirectory}/data.json` // /home/twitch-bot-cache/data.json
 
-if (fs.existsSync(cacheDirectory) === false) {
-  fs.mkdirSync(cacheDirectory)
+function createCacheDirectory() {
+  if (fs.existsSync(cacheDirectory) === false) {
+    fs.mkdirSync(cacheDirectory)
+  }
 }
 
 const fsCache = {
   save(name, value) {
-    console.log('save(), ')
+    createCacheDirectory()
     let newData = this.readAll('data')
     newData[name] = value
     console.log('newData: '+newData)
     fs.writeFileSync(cacheDataFile, JSON.stringify(newData, null, 2))
   },
   readAll(file) {
-    let data
+    let data = {}
 
+    createCacheDirectory()
     try {
       const cacheContent = fs.readFileSync(`${cacheDirectory}/${file}.json` , 'utf-8')
 
@@ -31,9 +34,7 @@ const fsCache = {
       }
     } catch (err) {
       console.log('Error in Cache:', err)
-      return {}
     }
-
     return data
   },
 }

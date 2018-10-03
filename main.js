@@ -37,6 +37,7 @@ function createWindow () {
   if (!caches["commands"] || caches["commands"].length == 0) {
     console.log('commands is empty')
     loadTestCommands()
+    caches = fsCache.readAll('data')
   }
 
   mainWindow = new BrowserWindow({width: 800, height: 600,
@@ -152,6 +153,17 @@ ipcMain.on('connect-bot', (event, arg) => {
 
 ipcMain.on('disconnect-bot', (event, arg) => {
   chatClient.disconnect();
+})
+
+ipcMain.on('new-command', (event, cmd) => {
+  let commands = caches["commands"]
+  // Avoid duplicates (show error?)
+  if (commands.find(function(e){ return e.name == cmd.name})) {
+    return
+  }
+  commands.push(cmd)
+  fsCache.save('commands', commands)
+  mainWindow.loadFile('index.html')
 })
 
 
