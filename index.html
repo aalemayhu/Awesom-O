@@ -11,8 +11,15 @@
   <body class="table-dark">
     <div class="container">
 
-      <span id="new-command-button" class="table-add float-right mb-3 mr-2"><a href="new-command.html" class="text-success"><i class="fa fa-plus fa-2x"
-         aria-hidden="true"></i></a></span>
+      <div class="text-center">
+      <div class="btn-group" role="group">
+        <button type="button" id="connect-button" class="btn btn-success">Connect to chat</button>
+        <button type="button" id="disconnect-button" class="btn btn-danger">Disconnect from chat</button>
+
+        <button type="button" id="new-command-button" class="btn btn-info">New command</button>
+       </div>
+     </div>
+
       <table id="commands-table" class="table table-dark">
         <thead>
           <tr>
@@ -31,10 +38,6 @@
           </tr>
         </tbody>
       </table>
-      <section>
-        <button type="button" id="connect-button" class="btn btn-success">Connect to chat</button>
-        <button type="button" id="disconnect-button" class="btn btn-danger">Disconnect from chat</button>
-      </section>
     </div>
     <script>
       // You can also require other files to run in this process

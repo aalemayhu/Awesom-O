@@ -33,6 +33,10 @@ function renderCommands() {
   }
 }
 
+function newCommand() {
+  remote.getCurrentWindow().loadFile('new-command.html')
+}
+
 function newCommandSubmit() {
   var cmd = {}
   cmd.name = document.querySelector('#command-name').value.toLowerCase();
@@ -56,6 +60,10 @@ if (document.querySelector('#connect-button')) {
 }
 if (document.querySelector('#disconnect-button')) {
   document.querySelector('#disconnect-button').addEventListener('click', disconnectBot);
+}
+
+if (document.querySelector('#new-command-button')) {
+  document.querySelector('#new-command-button').addEventListener('click', newCommand);
 }
 
 // new-command.html
