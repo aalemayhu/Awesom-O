@@ -115,6 +115,12 @@ function onMessageHandler (target, context, msg, self) {
     }
 }
 
+function onJoinHandler (channel, username, self) {
+    if (self) { return }    
+    let msg = 'Welcome '+username+'!'
+    chatClient.say(channel, msg)
+}
+
 function configure() {
   try {
     // TODO: replace secret with a configuration instance
@@ -129,7 +135,7 @@ function configure() {
     chatClient.on('message', onMessageHandler)
     chatClient.on('connected', onConnectedHandler)
     chatClient.on('disconnected', onDisconnectedHandler)
-
+    chatClient.on('join', onJoinHandler)
     // Auto connect
     chatClient.connect()
   }  catch (err) {
