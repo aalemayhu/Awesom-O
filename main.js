@@ -45,7 +45,7 @@ function createWindow () {
     caches = fsCache.readAll('data')
   }
 
-  mainWindow = new BrowserWindow({width: 800, height: 600,
+  mainWindow = new BrowserWindow({width: 1920, height: 1080,
     icon: path.join(__dirname, 'assets/icons/png/64x64.png')
   })
 
