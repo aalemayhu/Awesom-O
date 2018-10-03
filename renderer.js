@@ -56,6 +56,10 @@ function newCommandCancel() {
   remote.getCurrentWindow().loadFile('index.html')
 }
 
+function exportCommand() {
+  ipcRenderer.send('export-command', '');
+}
+
 // index.html
 if (document.querySelector('#connect-button')) {
   document.querySelector('#connect-button').addEventListener('click', connectBot);
@@ -68,6 +72,10 @@ if (document.querySelector('#disconnect-button')) {
 
 if (document.querySelector('#new-command-button')) {
   document.querySelector('#new-command-button').addEventListener('click', newCommand);
+}
+
+if (document.querySelector('#export-command-button')) {
+  document.querySelector('#export-command-button').addEventListener('click', exportCommand);
 }
 
 // new-command.html

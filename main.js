@@ -1,4 +1,4 @@
-const {app, BrowserWindow, ipcMain, Notification} = require('electron')
+const {dialog, app, BrowserWindow, ipcMain, Notification} = require('electron')
 var path = require('path')
 const { fsCache } = require('./electron-caches.js')
 const fs = require('fs')
@@ -178,6 +178,19 @@ ipcMain.on('new-command', (event, cmd) => {
   commands.push(cmd)
   fsCache.save('commands', commands)
   mainWindow.loadFile('index.html')
+})
+
+ipcMain.on('export-command', (event, arg) => {
+    let defaultPath = '~/Downloads/data.json'
+    var d = dialog.showSaveDialog( {
+        title: "Save commands",
+        defaultPath: defaultPath,
+        filters: [
+            { name: 'data', extensions: ['json'] },
+        ],
+    }, function (filePaths, bookmarks) {
+      fs.writeFileSync(filePaths, JSON.stringify(caches, null, 2))
+    });
 })
 
 
