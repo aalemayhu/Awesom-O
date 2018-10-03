@@ -18,6 +18,14 @@ let chatClient
 let commandPrefix = '!'
 let builtinCommands = {echo, help, commands, joke}
 
+let builtinCommandsStructure = [
+  // Builtin commands
+  { type: "builtin", name: "echo", description: "Print out everything after echo"},
+  { type: "builtin", name: "commands", description: "List all of the supported commands"},
+  { type: "builtin", name: "help", description: "Show description for a command"},
+  { type: "builtin", name: "joke", description: "Get a random joke ;-)"},
+]
+
 function loadTestCommands() {
   var commands = [
     { type: "string", name: "what",  description: "Print out the current project", value: "Twitch bot"},
@@ -27,11 +35,6 @@ function loadTestCommands() {
     { type: "string", name: "bashrc", description: "my bash profile", value: "https://github.com/scanf/dotfiles/tree/master/shell"},
     { type: "string", name: "twitter", description: "Link to my Twitter", value: "https://twitter.com/ccscanf"},
     { type: "file", name: "music", description: "Currently playing music", value: "/var/folders/2d/2xkdk5xd64z4s_l27tcyrwdc0000gp/T/com.alemayhu.-000/file-for-obs.txt" },
-    // Builtin commands
-    { type: "builtin", name: "echo", description: "Print out everything after echo"},
-    { type: "builtin", name: "commands", description: "List all of the supported commands"},
-    { type: "builtin", name: "help", description: "Show description for a command"},
-    { type: "builtin", name: "joke", description: "Get a random joke ;-)"},
   ]
   console.log('commands='+commands)
   fsCache.save('commands', commands)
@@ -59,7 +62,7 @@ function createWindow () {
     mainWindow = null
   })
 
-  global.commands = caches["commands"]
+  global.commands = caches["commands"].concat(builtinCommandsStructure)
   configure()
 }
 
@@ -207,7 +210,7 @@ ipcMain.on('import-command', (event, arg) => {
       let path = filePaths.toString()
       caches = fsCache.readAll(path)
       fsCache.saveAll(caches)
-      global.commands = caches["commands"]
+      global.commands = caches["commands"].concat(builtinCommandsStructure)
       // TODO: avoid reloading whole page
       mainWindow.loadFile('index.html')
     })
@@ -264,12 +267,18 @@ function joke (target, context, params) {
 
 // Function called when the "commands" command is issued:
 function commands (target, context, params) {
-  console.log('commands(...)')
-  let c = caches["commands"]
   var msg = ""
+  // Get user defined commands
+  let c = caches["commands"]
   for (var k in c) {
     msg += '!'+c[k].name+' '
   }
+  // Get builtin commands
+  for (var k in builtinCommandsStructure) {
+    let cmd = builtinCommandsStructure[k]
+    msg += '!'+cmd.name+' '
+  }
+
   sendMessage(target, context, msg)
 }
 
