@@ -27,7 +27,6 @@ function loadTestCommands() {
     { type: "string", name: "bashrc", description: "my bash profile", value: "https://github.com/scanf/dotfiles/tree/master/shell"},
     { type: "string", name: "twitter", description: "Link to my Twitter", value: "https://twitter.com/ccscanf"},
     { type: "file", name: "music", description: "Currently playing music", value: "/var/folders/2d/2xkdk5xd64z4s_l27tcyrwdc0000gp/T/com.alemayhu.-000/file-for-obs.txt" },
-}
     // Builtin commands
     { type: "builtin", name: "echo", description: "Print out everything after echo"},
     { type: "builtin", name: "commands", description: "List all of the supported commands"},
@@ -40,11 +39,11 @@ function loadTestCommands() {
 
 function createWindow () {
 
-  caches = fsCache.readAll('data')
+  caches = fsCache.load()
   if (!caches["commands"] || caches["commands"].length == 0) {
     console.log('commands is empty')
     loadTestCommands()
-    caches = fsCache.readAll('data')
+    caches = fsCache.load()
   }
 
   mainWindow = new BrowserWindow({width: 1920, height: 1080,
@@ -184,7 +183,7 @@ ipcMain.on('new-command', (event, cmd) => {
 
 ipcMain.on('export-command', (event, arg) => {
     let defaultPath = '~/Downloads/data.json'
-    var d = dialog.showSaveDialog( {
+    dialog.showSaveDialog( {
         title: "Save commands",
         defaultPath: defaultPath,
         filters: [
@@ -193,6 +192,25 @@ ipcMain.on('export-command', (event, arg) => {
     }, function (filePaths, bookmarks) {
       fs.writeFileSync(filePaths, JSON.stringify(caches, null, 2))
     });
+})
+
+ipcMain.on('import-command', (event, arg) => {
+    dialog.showOpenDialog({
+      properties: ['openFile'],
+      filters: [
+        { extensions: ['json']},
+      ]
+    }, function (filePaths, bookmarks) {
+      if (!filePaths) {
+        return
+      }
+      let path = filePaths.toString()
+      caches = fsCache.readAll(path)
+      fsCache.saveAll(caches)
+      global.commands = caches["commands"]
+      // TODO: avoid reloading whole page
+      mainWindow.loadFile('index.html')
+    })
 })
 
 

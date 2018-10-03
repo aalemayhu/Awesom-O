@@ -12,19 +12,26 @@ function createCacheDirectory() {
 }
 
 const fsCache = {
+  saveAll(data) {
+    createCacheDirectory()
+    fs.writeFileSync(cacheDataFile, JSON.stringify(data, null, 2))
+  },
   save(name, value) {
     createCacheDirectory()
-    let newData = this.readAll('data')
+    let newData = this.load()
     newData[name] = value
     console.log('newData: '+newData)
     fs.writeFileSync(cacheDataFile, JSON.stringify(newData, null, 2))
+  },
+  load() {
+    return this.readAll(`${cacheDirectory}/data.json`)
   },
   readAll(file) {
     let data = {}
 
     createCacheDirectory()
     try {
-      const cacheContent = fs.readFileSync(`${cacheDirectory}/${file}.json` , 'utf-8')
+      const cacheContent = fs.readFileSync(file, 'utf-8')
 
       try {
         const _data = JSON.parse(cacheContent)
@@ -40,6 +47,5 @@ const fsCache = {
 }
 
 module.exports = {
-    cacheDataFile,
     fsCache
 }

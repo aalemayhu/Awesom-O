@@ -60,6 +60,10 @@ function exportCommand() {
   ipcRenderer.send('export-command', '');
 }
 
+function importCommand() {
+  ipcRenderer.send('import-command', '');
+}
+
 // index.html
 if (document.querySelector('#connect-button')) {
   document.querySelector('#connect-button').addEventListener('click', connectBot);
@@ -76,6 +80,10 @@ if (document.querySelector('#new-command-button')) {
 
 if (document.querySelector('#export-command-button')) {
   document.querySelector('#export-command-button').addEventListener('click', exportCommand);
+}
+
+if (document.querySelector('#import-command-button')) {
+  document.querySelector('#import-command-button').addEventListener('click', importCommand);
 }
 
 // new-command.html
