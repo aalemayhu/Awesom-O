@@ -133,6 +133,11 @@ function onJoinHandler (channel, username, self) {
     chatClient.say(channel, msg)
 }
 
+function onHostedHandler (channel, username, viewers, autohost) {
+  let msg = channel+' is hosted by '+username+' viewers='+viewers
+  chatClient.say(channel, msg)
+});
+
 function configure() {
   try {
     // TODO: replace secret with a configuration instance
@@ -148,6 +153,7 @@ function configure() {
     chatClient.on('connected', onConnectedHandler)
     chatClient.on('disconnected', onDisconnectedHandler)
     chatClient.on('join', onJoinHandler)
+    chatClient.on('hosted', onHostedHandler)
     // Auto connect
     chatClient.connect()
   }  catch (err) {
