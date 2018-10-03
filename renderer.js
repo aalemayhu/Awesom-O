@@ -28,7 +28,11 @@ function renderCommands() {
     let row = table.insertRow(1);
     row.insertCell(0).innerHTML = c.name
     row.insertCell(1).innerHTML = c.type
-    row.insertCell(2).innerHTML = c.value
+    if (c.value) {
+      row.insertCell(2).innerHTML = c.value
+    } else {
+      row.insertCell(2).innerHTML = ""
+    }
     row.insertCell(3).innerHTML = c.description
   }
 }
