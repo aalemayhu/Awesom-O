@@ -254,6 +254,8 @@ function help (target, context, params) {
       sendMessage(target, context, '!'+cmd.name+'- '+cmd.description)
       break;
     }
+  } else {
+    sendMessage(target, context, 'USAGE: '+'!help cmd (without !)')
   }
 }
 
