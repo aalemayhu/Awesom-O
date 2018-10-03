@@ -35,6 +35,7 @@ function loadTestCommands() {
     { type: "string", name: "bashrc", description: "my bash profile", value: "https://github.com/scanf/dotfiles/tree/master/shell"},
     { type: "string", name: "twitter", description: "Link to my Twitter", value: "https://twitter.com/ccscanf"},
     { type: "file", name: "music", description: "Currently playing music", value: "/var/folders/2d/2xkdk5xd64z4s_l27tcyrwdc0000gp/T/com.alemayhu.-000/file-for-obs.txt" },
+    { type: "string", name: "donate", description: "Link to my donation page", value: "https://streamlabs.com/ccscanf"}
   ]
   console.log('commands='+commands)
   fsCache.save('commands', commands)
