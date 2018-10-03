@@ -24,6 +24,8 @@ function loadTestCommands() {
     { type: "string", name: "github", description: "Print GitHub profile URL", value: "https://github.com/scanf"},
     { type: "string", name: "gitlab", description: "Print GitHub profile URL", value: "https://gitlab.com/scanf"},
     { type: "string", name: "bashrc", description: "my bash profile", value: "https://github.com/scanf/dotfiles/tree/master/shell"},
+    { type: "string", name: "twitter", description: "Link to my Twitter", value: "https://twitter.com/ccscanf"},
+    // Builtin commands
     { type: "builtin", name: "echo", description: "Print out everything after echo"},
     { type: "builtin", name: "commands", description: "List all of the supported commands"},
     { type: "builtin", name: "help", description: "Show description for a command"},
