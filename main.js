@@ -26,6 +26,8 @@ function loadTestCommands() {
     { type: "string", name: "gitlab", description: "Print GitHub profile URL", value: "https://gitlab.com/scanf"},
     { type: "string", name: "bashrc", description: "my bash profile", value: "https://github.com/scanf/dotfiles/tree/master/shell"},
     { type: "string", name: "twitter", description: "Link to my Twitter", value: "https://twitter.com/ccscanf"},
+    { type: "file", name: "music", description: "Currently playing music", value: "/var/folders/2d/2xkdk5xd64z4s_l27tcyrwdc0000gp/T/com.alemayhu.-000/file-for-obs.txt" },
+}
     // Builtin commands
     { type: "builtin", name: "echo", description: "Print out everything after echo"},
     { type: "builtin", name: "commands", description: "List all of the supported commands"},
