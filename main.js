@@ -129,7 +129,7 @@ function onMessageHandler (target, context, msg, self) {
 
 function onJoinHandler (channel, username, self) {
     if (self) { return }
-    let msg = 'Welcome '+username+'!'
+    let msg = 'Welcome @'+username+'!'
     chatClient.say(channel, msg)
 }
 
