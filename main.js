@@ -5,8 +5,8 @@ const fs = require('fs')
 var giveMeAJoke = require('give-me-a-joke');
 
 let chatbot = require('./chatbot.js')
-
 let mainWindow
+let secret = require('./secret.js')
 
 /*
 TODO: add flag to disable a command
@@ -91,7 +91,7 @@ function onMessageHandler (target, context, msg, self) {
   if (self) { return } // Ignore messages from the bot
 
   // This isn't a command since it has no prefix:
-    if (msg.substr(0, 1) !== commandPrefix) {
+    if (msg.substr(0, 1) !== commandPrefix && context.username !== secret.USERNAMEHERE.replace('#', '')) {
       console.log(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
       displayNotification('Message from @'+context.username, msg)
       return
@@ -136,7 +136,7 @@ function onJoinHandler (channel, username, self) {
 function onHostedHandler (channel, username, viewers, autohost) {
   let msg = channel+' is hosted by '+username+' viewers='+viewers
   chatClient.say(channel, msg)
-});
+};
 
 function configure() {
   try {
