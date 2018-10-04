@@ -31,6 +31,7 @@ function renderCommands() {
       row.insertCell(2).innerHTML = ""
     }
     row.insertCell(3).innerHTML = c.description
+    row.insertCell(4).innerHTML = c.enabled
     // Callback handling
     row.id = c.name
     row.addEventListener('click', function() {
