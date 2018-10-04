@@ -13,15 +13,6 @@ let chatClient
 let commandPrefix = '!'
 let builtinCommands = {echo, help, commands, joke}
 
-// TODO: move builtinCommandsStructure back into useExampleCommands (but disable deleting them)
-let builtinCommandsStructure = [
-  // Builtin commands
-  { type: "builtin", name: "echo", description: "Print out everything after echo", enabled: true},
-  { type: "builtin", name: "commands", description: "List all of the supported commands", enabled: true},
-  { type: "builtin", name: "help", description: "Show description for a command", enabled: true},
-  { type: "builtin", name: "joke", description: "Get a random joke ;-)", enabled: true},
-]
-
 function useExampleCommands() {
   var commands = [
     { type: "string", name: "what",  description: "Print out the current project", value: "Twitch bot", enabled: true},
@@ -31,7 +22,11 @@ function useExampleCommands() {
     { type: "string", name: "bashrc", description: "my bash profile", value: "https://github.com/scanf/dotfiles/tree/master/shell", enabled: true},
     { type: "string", name: "twitter", description: "Link to my Twitter", value: "https://twitter.com/ccscanf", enabled: true},
     { type: "file", name: "music", description: "Currently playing music", value: "/var/folders/2d/2xkdk5xd64z4s_l27tcyrwdc0000gp/T/com.alemayhu.-000/file-for-obs.txt", enabled: true },
-    { type: "string", name: "donate", description: "Link to my donation page", value: "https://streamlabs.com/ccscanf", enabled: true}
+    { type: "string", name: "donate", description: "Link to my donation page", value: "https://streamlabs.com/ccscanf", enabled: true},
+    { type: "builtin", name: "echo", description: "Print out everything after echo", enabled: true},
+    { type: "builtin", name: "commands", description: "List all of the supported commands", enabled: true},
+    { type: "builtin", name: "help", description: "Show description for a command", enabled: true},
+    { type: "builtin", name: "joke", description: "Get a random joke ;-)", enabled: true},
   ]
   console.log('commands='+commands)
   fsCache.save('commands', commands)
@@ -156,7 +151,7 @@ function loadCacheFiles() {
     useExampleCommands()
     caches = fsCache.load()
   }
-  global.commands = caches["commands"].concat(builtinCommandsStructure)
+  global.commands = caches["commands"]
   config = fsCache.secrets()["config"]
   global.config = config
 }
@@ -267,7 +262,7 @@ ipcMain.on('import-command', (event, arg) => {
       let path = filePaths.toString()
       caches = fsCache.readAll(path)
       fsCache.saveAll(caches)
-      global.commands = caches["commands"].concat(builtinCommandsStructure)
+      global.commands = caches["commands"]
       // TODO: avoid reloading whole page
       mainWindow.loadFile('index.html')
     })
@@ -326,21 +321,13 @@ function commands (target, context, params) {
   // TODO: refactor below
   var msg = ""
   // Get user defined commands
-  let c = caches["commands"]
+  let c = global.commands
   for (var k in c) {
     let cmd = c[k]
     if (cmd.enabled) {
       msg += '!'+cmd.name+' '
     }
   }
-  // Get builtin commands
-  for (var k in builtinCommandsStructure) {
-    let cmd = builtinCommandsStructure[k]
-    if (cmd.enabled) {
-      msg += '!'+cmd.name+' '
-    }
-  }
-
   sendMessage(target, context, msg)
 }
 
