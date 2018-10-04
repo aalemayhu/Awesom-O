@@ -17,24 +17,25 @@ let chatClient
 let commandPrefix = '!'
 let builtinCommands = {echo, help, commands, joke}
 
+// TODO: move builtinCommandsStructure back into loadTestCommands (but disable deleting them)
 let builtinCommandsStructure = [
   // Builtin commands
-  { type: "builtin", name: "echo", description: "Print out everything after echo"},
-  { type: "builtin", name: "commands", description: "List all of the supported commands"},
-  { type: "builtin", name: "help", description: "Show description for a command"},
-  { type: "builtin", name: "joke", description: "Get a random joke ;-)"},
+  { type: "builtin", name: "echo", description: "Print out everything after echo", enabled: true},
+  { type: "builtin", name: "commands", description: "List all of the supported commands", enabled: true},
+  { type: "builtin", name: "help", description: "Show description for a command", enabled: true},
+  { type: "builtin", name: "joke", description: "Get a random joke ;-)", enabled: true},
 ]
 
 function loadTestCommands() {
   var commands = [
-    { type: "string", name: "what",  description: "Print out the current project", value: "Twitch bot"},
-    { type: "string", name: "when", description: "Print stream schedule", value: "From 5PM to roughly 7PM (GMT+2)"},
-    { type: "string", name: "github", description: "Print GitHub profile URL", value: "https://github.com/scanf"},
-    { type: "string", name: "gitlab", description: "Print GitHub profile URL", value: "https://gitlab.com/scanf"},
-    { type: "string", name: "bashrc", description: "my bash profile", value: "https://github.com/scanf/dotfiles/tree/master/shell"},
-    { type: "string", name: "twitter", description: "Link to my Twitter", value: "https://twitter.com/ccscanf"},
-    { type: "file", name: "music", description: "Currently playing music", value: "/var/folders/2d/2xkdk5xd64z4s_l27tcyrwdc0000gp/T/com.alemayhu.-000/file-for-obs.txt" },
-    { type: "string", name: "donate", description: "Link to my donation page", value: "https://streamlabs.com/ccscanf"}
+    { type: "string", name: "what",  description: "Print out the current project", value: "Twitch bot", enabled: true},
+    { type: "string", name: "when", description: "Print stream schedule", value: "From 5PM to roughly 7PM (GMT+2)", enabled: true},
+    { type: "string", name: "github", description: "Print GitHub profile URL", value: "https://github.com/scanf", enabled: true},
+    { type: "string", name: "gitlab", description: "Print GitHub profile URL", value: "https://gitlab.com/scanf", enabled: true},
+    { type: "string", name: "bashrc", description: "my bash profile", value: "https://github.com/scanf/dotfiles/tree/master/shell", enabled: true},
+    { type: "string", name: "twitter", description: "Link to my Twitter", value: "https://twitter.com/ccscanf", enabled: true},
+    { type: "file", name: "music", description: "Currently playing music", value: "/var/folders/2d/2xkdk5xd64z4s_l27tcyrwdc0000gp/T/com.alemayhu.-000/file-for-obs.txt", enabled: true },
+    { type: "string", name: "donate", description: "Link to my donation page", value: "https://streamlabs.com/ccscanf", enabled: true}
   ]
   console.log('commands='+commands)
   fsCache.save('commands', commands)
@@ -110,13 +111,16 @@ function onMessageHandler (target, context, msg, self) {
       if (caches)
       command(target, context, params)
       console.log(`* Executed ${commandName} command for ${context.username}`)
+      // TODO: check if command is enabled
     } else {
       let userCommands = caches["commands"]
       console.log(userCommands)
       let cmd = userCommands.find(function(e){
         return e.name == commandName
       })
-      if (cmd && cmd.type == "string") {
+      if (cmd.enabled === false) {
+        chatClient.say(target, '!'+commandName+' is disabled')        
+      } else if (cmd && cmd.type == "string") {
         sendMessage(target, context, cmd.value)
       } else if (cmd && cmd.type == "file") {
         let msg = fs.readFileSync(cmd.value , 'utf-8')

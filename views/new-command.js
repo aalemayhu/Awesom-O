@@ -7,6 +7,7 @@ function newCommandSubmit() {
   cmd.type = document.querySelector(".custom-select")[selectedIndex].text.toLowerCase()
   cmd.value = document.querySelector('#command-value').value;
   cmd.description = document.querySelector('#command-description').value;
+  cmd.enabled = document.querySelector("#command-enabled").checked;
   ipcRenderer.send('new-command', cmd);
 }
 
