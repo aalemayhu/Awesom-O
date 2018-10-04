@@ -291,10 +291,9 @@ function commands (target, context, params) {
 
 // Function called when the "help" command is issued:
 function help (target, context, params) {
-  console.log('help(...)')
   if (params.length) {
     const msg = params.join(' ')
-    let c = caches["commands"]
+    let c = global.commands
     for (var k in c) {
       let cmd = c[k]
       if (cmd.name != msg) {
