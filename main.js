@@ -10,7 +10,6 @@ let secret = require('./secret.js')
 
 /*
 TODO: add flag to disable a command
-TODO: Add more types (file, url, default)
 */
 
 let caches = {}
