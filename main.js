@@ -10,6 +10,7 @@ let mainWindow
 let chatClient
 let commandPrefix = '!'
 let builtinCommands = {echo, help, commands, joke}
+var greetedUsers = []
 
 function useExampleCommands() {
   var commands = [
@@ -121,8 +122,12 @@ function onMessageHandler (target, context, msg, self) {
 
 function onJoinHandler (channel, username, self) {
     if (self) { return }
-    let msg = 'Welcome @'+username+'!'
-    console.log(msg)
+    let didGreetUser = greetedUsers.find(function(u) {
+      if (u == username) { return u }
+    })
+    if (didGreetUser) { return }
+    greetedUsers.push(username)
+    let msg = 'Welcome @'+username+'! See !commands for chat commands ;-)'
     chatClient.say(channel, msg)
 }
 
