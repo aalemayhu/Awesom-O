@@ -11,4 +11,4 @@ darwin:
 	${ELECTRON_PACKAGER} . --overwrite --platform=darwin --arch=x64 --icon=${ICON_FILE} --prune=true --out=release-builds
 
 purge:
-	rm -r ~/twitch-bot-cache/
+	rm ~/twitch-bot-cache/data.json
