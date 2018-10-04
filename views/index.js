@@ -31,6 +31,11 @@ function renderCommands() {
       row.insertCell(2).innerHTML = ""
     }
     row.insertCell(3).innerHTML = c.description
+    // Callback handling
+    row.id = c.name
+    row.addEventListener('click', function() {
+      ipcRenderer.send('selected-command', this.id)
+    });
   }
 }
 

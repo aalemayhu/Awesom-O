@@ -16,12 +16,14 @@
       <input type="text" class="form-control" id="command-name" placeholder="newcmd">
       <small id="command-name" class="form-text text-muted">lowercase it and no ! prefix</small>
     </div>
-    <label class="my-1 mr-2" for="command-type">Type</label>
-    <select class="custom-select my-1 mr-sm-2" id="command-type">
-      <option selected value="1">String</option>
-      <option value="2">File</option>
-    </select>
-    <div class="form-group">
+    <div id="form-group-command-type" class="form-group">
+      <label class="my-1 mr-2" for="command-type">Type</label>
+      <select class="custom-select my-1 mr-sm-2" id="command-type">
+        <option selected value="1">String</option>
+        <option value="2">File</option>
+      </select>
+    </div>
+    <div id="form-group-command-value" class="form-group">
       <label for="command-value">Value</label>
       <input type="text" class="form-control" id="command-value" placeholder="newcmd output">
     </div>

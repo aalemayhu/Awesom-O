@@ -206,6 +206,11 @@ ipcMain.on('new-command', (event, cmd) => {
   mainWindow.loadFile('index.html')
 })
 
+ipcMain.on('selected-command', (event, cmd) => {
+    global.selectedCommand = cmd
+    mainWindow.loadFile('new-command.html')
+})
+
 ipcMain.on('new-configuration', (event, config) => {
   fsCache.saveSecret({"config": config})
   mainWindow.loadFile('index.html')
@@ -295,16 +300,21 @@ function joke (target, context, params) {
 
 // Function called when the "commands" command is issued:
 function commands (target, context, params) {
+  // TODO: refactor below
   var msg = ""
   // Get user defined commands
   let c = caches["commands"]
   for (var k in c) {
-    msg += '!'+c[k].name+' '
+    if (cmd.enabled) {
+      msg += '!'+c[k].name+' '
+    }
   }
   // Get builtin commands
   for (var k in builtinCommandsStructure) {
     let cmd = builtinCommandsStructure[k]
-    msg += '!'+cmd.name+' '
+    if (cmd.enabled) {
+      msg += '!'+cmd.name+' '
+    }
   }
 
   sendMessage(target, context, msg)
