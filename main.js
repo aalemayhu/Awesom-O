@@ -8,18 +8,12 @@ let chatbot = require('./chatbot.js')
 let mainWindow
 let config
 
-/*
-TODO: add flag to disable a command
-*/
-
 let caches = {}
 let chatClient
 let commandPrefix = '!'
 let builtinCommands = {echo, help, commands, joke}
 
-var autoConnect = false
-
-// TODO: move builtinCommandsStructure back into loadTestCommands (but disable deleting them)
+// TODO: move builtinCommandsStructure back into useExampleCommands (but disable deleting them)
 let builtinCommandsStructure = [
   // Builtin commands
   { type: "builtin", name: "echo", description: "Print out everything after echo", enabled: true},
@@ -28,7 +22,7 @@ let builtinCommandsStructure = [
   { type: "builtin", name: "joke", description: "Get a random joke ;-)", enabled: true},
 ]
 
-function loadTestCommands() {
+function useExampleCommands() {
   var commands = [
     { type: "string", name: "what",  description: "Print out the current project", value: "Twitch bot", enabled: true},
     { type: "string", name: "when", description: "Print stream schedule", value: "From 5PM to roughly 7PM (GMT+2)", enabled: true},
@@ -44,14 +38,6 @@ function loadTestCommands() {
 }
 
 function createWindow () {
-
-  caches = fsCache.load()
-  if (!caches["commands"] || caches["commands"].length == 0) {
-    console.log('commands is empty')
-    loadTestCommands()
-    caches = fsCache.load()
-  }
-
   mainWindow = new BrowserWindow({width: 1920, height: 1080,
     icon: path.join(__dirname, 'assets/icons/png/64x64.png')
   })
@@ -117,7 +103,9 @@ function onMessageHandler (target, context, msg, self) {
       let userCommands = caches["commands"]
       console.log(userCommands)
       let cmd = userCommands.find(function(e){
-        return e.name == commandName
+        if (e.name == commandName) {
+          return e
+        }
       })
       if (cmd.enabled === false) {
         chatClient.say(target, '!'+commandName+' is disabled')
@@ -144,11 +132,45 @@ function onHostedHandler (channel, username, viewers, autohost) {
   chatClient.say(channel, msg)
 };
 
-function configure() {
+function onConnectedHandler (addr, port) {
+  console.log(`* Connected to ${addr}:${port}`)
+}
+
+function onDisconnectedHandler (reason) {
+  displayNotification('Awesom-O disconnected', reason)
+  if (config.autoConnect) {
+    console.log("Reconnecting attempt")
+    chatClient.connect()
+  }
+}
+
+// ---
+
+function isValid(config) {
+  return config && config.name && config.bot && config.oauth
+}
+
+function loadCacheFiles() {
+  caches = fsCache.load()
+  if (!caches["commands"] || caches["commands"].length == 0) {
+    useExampleCommands()
+    caches = fsCache.load()
+  }
   global.commands = caches["commands"].concat(builtinCommandsStructure)
   config = fsCache.secrets()["config"]
   global.config = config
+}
 
+function configure() {
+  loadCacheFiles()
+  if (!isValid(config)) {
+    mainWindow.loadFile('configuration.html')
+  } else {
+    setupClient()
+  }
+}
+
+function setupClient() {
   chatClient = new chatbot({
       channel: config.name,
       username: config.bot,
@@ -161,20 +183,7 @@ function configure() {
   chatClient.on('join', onJoinHandler)
   chatClient.on('hosted', onHostedHandler)
 
-  console.log('autoConnect == '+config.autoconnect)
   if (config.autoconnect) {
-    chatClient.connect()
-  }
-}
-
-function onConnectedHandler (addr, port) {
-  console.log(`* Connected to ${addr}:${port}`)
-}
-
-function onDisconnectedHandler (reason) {
-  displayNotification('Awesom-O disconnected', reason)
-  if (autoConnect) {
-    console.log("Reconnecting attempt")
     chatClient.connect()
   }
 }
@@ -183,26 +192,39 @@ function onDisconnectedHandler (reason) {
 
 ipcMain.on('connect-bot', (event, arg) => {
     chatClient.connect();
-    autoConnect = true
 })
 
 ipcMain.on('disconnect-bot', (event, arg) => {
-  autoConnect = false
   chatClient.disconnect();
 })
 
 ipcMain.on('new-command', (event, cmd) => {
   console.log('new-command')
-  let commands = caches["commands"]
-  // Avoid duplicates (show error?)
-  if (commands.find(function(e){ return e.name == cmd.name})) {
-    console.log('found existing command, aborting')
-    return
+  let commands = global.commands
+  let existingCmd = commands.find(function(e) {
+    console.log(e.name+' === '+cmd.name)
+    if (e.name == cmd.name) {
+      return e
+    }
+  })
+  console.log('existingCmd == '+existingCmd)
+  if (existingCmd) {
+    console.log('existingCmd')
+    console.log(existingCmd)
+    if (existingCmd.type != "builtin") {
+      existingCmd.name = cmd.name
+      existingCmd.type = cmd.type
+      existingCmd.description = cmd.description
+      existingCmd.value = cmd.value
+    }
+    existingCmd.enabled = cmd.enabled
+  } else {
+    console.log('Added cmd '+cmd)
+    commands.push(cmd)
   }
-  console.log('Added cmd '+cmd)
-  commands.push(cmd)
   global.commands = commands
   fsCache.save('commands', commands)
+  global.selectedCommand = null
   mainWindow.loadFile('index.html')
 })
 
@@ -213,6 +235,8 @@ ipcMain.on('selected-command', (event, cmd) => {
 
 ipcMain.on('new-configuration', (event, config) => {
   fsCache.saveSecret({"config": config})
+  loadCacheFiles()
+  setupClient()
   mainWindow.loadFile('index.html')
 })
 
@@ -297,7 +321,6 @@ function joke (target, context, params) {
 
 }
 
-
 // Function called when the "commands" command is issued:
 function commands (target, context, params) {
   // TODO: refactor below
@@ -305,8 +328,9 @@ function commands (target, context, params) {
   // Get user defined commands
   let c = caches["commands"]
   for (var k in c) {
+    let cmd = c[k]
     if (cmd.enabled) {
-      msg += '!'+c[k].name+' '
+      msg += '!'+cmd.name+' '
     }
   }
   // Get builtin commands
@@ -330,7 +354,7 @@ function help (target, context, params) {
       if (cmd.name != msg) {
         continue;
       }
-      sendMessage(target, context, '!'+cmd.name+'- '+cmd.description)
+      sendMessage(target, context, '!'+cmd.name+' - '+cmd.description)
       break;
     }
   } else {
