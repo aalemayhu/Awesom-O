@@ -6,9 +6,7 @@ var giveMeAJoke = require('give-me-a-joke');
 
 let chatbot = require('./chatbot.js')
 let mainWindow
-let config
 
-let caches = {}
 let chatClient
 let commandPrefix = '!'
 let builtinCommands = {echo, help, commands, joke}
@@ -74,7 +72,7 @@ function onMessageHandler (target, context, msg, self) {
   if (self) { return } // Ignore messages from the bot
 
   // This isn't a command since it has no prefix:
-    if (msg.substr(0, 1) !== commandPrefix && context.username !== config.name.replace('#', '')) {
+    if (msg.substr(0, 1) !== commandPrefix && context.username !== global.config.name.replace('#', '')) {
       console.log(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
       displayNotification('Message from @'+context.username, msg)
       return
@@ -87,32 +85,36 @@ function onMessageHandler (target, context, msg, self) {
     // The rest (if any) are the parameters:
     const params = parse.splice(1)
 
+    let cmd = global.commands.find(function(e){
+      if (e.name == commandName) {
+        return e
+      }
+    })
 
+    if (cmd.enabled === false) {
+      chatClient.say(target, '!'+commandName+' is disabled')
+      return
+    }
+
+    // Handle the builtin commands
     if (commandName in builtinCommands) {
-      const command = builtinCommands[commandName]
-      if (caches)
-      command(target, context, params)
-      console.log(`* Executed ${commandName} command for ${context.username}`)
-      // TODO: check if command is enabled
-    } else {
-      let userCommands = caches["commands"]
-      console.log(userCommands)
-      let cmd = userCommands.find(function(e){
-        if (e.name == commandName) {
-          return e
-        }
-      })
-      if (cmd.enabled === false) {
-        chatClient.say(target, '!'+commandName+' is disabled')
-      } else if (cmd && cmd.type == "string") {
+      const commandHandler = builtinCommands[commandName]
+      if (commandHandler)
+        commandHandler(target, context, params)
+    }
+    // Handle the user defined commands
+    else {
+      if (cmd && cmd.type == "string") {
         sendMessage(target, context, cmd.value)
       } else if (cmd && cmd.type == "file") {
         let msg = fs.readFileSync(cmd.value , 'utf-8')
         chatClient.say(target, msg)
       } else {
         console.log(`* Unknown command ${commandName} from ${context.username}`)
+        return
       }
     }
+    console.log(`* Executed ${commandName} command for ${context.username}`)
 }
 
 function onJoinHandler (channel, username, self) {
@@ -133,7 +135,7 @@ function onConnectedHandler (addr, port) {
 
 function onDisconnectedHandler (reason) {
   displayNotification('Awesom-O disconnected', reason)
-  if (config.autoConnect) {
+  if (global.config.autoConnect) {
     console.log("Reconnecting attempt")
     chatClient.connect()
   }
@@ -146,14 +148,12 @@ function isValid(config) {
 }
 
 function loadCacheFiles() {
-  caches = fsCache.load()
-  if (!caches["commands"] || caches["commands"].length == 0) {
+  global.commands = fsCache.load().commands
+  if (!global.commands || global.commands.length == 0) {
     useExampleCommands()
-    caches = fsCache.load()
+    global.commands = fsCache.load().commands
   }
-  global.commands = caches["commands"]
-  config = fsCache.secrets()["config"]
-  global.config = config
+  global.config = fsCache.secrets()["config"]
 }
 
 function configure() {
@@ -167,9 +167,9 @@ function configure() {
 
 function setupClient() {
   chatClient = new chatbot({
-      channel: config.name,
-      username: config.bot,
-      password: config.oauth
+      channel: global.config.name,
+      username: global.config.bot,
+      password: global.config.oauth
   });
 
   chatClient.on('message', onMessageHandler)
@@ -178,7 +178,7 @@ function setupClient() {
   chatClient.on('join', onJoinHandler)
   chatClient.on('hosted', onHostedHandler)
 
-  if (config.autoconnect) {
+  if (global.config.autoconnect) {
     chatClient.connect()
   }
 }
@@ -245,7 +245,7 @@ ipcMain.on('export-command', (event, arg) => {
             { name: 'data', extensions: ['json'] },
         ],
     }, function (filePaths, bookmarks) {
-      fs.writeFileSync(filePaths, JSON.stringify(caches, null, 2))
+      fs.writeFileSync(filePaths, JSON.stringify({"commands": global.commands}, null, 2))
     });
 })
 
@@ -260,9 +260,8 @@ ipcMain.on('import-command', (event, arg) => {
         return
       }
       let path = filePaths.toString()
-      caches = fsCache.readAll(path)
-      fsCache.saveAll(caches)
-      global.commands = caches["commands"]
+      global.commands = fsCache.readAll(path).commands
+      fsCache.saveAll({"commands": global.commands})
       // TODO: avoid reloading whole page
       mainWindow.loadFile('index.html')
     })
@@ -287,14 +286,6 @@ function echo (target, context, params) {
 
 // Function called when the "joke" command is issued:
 function joke (target, context, params) {
-  // console.log('commands(...)')
-  // let c = caches["commands"]
-  // var msg = ""
-  // for (var k in c) {
-  //   msg += '!'+c[k].name+' '
-  // }
-  // sendMessage(target, context, msg)
-
   // TODO: pick one at random
 
   // To get a random dad joke
