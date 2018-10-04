@@ -180,12 +180,16 @@ ipcMain.on('disconnect-bot', (event, arg) => {
 })
 
 ipcMain.on('new-command', (event, cmd) => {
+  console.log('new-command')
   let commands = caches["commands"]
   // Avoid duplicates (show error?)
   if (commands.find(function(e){ return e.name == cmd.name})) {
+    console.log('found existing command, aborting')
     return
   }
+  console.log('Added cmd '+cmd)
   commands.push(cmd)
+  global.commands = commands
   fsCache.save('commands', commands)
   mainWindow.loadFile('index.html')
 })

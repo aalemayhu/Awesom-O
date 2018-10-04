@@ -3,6 +3,10 @@
 // All of the Node.js APIs are available in this process.
 const {remote, ipcRenderer} = require('electron')
 
+// Setup the new command page
+require('./views/new-command.js')
+
+
 function connectBot() {
     console.log('connectBot');
     ipcRenderer.send('connect-bot', 'connect');
@@ -41,21 +45,6 @@ function newCommand() {
   remote.getCurrentWindow().loadFile('new-command.html')
 }
 
-function newCommandSubmit() {
-  var cmd = {}
-  cmd.name = document.querySelector('#command-name').value.toLowerCase();
-  let selectedIndex = document.querySelector(".custom-select").selectedIndex
-  cmd.type = document.querySelector(".custom-select")[selectedIndex].text.toLowerCase()
-  cmd.value = document.querySelector('#command-value').value;
-  cmd.description = document.querySelector('#command-description').value;
-  ipcRenderer.send('new-command', cmd);
-}
-
-function newCommandCancel() {
-  console.log('newCommandCancel()')
-  remote.getCurrentWindow().loadFile('index.html')
-}
-
 function exportCommand() {
   ipcRenderer.send('export-command', '');
 }
@@ -74,10 +63,6 @@ if (document.querySelector('#disconnect-button')) {
   document.querySelector('#disconnect-button').addEventListener('click', disconnectBot);
 }
 
-if (document.querySelector('#new-command-button')) {
-  document.querySelector('#new-command-button').addEventListener('click', newCommand);
-}
-
 if (document.querySelector('#export-command-button')) {
   document.querySelector('#export-command-button').addEventListener('click', exportCommand);
 }
@@ -86,10 +71,6 @@ if (document.querySelector('#import-command-button')) {
   document.querySelector('#import-command-button').addEventListener('click', importCommand);
 }
 
-// new-command.html
-if (document.querySelector('#new-command-submit')) {
-  document.querySelector('#new-command-submit').addEventListener('click', newCommandSubmit)
-}
-if (document.querySelector('#new-command-cancel')) {
-  document.querySelector('#new-command-cancel').addEventListener('click', newCommandCancel)
+if (document.querySelector('#new-command-button')) {
+  document.querySelector('#new-command-button').addEventListener('click', newCommand);
 }
