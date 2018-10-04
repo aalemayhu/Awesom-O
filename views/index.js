@@ -46,6 +46,10 @@ function importCommand() {
   ipcRenderer.send('import-command', '');
 }
 
+function configuration() {
+  remote.getCurrentWindow().loadFile('configuration.html')
+}
+
 // index.html
 if (document.querySelector('#connect-button')) {
   document.querySelector('#connect-button').addEventListener('click', connectBot);
@@ -66,4 +70,8 @@ if (document.querySelector('#import-command-button')) {
 
 if (document.querySelector('#new-command-button')) {
   document.querySelector('#new-command-button').addEventListener('click', newCommand);
+}
+
+if (document.querySelector('#configuration-button')) {
+  document.querySelector('#configuration-button').addEventListener('click', configuration);
 }

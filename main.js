@@ -6,7 +6,7 @@ var giveMeAJoke = require('give-me-a-joke');
 
 let chatbot = require('./chatbot.js')
 let mainWindow
-let secret = require('./secret.js')
+let config
 
 /*
 TODO: add flag to disable a command
@@ -65,7 +65,6 @@ function createWindow () {
     mainWindow = null
   })
 
-  global.commands = caches["commands"].concat(builtinCommandsStructure)
   configure()
 }
 
@@ -94,7 +93,7 @@ function onMessageHandler (target, context, msg, self) {
   if (self) { return } // Ignore messages from the bot
 
   // This isn't a command since it has no prefix:
-    if (msg.substr(0, 1) !== commandPrefix && context.username !== secret.USERNAMEHERE.replace('#', '')) {
+    if (msg.substr(0, 1) !== commandPrefix && context.username !== config.name.replace('#', '')) {
       console.log(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
       displayNotification('Message from @'+context.username, msg)
       return
@@ -136,7 +135,8 @@ function onMessageHandler (target, context, msg, self) {
 function onJoinHandler (channel, username, self) {
     if (self) { return }
     let msg = 'Welcome @'+username+'!'
-    chatClient.say(channel, msg)
+    console.log(msg)
+    // chatClient.say(channel, msg)
 }
 
 function onHostedHandler (channel, username, viewers, autohost) {
@@ -145,25 +145,25 @@ function onHostedHandler (channel, username, viewers, autohost) {
 };
 
 function configure() {
-  try {
-    // TODO: replace secret with a configuration instance
-    let secret = require('./secret.js')
+  global.commands = caches["commands"].concat(builtinCommandsStructure)
+  config = fsCache.secrets()["config"]
+  global.config = config
 
-    chatClient = new chatbot({
-        channel: secret.CHANNELNAMEHERE,
-        username: secret.USERNAMEHERE,
-        password: secret.AUTHTOKENHERE
-    });
+  chatClient = new chatbot({
+      channel: config.name,
+      username: config.bot,
+      password: config.oauth
+  });
 
-    chatClient.on('message', onMessageHandler)
-    chatClient.on('connected', onConnectedHandler)
-    chatClient.on('disconnected', onDisconnectedHandler)
-    chatClient.on('join', onJoinHandler)
-    chatClient.on('hosted', onHostedHandler)
-    // Auto connect
+  chatClient.on('message', onMessageHandler)
+  chatClient.on('connected', onConnectedHandler)
+  chatClient.on('disconnected', onDisconnectedHandler)
+  chatClient.on('join', onJoinHandler)
+  chatClient.on('hosted', onHostedHandler)
+
+  console.log('autoConnect == '+config.autoconnect)
+  if (config.autoconnect) {
     chatClient.connect()
-  }  catch (err) {
-    console.log(err)
   }
 }
 
@@ -205,6 +205,12 @@ ipcMain.on('new-command', (event, cmd) => {
   fsCache.save('commands', commands)
   mainWindow.loadFile('index.html')
 })
+
+ipcMain.on('new-configuration', (event, config) => {
+  fsCache.saveSecret({"config": config})
+  mainWindow.loadFile('index.html')
+})
+
 
 ipcMain.on('export-command', (event, arg) => {
     let defaultPath = '~/Downloads/data.json'

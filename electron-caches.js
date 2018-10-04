@@ -12,6 +12,13 @@ function createCacheDirectory() {
 }
 
 const fsCache = {
+  saveSecret(data) {
+    createCacheDirectory()
+    fs.writeFileSync(`${cacheDirectory}/secret.json`, JSON.stringify(data, null, 2))
+  },
+  secrets() {
+    return this.readAll(`${cacheDirectory}/secret.json`)
+  },
   saveAll(data) {
     createCacheDirectory()
     fs.writeFileSync(cacheDataFile, JSON.stringify(data, null, 2))

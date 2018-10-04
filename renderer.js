@@ -7,3 +7,6 @@ require('./views/index.js')
 
 // Setup the new command page
 require('./views/new-command.js')
+
+// Setup the configuration page
+require('./views/configuration.js')

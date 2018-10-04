@@ -1,7 +1,4 @@
 node_modules
 
-# Twitch credentials
-secret.js
-
 # Packaging
 Awesom-O-darwin-x64
