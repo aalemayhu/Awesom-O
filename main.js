@@ -91,6 +91,11 @@ function onMessageHandler (target, context, msg, self) {
       }
     })
 
+    if (!cmd) {
+      console.log(`* Unknown command ${commandName} from ${context.username}`)
+      return
+    }
+
     if (cmd.enabled === false) {
       chatClient.say(target, '!'+commandName+' is disabled')
       return
@@ -109,9 +114,6 @@ function onMessageHandler (target, context, msg, self) {
       } else if (cmd && cmd.type == "file") {
         let msg = fs.readFileSync(cmd.value , 'utf-8')
         chatClient.say(target, msg)
-      } else {
-        console.log(`* Unknown command ${commandName} from ${context.username}`)
-        return
       }
     }
     console.log(`* Executed ${commandName} command for ${context.username}`)
@@ -121,7 +123,7 @@ function onJoinHandler (channel, username, self) {
     if (self) { return }
     let msg = 'Welcome @'+username+'!'
     console.log(msg)
-    // chatClient.say(channel, msg)
+    chatClient.say(channel, msg)
 }
 
 function onHostedHandler (channel, username, viewers, autohost) {
