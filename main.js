@@ -17,6 +17,8 @@ let chatClient
 let commandPrefix = '!'
 let builtinCommands = {echo, help, commands, joke}
 
+var autoConnect = false
+
 // TODO: move builtinCommandsStructure back into loadTestCommands (but disable deleting them)
 let builtinCommandsStructure = [
   // Builtin commands
@@ -119,7 +121,7 @@ function onMessageHandler (target, context, msg, self) {
         return e.name == commandName
       })
       if (cmd.enabled === false) {
-        chatClient.say(target, '!'+commandName+' is disabled')        
+        chatClient.say(target, '!'+commandName+' is disabled')
       } else if (cmd && cmd.type == "string") {
         sendMessage(target, context, cmd.value)
       } else if (cmd && cmd.type == "file") {
@@ -170,16 +172,22 @@ function onConnectedHandler (addr, port) {
 }
 
 function onDisconnectedHandler (reason) {
-  console.log(`Disconnected: ${reason}`)
+  displayNotification('Awesom-O disconnected', reason)
+  if (autoConnect) {
+    console.log("Reconnecting attempt")
+    chatClient.connect()
+  }
 }
 
 // Handle renderer messages
 
 ipcMain.on('connect-bot', (event, arg) => {
     chatClient.connect();
+    autoConnect = true
 })
 
 ipcMain.on('disconnect-bot', (event, arg) => {
+  autoConnect = false
   chatClient.disconnect();
 })
 
