@@ -121,13 +121,13 @@ function onMessageHandler (target, context, msg, self) {
 }
 
 function onJoinHandler (channel, username, self) {
-    if (self) { return }
+    if (self && username != global.config.name.replace('#', '')) { return }
     let didGreetUser = greetedUsers.find(function(u) {
       if (u == username) { return u }
     })
     if (didGreetUser) { return }
     greetedUsers.push(username)
-    let msg = 'Welcome @'+username+'! See !commands for chat commands ;-)'
+    let msg = 'Welcome @'+username+', see !commands for chat commands ;-)'
     chatClient.say(channel, msg)
 }
 
