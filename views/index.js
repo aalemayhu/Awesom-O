@@ -1,6 +1,7 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
+var $ = require('jQuery')
 
 function connectBot () {
   ipcRenderer.send('connect-bot', 'connect')
@@ -28,12 +29,20 @@ function renderCommands () {
     row.insertCell(2).innerHTML = c.description
     // Callback handling
     row.id = c.name
-    row.addEventListener('click', function () {
-      ipcRenderer.send('selected-command', this.id)
+
+    let rowId = `#${c.name}`
+    let buttonId = `${rowId}-button`
+    $(rowId).mouseenter(function () {
+      console.log(`${buttonId}.add()`)
+      $(this).append($(`<button id='${buttonId}' type="button" class="btn btn-info">Edit</button>`))
+      $(this).find('button:last').click(function () {
+        // Using row.id here so we avoid the # sign
+        ipcRenderer.send('selected-command', row.id)
+      })
     })
-    row.addEventListener('mouseenter', function (e) {
-      // TODO: show edit button now?
-      console.log(`mouseenter(${e})`)
+    $(rowId).mouseleave(function () {
+      console.log(`${buttonId}.remove()`)
+      $(this).find('button:last').remove()
     })
   }
 }
