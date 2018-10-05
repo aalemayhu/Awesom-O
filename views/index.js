@@ -31,6 +31,10 @@ function renderCommands () {
     row.addEventListener('click', function () {
       ipcRenderer.send('selected-command', this.id)
     })
+    row.addEventListener('mouseenter', function (e) {
+      // TODO: show edit button now?
+      console.log(`mouseenter(${e})`)
+    })
   }
 }
 
