@@ -33,16 +33,21 @@ function renderCommands () {
     let rowId = `#${c.name}`
     let buttonId = `${rowId}-button`
     $(rowId).mouseenter(function () {
-      console.log(`${buttonId}.add()`)
-      $(this).append($(`<button id='${buttonId}' type="button" class="btn btn-info">Edit</button>`))
-      $(this).find('button:last').click(function () {
+      let button = $(`<button id='${buttonId}' type="button" class="btn btn-info">Edit</button>`)
+      let descriptionNode = $(this).find('td:last')
+      descriptionNode.append(button)
+      descriptionNode.find('button:last').click(function () {
         // Using row.id here so we avoid the # sign
         ipcRenderer.send('selected-command', row.id)
       })
+
+      button.attr('class', 'btn-sm')
+      button.css('float', 'right')
     })
     $(rowId).mouseleave(function () {
       console.log(`${buttonId}.remove()`)
-      $(this).find('button:last').remove()
+      let descriptionNode = $(this).find('td:last')
+      descriptionNode.find('button:last').remove()
     })
   }
 }
