@@ -43,6 +43,7 @@ function renderCommands () {
 
       button.attr('class', 'btn-sm')
       button.css('float', 'right')
+      button.css('margin', '-30px')
     })
     $(rowId).mouseleave(function () {
       console.log(`${buttonId}.remove()`)
