@@ -5,6 +5,7 @@ var path = require('path')
 const { fsCache } = require('./electron-caches.js')
 const fs = require('fs')
 var giveMeAJoke = require('give-me-a-joke')
+var dateFormat = require('dateformat')
 
 let Chatbot = require('./chatbot.js')
 let mainWindow
@@ -167,6 +168,15 @@ function loadCacheFiles () {
 }
 
 function configure () {
+  // Remind me to stand up every hour 00 via notifications
+  setInterval(function () {
+    let date = Date()
+    let f = dateFormat(date, 'MM')
+    if (f === '00' && isValid(global.config)) {
+      displayNotification('Reminder', 'Time to standup and stretch out ;-)')
+    }
+  }, 60000)
+
   loadCacheFiles()
   if (!isValid(global.config)) {
     mainWindow.loadFile('configuration.html')
