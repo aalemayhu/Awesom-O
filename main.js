@@ -13,7 +13,7 @@ let mainWindow
 let chatClient
 let commandPrefix = '!'
 let builtinCommands = { echo, help, commands, joke }
-var greetedUsers = []
+// var greetedUsers = []
 
 function useExampleCommands () {
   var commands = [
