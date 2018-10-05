@@ -1,3 +1,5 @@
+'use strict';
+
 const {dialog, app, BrowserWindow, ipcMain, Notification} = require('electron')
 var path = require('path')
 const { fsCache } = require('./electron-caches.js')

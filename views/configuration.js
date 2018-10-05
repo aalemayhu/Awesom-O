@@ -1,3 +1,5 @@
+'use strict';
+
 const {remote, ipcRenderer} = require('electron')
 
 function configurationSubmit() {
