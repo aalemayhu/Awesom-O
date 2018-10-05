@@ -33,9 +33,26 @@ function useExampleCommands () {
   fsCache.save('commands', commands)
 }
 
+function defaultWindowState () {
+  var state = { x: 0, y: 0, width: 640, height: 320 }
+  if (global.config && global.config.windowState) {
+    let ws = global.config.windowState
+    state.x = ws.x ? ws.x : state.x
+    state.y = ws.y ? ws.y : state.y
+    state.width = ws.width ? ws.width : state.width
+    state.height = ws.height ? ws.height : state.height
+  }
+  return state
+}
+
 function createWindow () {
-  mainWindow = new BrowserWindow({ width: 1920,
-    height: 1080,
+  loadCacheFiles()
+  let state = defaultWindowState()
+  mainWindow = new BrowserWindow({
+    x: state.x,
+    y: state.y,
+    width: state.width,
+    height: state.height,
     icon: path.join(__dirname, 'assets/icons/png/64x64.png')
   })
 
@@ -46,6 +63,22 @@ function createWindow () {
 
   mainWindow.on('closed', function () {
     mainWindow = null
+  })
+
+  mainWindow.on('close', function () {
+    fsCache.saveSecret({ 'config': global.config })
+  })
+
+  mainWindow.on('move', () => {
+    let pos = mainWindow.getPosition()
+    global.config.windowState.x = pos[0]
+    global.config.windowState.y = pos[1]
+  })
+
+  mainWindow.on('resize', () => {
+    let size = mainWindow.getSize()
+    global.config.windowState.width = size[0]
+    global.config.windowState.height = size[1]
   })
 
   configure()
@@ -165,6 +198,9 @@ function loadCacheFiles () {
     global.commands = fsCache.load().commands
   }
   global.config = fsCache.secrets()['config']
+  if (global.config && !global.config.windowState) {
+    global.config.windowState = {}
+  }
 }
 
 function configure () {
@@ -177,7 +213,6 @@ function configure () {
     }
   }, 60000)
 
-  loadCacheFiles()
   if (!isValid(global.config)) {
     mainWindow.loadFile('configuration.html')
   } else {
@@ -244,6 +279,8 @@ ipcMain.on('selected-command', (event, cmd) => {
 })
 
 ipcMain.on('new-configuration', (event, config) => {
+  let newConfig = config
+  newConfig.windowState = global.config.windowState
   fsCache.saveSecret({ 'config': config })
   loadCacheFiles()
   setupClient()
