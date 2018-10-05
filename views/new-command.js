@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
-const {remote, ipcRenderer} = require('electron')
+const { remote, ipcRenderer } = require('electron')
 
-function newCommandSubmit() {
+function newCommandSubmit () {
   var cmd = {}
-  let typeSelector = document.querySelector(".custom-select")
+  let typeSelector = document.querySelector('.custom-select')
   if (typeSelector) {
     let selectedIndex = typeSelector.selectedIndex
     cmd.type = typeSelector[selectedIndex].text.toLowerCase()
@@ -12,16 +12,16 @@ function newCommandSubmit() {
 
   let value = document.querySelector('#command-value')
   if (value) {
-    cmd.value = value.value;
+    cmd.value = value.value
   }
 
-  cmd.name = document.querySelector('#command-name').value.toLowerCase();
-  cmd.description = document.querySelector('#command-description').value;
-  cmd.enabled = document.querySelector("#command-enabled").checked;
-  ipcRenderer.send('new-command', cmd);
+  cmd.name = document.querySelector('#command-name').value.toLowerCase()
+  cmd.description = document.querySelector('#command-description').value
+  cmd.enabled = document.querySelector('#command-enabled').checked
+  ipcRenderer.send('new-command', cmd)
 }
 
-function newCommandCancel() {
+function newCommandCancel () {
   console.log('newCommandCancel()')
   remote.getCurrentWindow().loadFile('index.html')
 }
@@ -31,8 +31,8 @@ if (document.querySelector('#new-command-submit')) {
 
   let selectedCommand = remote.getGlobal('selectedCommand')
   if (selectedCommand) {
-    let cmd = remote.getGlobal('commands').find(function(cmd) {
-      if (cmd.name == selectedCommand) {
+    let cmd = remote.getGlobal('commands').find(function (cmd) {
+      if (cmd.name === selectedCommand) {
         return cmd
       }
     })
@@ -40,18 +40,18 @@ if (document.querySelector('#new-command-submit')) {
     if (cmd) {
       console.log('prefix:')
       console.log(cmd)
-      document.querySelector('#command-name').value = cmd.name;
-      document.querySelector('#command-description').value = cmd.description;
-      document.querySelector("#command-enabled").checked = cmd.enabled;
+      document.querySelector('#command-name').value = cmd.name
+      document.querySelector('#command-description').value = cmd.description
+      document.querySelector('#command-enabled').checked = cmd.enabled
 
-      if (cmd.type == "builtin") {
+      if (cmd.type === 'builtin') {
         document.querySelector('#form-group-command-value').remove()
         document.querySelector('#form-group-command-type').remove()
-        document.querySelector('#command-name').readOnly = true;
-        document.querySelector('#command-description').readOnly = true;
+        document.querySelector('#command-name').readOnly = true
+        document.querySelector('#command-description').readOnly = true
       } else {
-        document.querySelector(".custom-select").selectedIndex = cmd.type == "string" ? 0 : 1
-        document.querySelector('#command-value').value = cmd.value;
+        document.querySelector('.custom-select').selectedIndex = cmd.type === 'string' ? 0 : 1
+        document.querySelector('#command-value').value = cmd.value
       }
     }
   }

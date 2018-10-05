@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 /*
 Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
@@ -15,7 +15,7 @@ or in the "license" file accompanying this file. This file is distributed on an 
 
 const tmi = require('tmi.js')
 
-function chatClient(options){
+function chatClient (options) {
   let opts = {
     identity: {
       username: options.username,
@@ -25,7 +25,7 @@ function chatClient(options){
       options.channel
     ]
   }
-  return tmi.client(opts);
+  return tmi.client(opts)
 }
 
-module.exports = chatClient;
+module.exports = chatClient

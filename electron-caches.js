@@ -1,41 +1,40 @@
-'use strict';
+'use strict'
 
-const {app} = require('electron')
+const { app } = require('electron')
 const fs = require('fs')
 
 const directory = app.getPath('home') // /home folder on OS X
 const cacheDirectory = `${directory}/twitch-bot-cache` // /home/twitch-bot-cache/
 const cacheDataFile = `${cacheDirectory}/data.json` // /home/twitch-bot-cache/data.json
 
-function createCacheDirectory() {
+function createCacheDirectory () {
   if (fs.existsSync(cacheDirectory) === false) {
     fs.mkdirSync(cacheDirectory)
   }
 }
 
 const fsCache = {
-  saveSecret(data) {
+  saveSecret (data) {
     createCacheDirectory()
     fs.writeFileSync(`${cacheDirectory}/secret.json`, JSON.stringify(data, null, 2))
   },
-  secrets() {
+  secrets () {
     return this.readAll(`${cacheDirectory}/secret.json`)
   },
-  saveAll(data) {
+  saveAll (data) {
     createCacheDirectory()
     fs.writeFileSync(cacheDataFile, JSON.stringify(data, null, 2))
   },
-  save(name, value) {
+  save (name, value) {
     createCacheDirectory()
     let newData = this.load()
     newData[name] = value
-    console.log('newData: '+newData)
     fs.writeFileSync(cacheDataFile, JSON.stringify(newData, null, 2))
   },
-  load() {
+  load () {
     return this.readAll(`${cacheDirectory}/data.json`)
   },
-  readAll(file) {
+  readAll (file) {
     let data = {}
 
     createCacheDirectory()
@@ -52,9 +51,9 @@ const fsCache = {
       console.log('Error in Cache:', err)
     }
     return data
-  },
+  }
 }
 
 module.exports = {
-    fsCache
+  fsCache
 }
