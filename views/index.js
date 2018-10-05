@@ -18,7 +18,7 @@ function renderCommands () {
   for (var i = 1; i < rowCount; i++) {
     table.deleteRow(1)
   }
-  
+
   var commands = remote.getGlobal('commands')
   for (let i = 0; i < commands.length; i++) {
     let c = commands[i]
@@ -26,7 +26,6 @@ function renderCommands () {
     row.insertCell(0).innerHTML = c.enabled
     row.insertCell(1).innerHTML = c.name
     row.insertCell(2).innerHTML = c.description
-    row.insertCell(3).innerHTML = c.type
     // Callback handling
     row.id = c.name
     row.addEventListener('click', function () {
