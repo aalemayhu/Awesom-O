@@ -99,7 +99,8 @@ app.on('activate', function () {
 })
 
 function displayNotification (title, body) {
-  const n = new Notification({ title: title, body: body, silent: false })
+  let isSilent = global.config && global.config.silent ? global.config.silent : true
+  const n = new Notification({ title: title, body: body, silent: isSilent })
   n.on('show', () => console.log('showed'))
   n.on('click', () => console.info('clicked!!'))
   n.show()

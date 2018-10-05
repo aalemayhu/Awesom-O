@@ -8,6 +8,7 @@ function configurationSubmit () {
   c.bot = document.querySelector('#channel-bot').value.toLowerCase()
   c.oauth = document.querySelector('#channel-oauth').value
   c.autoconnect = document.querySelector('#channel-autoconnect').checked
+  c.silent = document.querySelector('#channel-notifications').checked
   if (!c.name.startsWith('#')) {
     c.name = `'#${c.name}`
   }
@@ -25,6 +26,7 @@ function render () {
   document.querySelector('#channel-bot').value = c.bot
   document.querySelector('#channel-oauth').value = c.oauth
   document.querySelector('#channel-autoconnect').checked = c.autoconnect
+  document.querySelector('#channel-notifications').checked = c.silent
 }
 
 if (document.querySelector('#new-configuration-submit')) {
