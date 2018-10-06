@@ -65,9 +65,8 @@ let isConnected = remote.getGlobal('isConnected')
 let connectedLabel = $('#connection-state-status')
 connectedLabel.text(isConnected ? 'Connected' : 'Disconnected')
 
-// TODO: fix disconnect class not being used
 let connectButton = $('#connection-state-action')
-connectButton.css('css', isConnected ? 'btn btn-danger' : 'btn btn-success')
+connectButton.attr('class', isConnected ? 'btn btn-danger' : 'btn btn-success')
 connectButton.text(isConnected ? 'Disconnect' : 'Connect')
 
 renderCommands()
