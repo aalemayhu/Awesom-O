@@ -120,12 +120,12 @@ function onMessageHandler (target, context, msg, self) {
   // Split the message into individual words:
   const parse = msg.slice(1).split(' ')
   // The command name is the first (0th) one:
-  const commandName = parse[0]
+  const commandName = parse[0].toLowerCase()
   // The rest (if any) are the parameters:
   const params = parse.splice(1)
 
   let cmd = global.commands.find(function (e) {
-    if (e.name === commandName) {
+    if (e.name.toLowerCase() === commandName) {
       return e
     }
   })
