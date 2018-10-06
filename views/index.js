@@ -62,8 +62,10 @@ function renderCommands () {
 }
 
 let isConnected = remote.getGlobal('isConnected')
+
 let connectedLabel = $('#connection-state-status')
 connectedLabel.text(isConnected ? 'Connected' : 'Disconnected')
+connectedLabel.css('padding', '0px 8px 0px 0px')
 
 let connectButton = $('#connection-state-action')
 connectButton.attr('class', isConnected ? 'btn btn-danger' : 'btn btn-success')
