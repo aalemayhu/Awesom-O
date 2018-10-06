@@ -4,7 +4,7 @@ A Twitch bot to receive chat messages as native notifications on macOS.
 
 ## Running locally
 
-    npm install .
+    make install_deps
     make run
 
 ## Features
