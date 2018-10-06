@@ -10,6 +10,11 @@
   <body class="table-dark">
     <div class="container">
 
+      <div id='connection-state' class='btn-group'>
+        <label id='connection-state-status' for="connection-state-action">Disconnected</label>
+        <button id='connection-state-action' class="btn btn-success">Connect</button>
+      </div>
+
       <div class="text-center">
       <div class="btn-group" role="group">
         <button type="button" id="new-command-button" class="btn btn-info">New command</button>
@@ -35,11 +40,6 @@
           </tr>
         </tbody>
       </table>
-
-      <div class="btn-group" role="group">
-          <button type="button" id="connect-button" class="btn btn-success">Connect to chat</button>
-          <button type="button" id="disconnect-button" class="btn btn-danger">Disconnect from chat</button>
-      </div>
     </div>
     <script>
       // You can also require other files to run in this process

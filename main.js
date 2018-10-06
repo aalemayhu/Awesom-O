@@ -178,6 +178,8 @@ function onHostedHandler (channel, username, viewers, autohost) {
 
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`)
+  global.isConnected = true
+  mainWindow.loadFile('index.html')
 }
 
 function onDisconnectedHandler (reason) {
@@ -186,6 +188,8 @@ function onDisconnectedHandler (reason) {
     console.log('Reconnecting attempt')
     chatClient.connect()
   }
+  global.isConnected = false
+  mainWindow.loadFile('index.html')
 }
 
 // ---
