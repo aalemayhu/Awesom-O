@@ -210,16 +210,20 @@ function loadCacheFiles () {
   }
 }
 
-function configure () {
+function addStandupReminder () {
   // Remind me to stand up every hour 00 via notifications
   setInterval(function () {
+    if (!global.config.standupReminder) { return }
     let date = Date()
     let f = dateFormat(date, 'MM')
     if (f === '00' && isValid(global.config)) {
       displayNotification('Reminder', 'Time to standup and stretch out ;-)')
     }
   }, 60000)
+}
 
+function configure () {
+  addStandupReminder()
   if (!isValid(global.config)) {
     mainWindow.loadFile('configuration.html')
   } else {

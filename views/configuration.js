@@ -10,6 +10,8 @@ function configurationSubmit () {
   c.oauth = document.querySelector('#channel-oauth').value
   c.autoconnect = document.querySelector('#channel-autoconnect').checked
   c.silent = document.querySelector('#channel-notifications').checked
+  c.standupReminder = document.querySelector('#channel-notification-break').checked
+
   if (!c.name.startsWith('#')) {
     c.name = `'#${c.name}`
   }
@@ -28,6 +30,7 @@ function render () {
   document.querySelector('#channel-oauth').value = c.oauth
   document.querySelector('#channel-autoconnect').checked = c.autoconnect
   document.querySelector('#channel-notifications').checked = c.silent
+  document.querySelector('#channel-notification-break').checked = c.standupReminder
 }
 
 if (document.querySelector('#new-configuration-submit')) {
