@@ -38,21 +38,25 @@ function renderCommands () {
 
     // Callback handling
     tr.mouseenter(function () {
-      let button = $(`<button id='${c.name}-button' type="button" class="btn btn-info">Edit</button>`)
+      let button = $(`<p>Edit</p>`)
       let descriptionNode = $(this).find('td:last')
       descriptionNode.append(button)
-      descriptionNode.find('button:last').click(function () {
+      descriptionNode.find('p:last').click(function () {
         // Using row.id here so we avoid the # sign
         ipcRenderer.send('selected-command', c.name)
       })
 
       button.attr('class', 'btn-sm')
       button.css('float', 'right')
-      button.css('margin', '-30px')
+
+      // margin-top, margin-right, margin-bottom, and margin-left.
+      button.css('font-size', '1rem')
+      button.css('color', 'green')
+      button.css('margin', '0px -15px 0px 0px')
     })
     tr.mouseleave(function () {
       let descriptionNode = $(this).find('td:last')
-      descriptionNode.find('button:last').remove()
+      descriptionNode.find('p:last').remove()
     })
   }
 }
