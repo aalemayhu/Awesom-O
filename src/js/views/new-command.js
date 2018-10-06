@@ -23,7 +23,7 @@ function newCommandSubmit () {
 
 function newCommandCancel () {
   console.log('newCommandCancel()')
-  remote.getCurrentWindow().loadFile('pages/index.html')
+  remote.getCurrentWindow().loadFile('src/pages/index.html')
 }
 
 if (document.querySelector('#new-command-submit')) {
