@@ -19,6 +19,7 @@ function renderCommands () {
     let tr = $(`<tr id='${c.name}'></tr>`)
 
     let enabledTD = $('<td></td>')
+    enabledTD.css('text-align', 'center')
     let checkBox = $(`<input type="checkbox">`)
     checkBox.attr('checked', c.enabled)
     checkBox.click(function () {
