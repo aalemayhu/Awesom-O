@@ -1,11 +1,12 @@
 'use strict'
 
 const { dialog, app, BrowserWindow, ipcMain, Notification } = require('electron')
-var path = require('path')
 const { fsCache } = require('./electron-caches.js')
 const fs = require('fs')
-var giveMeAJoke = require('give-me-a-joke')
+const { randomJoke } = require('./joker.js')
+
 var dateFormat = require('dateformat')
+var path = require('path')
 
 let Chatbot = require('./chatbot.js')
 let mainWindow
@@ -348,39 +349,9 @@ function echo (target, context, params) {
 
 // Function called when the "joke" command is issued:
 function joke (target, context, params) {
-  // TODO: pick one at random
-  function getRandomInt (min, max) {
-    min = Math.ceil(min)
-    max = Math.floor(max)
-    let date = new Date()
-    let seed = date.getMonth() + date.getFullYear() + date.getMinutes() + date.getMilliseconds() + date.getSeconds()
-    return Math.floor(Math.random(seed) * (max - min)) + min
-  }
-
-  let pick = getRandomInt(1, 3)
-
-  switch (pick) {
-    case 1:
-      console.log('random dad joke')
-      giveMeAJoke.getRandomDadJoke(function (joke) {
-        sendMessage(target, context, joke)
-      })
-      break
-    case 2:
-      console.log('random Chuck Norris joke')
-      giveMeAJoke.getRandomCNJoke(function (joke) {
-        sendMessage(target, context, joke)
-      })
-      break
-    case 3:
-      console.log('random Jackie Chan joke')
-      var fn = 'Jackie'
-      var ln = 'Chan'
-      giveMeAJoke.getCustomJoke(fn, ln, function (joke) {
-        sendMessage(target, context, joke)
-      })
-      break
-  }
+  randomJoke(function (joke) {
+    sendMessage(target, context, joke)
+  })
 }
 
 // Function called when the "commands" command is issued:
