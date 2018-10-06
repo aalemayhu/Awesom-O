@@ -1,6 +1,10 @@
 ELECTRON_PACKAGER=./node_modules/.bin/electron-packager
 ICON_FILE=assets/icons/mac/icon.icns
 
+install_deps:
+	npm install .
+	pip install pyjokes
+
 run:
 	electron .
 
