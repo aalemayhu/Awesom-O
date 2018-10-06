@@ -17,7 +17,17 @@ function renderCommands () {
   for (let i = 0; i < commands.length; i++) {
     let c = commands[i]
     let tr = $(`<tr id='${c.name}'></tr>`)
-    tr.append(`<td>${c.enabled}</td>`)
+
+    let enabledTD = $('<td></td>')
+    let checkBox = $(`<input type="checkbox">`)
+    checkBox.attr('checked', c.enabled)
+    checkBox.click(function () {
+      c.enabled = !c.enabled
+      ipcRenderer.send('new-command', c)
+    })
+    enabledTD.append(checkBox)
+    tr.append(enabledTD)
+
     tr.append(`<td>${c.name}</td>`)
     tr.append(`<td>${c.description}</td>`)
     tbody.append(tr)
