@@ -1,14 +1,14 @@
 'use strict'
 
 const { dialog, app, BrowserWindow, ipcMain, Notification } = require('electron')
-const { fsCache } = require('./electron-caches.js')
+const { fsCache } = require('./src/js/electron-caches.js')
 const fs = require('fs')
-const { randomJoke } = require('./joker.js')
+const { randomJoke } = require('./src/js/joker.js')
+const Chatbot = require('./src/js/chatbot.js')
 
 var dateFormat = require('dateformat')
 var path = require('path')
 
-let Chatbot = require('./chatbot.js')
 let mainWindow
 
 let chatClient

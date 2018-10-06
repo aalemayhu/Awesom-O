@@ -10,11 +10,11 @@ let location = document.location.href
 
 if (location.endsWith('index.html')) {
   // Setup the index page
-  require('./views/index.js')
+  require('./src/js/views/index.js')
 } else if (location.endsWith('new-command.html')) {
   // Setup the new command page
-  require('./views/new-command.js')
+  require('./src/js/views/new-command.js')
 } else if (location.endsWith('configuration.html')) {
   // Setup the configuration page
-  require('./views/configuration.js')
+  require('./src/js/views/configuration.js')
 }
