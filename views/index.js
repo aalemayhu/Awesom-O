@@ -3,14 +3,6 @@
 const { remote, ipcRenderer } = require('electron')
 var $ = require('jQuery')
 
-function connectBot () {
-  ipcRenderer.send('connect-bot', 'connect')
-}
-
-function disconnectBot () {
-  ipcRenderer.send('disconnect-bot', 'disconnect')
-}
-
 function renderCommands () {
   // Get the table
   var table = document.getElementById('commands-table')
@@ -53,44 +45,30 @@ function renderCommands () {
   }
 }
 
-function newCommand () {
-  remote.getCurrentWindow().loadFile('new-command.html')
-}
+renderCommands()
 
-function exportCommand () {
+// Wire up the button click handlers
+
+$('#connect-button').click(function () {
+  ipcRenderer.send('connect-bot', 'connect')
+})
+
+$('#disconnect-button').click(function () {
+  ipcRenderer.send('disconnect-bot', 'disconnect')
+})
+
+$('#export-command-button').click(function () {
   ipcRenderer.send('export-command', '')
-}
+})
 
-function importCommand () {
+$('#import-command-button').click(function () {
   ipcRenderer.send('import-command', '')
-}
+})
 
-function configuration () {
+$('#new-command-button').click(function () {
+  remote.getCurrentWindow().loadFile('new-command.html')
+})
+
+$('#configuration-button').click(function () {
   remote.getCurrentWindow().loadFile('configuration.html')
-}
-
-// index.html
-if (document.querySelector('#connect-button')) {
-  document.querySelector('#connect-button').addEventListener('click', connectBot)
-
-  renderCommands()
-}
-if (document.querySelector('#disconnect-button')) {
-  document.querySelector('#disconnect-button').addEventListener('click', disconnectBot)
-}
-
-if (document.querySelector('#export-command-button')) {
-  document.querySelector('#export-command-button').addEventListener('click', exportCommand)
-}
-
-if (document.querySelector('#import-command-button')) {
-  document.querySelector('#import-command-button').addEventListener('click', importCommand)
-}
-
-if (document.querySelector('#new-command-button')) {
-  document.querySelector('#new-command-button').addEventListener('click', newCommand)
-}
-
-if (document.querySelector('#configuration-button')) {
-  document.querySelector('#configuration-button').addEventListener('click', configuration)
-}
+})
