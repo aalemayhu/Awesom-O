@@ -13,14 +13,13 @@
       <div id='connection-state' class='btn-group'>
         <label id='connection-state-status' for="connection-state-action">Disconnected</label>
         <button id='connection-state-action' class="btn btn-success">Connect</button>
+        <button type="button" id="configuration-button" class="btn btn-info">Configure</button>
       </div>
 
       <div class="text-center">
       <div class="btn-group" role="group">
-        <button type="button" id="new-command-button" class="btn btn-info">New command</button>
         <button type="button" id="export-command-button" class="btn btn-info">Export</button>
         <button type="button" id="import-command-button" class="btn btn-info">Import</button>
-        <button type="button" id="configuration-button" class="btn btn-info">Configuration</button>
        </div>
      </div>
 
@@ -40,6 +39,8 @@
           </tr>
         </tbody>
       </table>
+
+      <button type="button" id="new-command-button" class="btn btn-success btn-lg btn-block">Add command</button>
     </div>
     <script>
       // You can also require other files to run in this process
