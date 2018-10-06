@@ -299,6 +299,7 @@ ipcMain.on('export-command', (event, arg) => {
       { name: 'data', extensions: ['json'] }
     ]
   }, function (filePaths, bookmarks) {
+    if (!filePaths) { return }
     fs.writeFileSync(filePaths, JSON.stringify({ 'commands': global.commands }, null, 2))
   })
 })
