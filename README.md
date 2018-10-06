@@ -2,6 +2,9 @@
 
 A Twitch bot to receive chat messages as native notifications on macOS.
 
+This app was mostly built live on https://www.twitch.tv/ccscanf
+Hour long videos available on [YouTube](https://www.youtube.com/playlist?list=PL6ETvzpSGtt3XnmnBtmAldrpGA0lK6uAG)
+
 ## Running locally
 
     make install_deps
