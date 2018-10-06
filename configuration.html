@@ -34,8 +34,13 @@
   </form>
 
 
-  <button id="new-configuration-submit" type="submit" class="btn btn-success">Save</button>
-  <button id="new-configuration-cancel" class="btn btn-secondary">Cancel</button>
+  <div class="btn-group" role="group">
+    <button type="button" id="export-configuration-button" class="btn btn-info">Export</button>
+    <button type="button" id="import-configuration-button" class="btn btn-info">Import</button>
+    <button id="new-configuration-submit" type="submit" class="btn btn-success">Save</button>
+    <button id="new-configuration-cancel" class="btn btn-secondary">Back</button>
+  </div>
+
     <script>
       // You can also require other files to run in this process
       require('./renderer.js')

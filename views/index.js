@@ -78,14 +78,6 @@ connectButton.click(function () {
   }
 })
 
-$('#export-command-button').click(function () {
-  ipcRenderer.send('export-command', '')
-})
-
-$('#import-command-button').click(function () {
-  ipcRenderer.send('import-command', '')
-})
-
 $('#new-command-button').click(function () {
   remote.getCurrentWindow().loadFile('new-command.html')
 })

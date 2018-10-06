@@ -1,6 +1,7 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
+var $ = require('jQuery')
 
 function configurationSubmit () {
   let c = {}
@@ -37,3 +38,11 @@ if (document.querySelector('#new-configuration-submit')) {
 if (document.querySelector('#new-configuration-cancel')) {
   document.querySelector('#new-configuration-cancel').addEventListener('click', configurationCancel)
 }
+
+$('#export-configuration-button').click(function () {
+  ipcRenderer.send('export-command', '')
+})
+
+$('#import-configuration-button').click(function () {
+  ipcRenderer.send('import-command', '')
+})
