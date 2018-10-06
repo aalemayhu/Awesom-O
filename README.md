@@ -2,19 +2,20 @@
 
 A Twitch bot to receive chat messages as native notifications on macOS.
 
-## Features
-
-TODO: fill this out
-
-
-## Screenshots
-
-TODO: add screenshots
+TODO: mention release page
 
 ## Running locally
 
     npm install .
     make run
+
+## Features
+
+TODO: fill this out
+
+## Screenshots
+
+TODO: add screenshots
 
 ## License
 
