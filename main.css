@@ -42,6 +42,11 @@ button {
     color: white;
 }
 
+.btn-secondary {
+    border-color: gray;
+    color: gray;
+}
+
 .info:hover {
     background: #e7e7e7;
 }
