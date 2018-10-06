@@ -26,6 +26,7 @@ function renderCommands () {
       ipcRenderer.send('new-command', c)
     })
     enabledTD.append(checkBox)
+    tr.css('text-align', 'center')
     tr.append(enabledTD)
 
     tr.append(`<td>${c.name}</td>`)
