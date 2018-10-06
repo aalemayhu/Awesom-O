@@ -1,6 +1,15 @@
 # Awesom-o
 
-TODO: Add description
+A Twitch bot to receive chat messages as native notifications on macOS.
+
+## Features
+
+TODO: fill this out
+
+
+## Screenshots
+
+TODO: add screenshots
 
 ## Running locally
 
