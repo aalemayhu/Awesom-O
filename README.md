@@ -17,7 +17,7 @@ Twitter profile URL or text files to show what music is currently being played.
 
 ## Screenshots
 
-TODO: add three screenshots
+TODO: add three screenshots (index, configure, new-command)
 
 ## License
 
