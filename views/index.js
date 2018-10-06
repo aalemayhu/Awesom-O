@@ -84,9 +84,9 @@ connectButton.click(function () {
 })
 
 $('#new-command-button').click(function () {
-  remote.getCurrentWindow().loadFile('new-command.html')
+  remote.getCurrentWindow().loadFile('pages/new-command.html')
 })
 
 $('#configuration-button').click(function () {
-  remote.getCurrentWindow().loadFile('configuration.html')
+  remote.getCurrentWindow().loadFile('pages/configuration.html')
 })

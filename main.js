@@ -57,7 +57,7 @@ function createWindow () {
     icon: path.join(__dirname, 'assets/icons/png/64x64.png')
   })
 
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('pages/index.html')
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
@@ -180,7 +180,7 @@ function onHostedHandler (channel, username, viewers, autohost) {
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`)
   global.isConnected = true
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('pages/index.html')
 }
 
 function onDisconnectedHandler (reason) {
@@ -190,7 +190,7 @@ function onDisconnectedHandler (reason) {
     chatClient.connect()
   }
   global.isConnected = false
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('pages/index.html')
 }
 
 // ---
@@ -226,7 +226,7 @@ function addStandupReminder () {
 function configure () {
   addStandupReminder()
   if (!isValid(global.config)) {
-    mainWindow.loadFile('configuration.html')
+    mainWindow.loadFile('pages/configuration.html')
   } else {
     setupClient()
   }
@@ -282,12 +282,12 @@ ipcMain.on('new-command', (event, cmd) => {
   global.commands = commands
   fsCache.save('commands', commands)
   global.selectedCommand = null
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('pages/index.html')
 })
 
 ipcMain.on('selected-command', (event, cmd) => {
   global.selectedCommand = cmd
-  mainWindow.loadFile('new-command.html')
+  mainWindow.loadFile('pages/new-command.html')
 })
 
 ipcMain.on('new-configuration', (event, config) => {
@@ -296,7 +296,7 @@ ipcMain.on('new-configuration', (event, config) => {
   fsCache.saveSecret({ 'config': config })
   loadCacheFiles()
   setupClient()
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('pages/index.html')
 })
 
 ipcMain.on('export-command', (event, arg) => {
@@ -327,7 +327,7 @@ ipcMain.on('import-command', (event, arg) => {
     global.commands = fsCache.readAll(path).commands
     fsCache.saveAll({ 'commands': global.commands })
     // TODO: avoid reloading whole page
-    mainWindow.loadFile('index.html')
+    mainWindow.loadFile('pages/index.html')
   })
 })
 

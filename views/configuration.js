@@ -20,7 +20,7 @@ function configurationSubmit () {
 
 function configurationCancel () {
   console.log('configurationCancel()')
-  remote.getCurrentWindow().loadFile('index.html')
+  remote.getCurrentWindow().loadFile('pages/index.html')
 }
 
 function render () {
