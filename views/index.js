@@ -32,7 +32,7 @@ function renderCommands () {
     }
     tr.append(enabledTD)
 
-    tr.append(`<td>${c.name}</td>`)
+    tr.append(`<td>!${c.name}</td>`)
     tr.append(`<td>${c.description}</td>`)
     tbody.append(tr)
 
