@@ -45,3 +45,7 @@ button {
 .info:hover {
     background: #e7e7e7;
 }
+
+.table > tbody > tr:first-child > td {
+    border: none;
+}
