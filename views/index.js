@@ -13,32 +13,30 @@ function renderCommands () {
   }
 
   var commands = remote.getGlobal('commands')
+  let tbody = $('tbody:last')
   for (let i = 0; i < commands.length; i++) {
     let c = commands[i]
-    let row = table.insertRow(1)
-    row.insertCell(0).innerHTML = c.enabled
-    row.insertCell(1).innerHTML = c.name
-    row.insertCell(2).innerHTML = c.description
-    // Callback handling
-    row.id = c.name
+    let tr = $(`<tr id='${c.name}'></tr>`)
+    tr.append(`<td>${c.enabled}</td>`)
+    tr.append(`<td>${c.name}</td>`)
+    tr.append(`<td>${c.description}</td>`)
+    tbody.append(tr)
 
-    let rowId = `#${c.name}`
-    let buttonId = `${rowId}-button`
-    $(rowId).mouseenter(function () {
-      let button = $(`<button id='${buttonId}' type="button" class="btn btn-info">Edit</button>`)
+    // Callback handling
+    tr.mouseenter(function () {
+      let button = $(`<button id='${c.name}-button' type="button" class="btn btn-info">Edit</button>`)
       let descriptionNode = $(this).find('td:last')
       descriptionNode.append(button)
       descriptionNode.find('button:last').click(function () {
         // Using row.id here so we avoid the # sign
-        ipcRenderer.send('selected-command', row.id)
+        ipcRenderer.send('selected-command', c.name)
       })
 
       button.attr('class', 'btn-sm')
       button.css('float', 'right')
       button.css('margin', '-30px')
     })
-    $(rowId).mouseleave(function () {
-      console.log(`${buttonId}.remove()`)
+    tr.mouseleave(function () {
       let descriptionNode = $(this).find('td:last')
       descriptionNode.find('button:last').remove()
     })
