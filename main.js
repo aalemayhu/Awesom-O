@@ -349,23 +349,38 @@ function echo (target, context, params) {
 // Function called when the "joke" command is issued:
 function joke (target, context, params) {
   // TODO: pick one at random
+  function getRandomInt (min, max) {
+    min = Math.ceil(min)
+    max = Math.floor(max)
+    let date = new Date()
+    let seed = date.getMonth() + date.getFullYear() + date.getMinutes() + date.getMilliseconds() + date.getSeconds()
+    return Math.floor(Math.random(seed) * (max - min)) + min
+  }
 
-  // To get a random dad joke
-  giveMeAJoke.getRandomDadJoke(function (joke) {
-    sendMessage(target, context, joke)
-  })
+  let pick = getRandomInt(1, 3)
 
-  // To get a random Chuck Norris joke
-  // giveMeAJoke.getRandomCNJoke (function(joke) {
-  //     //=> console.log(joke);
-  // });
-  //
-  // // To get a customized joke
-  // var fn = "Jackie";
-  // var ln = "Chan";
-  // giveMeAJoke.getCustomJoke (fn, ln, function(joke) {
-  //     //=> console.log(joke);
-  // });
+  switch (pick) {
+    case 1:
+      console.log('random dad joke')
+      giveMeAJoke.getRandomDadJoke(function (joke) {
+        sendMessage(target, context, joke)
+      })
+      break
+    case 2:
+      console.log('random Chuck Norris joke')
+      giveMeAJoke.getRandomCNJoke(function (joke) {
+        sendMessage(target, context, joke)
+      })
+      break
+    case 3:
+      console.log('random Jackie Chan joke')
+      var fn = 'Jackie'
+      var ln = 'Chan'
+      giveMeAJoke.getCustomJoke(fn, ln, function (joke) {
+        sendMessage(target, context, joke)
+      })
+      break
+  }
 }
 
 // Function called when the "commands" command is issued:
