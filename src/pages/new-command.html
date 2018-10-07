@@ -12,7 +12,7 @@
     <form>
     <div class="form-group">
       <label for="command-name">Name</label>
-      <input type="text" class="form-control" id="command-name" placeholder="newcmd">
+      <input type="text" class="form-control" id="command-name" placeholder="newcmd" required>
       <small id="command-name" class="form-text text-muted">lowercase it and no ! prefix</small>
     </div>
     <div id="form-group-command-type" class="form-group">
@@ -24,7 +24,7 @@
     </div>
     <div id="form-group-command-value" class="form-group">
       <label for="command-value">Value</label>
-      <input type="text" class="form-control" id="command-value" placeholder="newcmd output">
+      <input type="text" class="form-control" id="command-value" placeholder="newcmd output" required>
     </div>
     <div class="form-group">
       <label for="command-description">Description</label>
@@ -35,7 +35,6 @@
       <label class="form-check-label" for="command-enabled">Enabled</label>
     </div>
   </form>
-
 
   <button id="new-command-submit" type="submit" class="btn btn-success">Save</button>
   <button id="new-command-cancel" class="btn btn-secondary">Cancel</button>
