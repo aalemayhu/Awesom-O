@@ -1,5 +1,5 @@
 ELECTRON_PACKAGER=./node_modules/.bin/electron-packager
-ICON_FILE=assets/icons/mac/icon.icns
+ICON_FILE=$(shell pwd)/assets/icons/mac/icon.icns
 
 install_deps:
 	npm install .
@@ -10,6 +10,9 @@ run:
 
 package:
 	 ${ELECTRON_PACKAGER} --overwrite --icon=${ICON_FILE} .
+
+all_platforms:
+	 ${ELECTRON_PACKAGER} --platform=all --overwrite --icon=${ICON_FILE} .
 
 darwin:
 	${ELECTRON_PACKAGER} . --overwrite --platform=darwin --arch=x64 --icon=${ICON_FILE} --prune=true --out=release-builds
