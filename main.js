@@ -167,7 +167,7 @@ function onJoinHandler (channel, username, self) {
   if (didGreetUser) { return }
   global.config.greetedUsers.push(username)
   let msg = `Welcome @${username}, see !commands for chat commands ;-)`
-  chatClient.say(channel, msg)
+  chatClient.whisper(channel, msg)
 }
 
 function onHostedHandler (channel, username, viewers, autohost) {
