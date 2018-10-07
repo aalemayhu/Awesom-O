@@ -1,9 +1,12 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
+const { renderView } = require('./view_helper.js')
 var $ = require('jQuery')
 
-function renderCommands () {
+var commands = remote.getGlobal('commands')
+if (commands) {
+  console.log(`renderCommands() -> ${remote.getGlobal('commands')}`)
   // Get the table
   var table = document.getElementById('commands-table')
   var rowCount = table.rows.length
@@ -12,7 +15,6 @@ function renderCommands () {
     table.deleteRow(1)
   }
 
-  var commands = remote.getGlobal('commands')
   let tbody = $('tbody:last')
   for (let i = 0; i < commands.length; i++) {
     let c = commands[i]
@@ -71,8 +73,6 @@ let connectButton = $('#connection-state-action')
 connectButton.attr('class', isConnected ? 'btn btn-danger' : 'btn btn-success')
 connectButton.text(isConnected ? 'Disconnect' : 'Connect')
 
-renderCommands()
-
 // Wire up the button click handlers
 
 connectButton.click(function () {
@@ -84,9 +84,9 @@ connectButton.click(function () {
 })
 
 $('#new-command-button').click(function () {
-  remote.getCurrentWindow().loadFile('src/pages/new-command.html')
+  renderView('../../src/pages/new-command.html', './new-command.js')
 })
 
 $('#configuration-button').click(function () {
-  remote.getCurrentWindow().loadFile('src/pages/configuration.html')
+  renderView('../../src/pages/configuration.html', './configuration.js')
 })
