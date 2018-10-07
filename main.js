@@ -289,7 +289,7 @@ ipcMain.on('selected-command', (event, cmd) => {
   mainWindow.loadFile('src/pages/new-command.html')
 })
 
-ipcMain.on('new-configuration', (event, config) => {
+ipcMain.on('save-configuration', (event, config) => {
   let newConfig = config
   newConfig.windowState = global.config.windowState
   fsCache.saveSecret({ 'config': config })

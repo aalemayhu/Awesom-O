@@ -15,7 +15,7 @@ function configurationSubmit () {
   if (!c.name.startsWith('#')) {
     c.name = `'#${c.name}`
   }
-  ipcRenderer.send('new-configuration', c)
+  ipcRenderer.send('save-configuration', c)
 }
 
 function configurationCancel () {
