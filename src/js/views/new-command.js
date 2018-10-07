@@ -1,6 +1,7 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
+var $ = require('jQuery')
 
 function newCommandSubmit () {
   var cmd = {}
@@ -59,3 +60,7 @@ if (document.querySelector('#new-command-submit')) {
 if (document.querySelector('#new-command-cancel')) {
   document.querySelector('#new-command-cancel').addEventListener('click', newCommandCancel)
 }
+
+$('#new-command-delete').click(function () {
+  ipcRenderer.send('delete-command', $('#channel-name').val())
+})

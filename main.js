@@ -328,6 +328,20 @@ ipcMain.on('import-command', (event, arg) => {
   })
 })
 
+ipcMain.on('delete-command', (event, cmdName) => {
+  let commands = global.commands
+  let index = commands.findIndex(function (e) {
+    return e.name === cmdName
+  })
+  if (index) {
+    commands.splice(index, 1)
+    global.commands = commands
+    fsCache.save('commands', commands)
+    global.selectedCommand = null
+  }
+  mainWindow.loadFile('src/pages/index.html')
+})
+
 // Commands
 
 // Function called when the "echo" command is issued:
