@@ -180,7 +180,7 @@ function onHostedHandler (channel, username, viewers, autohost) {
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`)
   global.isConnected = true
-  mainWindow.webContents.send('view', 'index.html')
+  mainWindow.loadFile('src/pages/index.html')
 }
 
 function onDisconnectedHandler (reason) {
@@ -190,7 +190,7 @@ function onDisconnectedHandler (reason) {
     chatClient.connect()
   }
   global.isConnected = false
-  mainWindow.webContents.send('view', 'index.html')
+  mainWindow.loadFile('src/pages/index.html')
 }
 
 // ---
@@ -226,7 +226,7 @@ function addStandupReminder () {
 function configure () {
   addStandupReminder()
   if (!isValid(global.config)) {
-    mainWindow.webContents.send('view', 'configuration.html')
+    mainWindow.loadFile('src/pages/configuration.html')
   } else {
     setupClient()
   }
@@ -281,12 +281,12 @@ ipcMain.on('save-command', (event, cmd) => {
   global.commands = commands
   fsCache.save('commands', commands)
   global.selectedCommand = null
-  mainWindow.webContents.send('view', 'index.html')
+  mainWindow.loadFile('src/pages/index.html')
 })
 
 ipcMain.on('selected-command', (event, cmd) => {
   global.selectedCommand = cmd
-  mainWindow.webContents.send('view', 'new-command.html')
+  mainWindow.loadFile('src/pages/new-command.html')
 })
 
 ipcMain.on('save-configuration', (event, config) => {
@@ -295,7 +295,7 @@ ipcMain.on('save-configuration', (event, config) => {
   fsCache.saveSecret({ 'config': config })
   loadCacheFiles()
   setupClient()
-  mainWindow.webContents.send('view', 'index.html')
+  mainWindow.loadFile('src/pages/index.html')
 })
 
 ipcMain.on('export-command', (event, arg) => {
@@ -325,7 +325,8 @@ ipcMain.on('import-command', (event, arg) => {
     let path = filePaths.toString()
     global.commands = fsCache.readAll(path).commands
     fsCache.saveAll({ 'commands': global.commands })
-    mainWindow.webContents.send('view', 'index.html')
+    // TODO: avoid reloading whole page
+    mainWindow.loadFile('src/pages/index.html')
   })
 })
 
