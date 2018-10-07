@@ -4,8 +4,6 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 
-// TODO: don't require all the view files but check the URL and load the appropriate one
-
 let location = document.location.href
 
 if (location.endsWith('index.html')) {
