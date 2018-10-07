@@ -19,7 +19,9 @@ Twitter profile URL or text files to show what music is currently being played.
 
 ## Screenshots
 
-TODO: add three screenshots (index, configure, new-command)
+![Commands](Screenshots/commands.png)
+![Configure](Screenshots/configure.png)
+![New command](Screenshots/new-command.png)
 
 ## License
 
