@@ -18,8 +18,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^3.0.0",
-    "electron-packager": "^12.1.2",
-    "font-awesome": "^4.7.0"
+    "electron-packager": "^12.1.2"
   },
   "dependencies": {
     "bootstrap": "^4.1.3",
