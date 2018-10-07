@@ -2,7 +2,8 @@ node_modules
 
 # Packaging
 Awesom-O-darwin-x64
-assets/icons/mac/
+Awesom-O-linux-x64
+Awesom-O-mas-x64
 
 # vim
 *.swp
