@@ -323,7 +323,7 @@ ipcMain.on('import-command', (event, arg) => {
     let path = filePaths.toString()
     global.commands = fsCache.readAll(path).commands
     fsCache.saveAll({ 'commands': global.commands })
-    // TODO: avoid reloading whole page
+    // TODO: avoid reloading whole page, https://github.com/scanf/Awesom-o/issues/5
     mainWindow.loadFile('src/pages/index.html')
   })
 })
