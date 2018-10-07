@@ -31,10 +31,18 @@ if (selectedCommand) {
 }
 
 $('#new-command-submit').click(function () {
-  let name = $('#command-name').val().toLowerCase().trim()
-  let value = $('#command-value').val()
-  if (!name || !value) { return }
-  var cmd = { name: name, value: value }
+  var cmd = {
+    name: $('#command-name').val().replace(/\s+/g, ''),
+    value: $('#command-value').val()
+  }
+  if (!cmd.name) {
+    $('#command-name').focus()
+    return
+  }
+  if (!cmd.value) {
+    $('#command-value').focus()
+    return
+  }
   let typeSelector = document.querySelector('.custom-select')
   if (typeSelector) {
     let selectedIndex = typeSelector.selectedIndex
