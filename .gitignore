@@ -2,3 +2,10 @@ node_modules
 
 # Packaging
 Awesom-O-darwin-x64
+assets/icons/mac/
+
+# vim
+*.swp
+
+# macOS
+.DS_Store
