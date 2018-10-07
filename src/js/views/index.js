@@ -24,7 +24,7 @@ function renderCommands () {
     checkBox.attr('checked', c.enabled)
     checkBox.click(function () {
       c.enabled = !c.enabled
-      ipcRenderer.send('new-command', c)
+      ipcRenderer.send('save-command', c)
     })
     enabledTD.append(checkBox)
     if (!c.enabled) {

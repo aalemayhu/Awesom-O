@@ -260,8 +260,7 @@ ipcMain.on('disconnect-bot', (event, arg) => {
   chatClient.disconnect()
 })
 
-ipcMain.on('new-command', (event, cmd) => {
-  console.log('new-command')
+ipcMain.on('save-command', (event, cmd) => {
   let commands = global.commands
   let existingCmd = commands.find(function (e) {
     if (e.name === cmd.name) {

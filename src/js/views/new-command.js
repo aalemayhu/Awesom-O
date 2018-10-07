@@ -18,7 +18,7 @@ function newCommandSubmit () {
   cmd.name = document.querySelector('#command-name').value.toLowerCase()
   cmd.description = document.querySelector('#command-description').value
   cmd.enabled = document.querySelector('#command-enabled').checked
-  ipcRenderer.send('new-command', cmd)
+  ipcRenderer.send('save-command', cmd)
 }
 
 function newCommandCancel () {
