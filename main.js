@@ -212,6 +212,9 @@ function loadCacheFiles () {
     global.commands = fsCache.load().commands
   }
   global.config = fsCache.secrets()['config']
+  if (!global.config) {
+    global.config = {}
+  }
   if (global.config && !global.config.windowState) {
     global.config.windowState = {}
   }
