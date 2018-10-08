@@ -189,7 +189,7 @@ function onConnectedHandler (addr, port) {
 
 function onDisconnectedHandler (reason) {
   displayNotification('Awesom-O disconnected', reason)
-  if (global.config.autoConnect) {
+  if (global.config.autoConnect && chatClient) {
     console.log('Reconnecting attempt')
     chatClient.connect()
   }
@@ -259,19 +259,21 @@ function setupClient () {
   chatClient.on('disconnected', onDisconnectedHandler)
   chatClient.on('join', onJoinHandler)
   chatClient.on('hosted', onHostedHandler)
-
-  if (global.config.autoconnect) {
-    chatClient.connect()
-  }
 }
 
 // Handle renderer messages
 
 ipcMain.on('connect-bot', (event, arg) => {
-  chatClient.connect()
+  if (!global.config) { setupClient() }
+  if (chatClient) {
+    chatClient.connect()
+  } else {
+    displayNotification('Error', 'Chat client not configured')
+  }
 })
 
 ipcMain.on('disconnect-bot', (event, arg) => {
+  if (!chatClient) { return }
   chatClient.disconnect()
 })
 
@@ -309,7 +311,16 @@ ipcMain.on('save-configuration', (event, config) => {
   newConfig.windowState = global.config.windowState
   fsCache.saveSecret({ 'config': config })
   loadCacheFiles()
+
+  if (chatClient) {
+    chatClient.disconnect()
+  }
   setupClient()
+  if (chatClient) {
+    chatClient.connect()
+  } else {
+    displayNotification('Error', 'Chat client not configured')
+  }
   mainWindow.webContents.send('view', 'commands.html')
 })
 
