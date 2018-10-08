@@ -59,7 +59,7 @@ function createWindow () {
   mainWindow.loadFile('src/pages/index.html')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
@@ -178,7 +178,7 @@ function onHostedHandler (channel, username, viewers, autohost) {
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`)
   global.isConnected = true
-  mainWindow.loadFile('src/pages/index.html')
+  mainWindow.webContents.send('view', 'commands.html')
 }
 
 function onDisconnectedHandler (reason) {
@@ -188,7 +188,7 @@ function onDisconnectedHandler (reason) {
     chatClient.connect()
   }
   global.isConnected = false
-  mainWindow.loadFile('src/pages/index.html')
+  mainWindow.webContents.send('view', 'commands.html')
 }
 
 // ---
@@ -224,7 +224,7 @@ function addStandupReminder () {
 function configure () {
   addStandupReminder()
   if (!isValid(global.config)) {
-    mainWindow.loadFile('src/pages/configuration.html')
+    mainWindow.webContents.send('view', 'configuration.html')
   } else {
     setupClient()
   }
@@ -279,12 +279,12 @@ ipcMain.on('save-command', (event, cmd) => {
   global.commands = commands
   fsCache.save('commands', commands)
   global.selectedCommand = null
-  mainWindow.loadFile('src/pages/index.html')
+  mainWindow.webContents.send('view', 'commands.html')
 })
 
 ipcMain.on('selected-command', (event, cmd) => {
   global.selectedCommand = cmd
-  mainWindow.loadFile('src/pages/new-command.html')
+  mainWindow.webContents.send('view', 'new-command.html')
 })
 
 ipcMain.on('save-configuration', (event, config) => {
@@ -293,7 +293,7 @@ ipcMain.on('save-configuration', (event, config) => {
   fsCache.saveSecret({ 'config': config })
   loadCacheFiles()
   setupClient()
-  mainWindow.loadFile('src/pages/index.html')
+  mainWindow.webContents.send('view', 'commands.html')
 })
 
 ipcMain.on('export-command', (event, arg) => {
@@ -323,7 +323,7 @@ ipcMain.on('import-command', (event, arg) => {
     let path = filePaths.toString()
     global.commands = fsCache.readAll(path).commands
     fsCache.saveAll({ 'commands': global.commands })
-    mainWindow.loadFile('src/pages/index.html')
+    mainWindow.webContents.send('view', 'commands.html')
   })
 })
 
@@ -338,7 +338,7 @@ ipcMain.on('delete-command', (event, cmdName) => {
     fsCache.save('commands', commands)
     global.selectedCommand = null
   }
-  mainWindow.loadFile('src/pages/index.html')
+  mainWindow.webContents.send('view', 'commands.html')
 })
 
 // Commands

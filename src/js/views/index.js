@@ -1,6 +1,9 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
+const { renderConfigure } = require('./configuration.js')
+const { renderNewCommand } = require('./new-command.js')
+
 var $ = require('jQuery')
 
 function renderCommands () {
@@ -59,34 +62,39 @@ function renderCommands () {
       descriptionNode.find('p:last').remove()
     })
   }
+
+  let isConnected = remote.getGlobal('isConnected')
+
+  let connectedLabel = $('#connection-state-status')
+  connectedLabel.text(isConnected ? 'Connected' : 'Disconnected')
+  connectedLabel.css('padding', '0px 8px 0px 0px')
+
+  let connectButton = $('#connection-state-action')
+  connectButton.attr('class', isConnected ? 'btn btn-danger' : 'btn btn-success')
+  connectButton.text(isConnected ? 'Disconnect' : 'Connect')
+
+  // Wire up the button click handlers
+  connectButton.click(function () {
+    if (isConnected) {
+      ipcRenderer.send('disconnect-bot', 'disconnect')
+    } else {
+      ipcRenderer.send('connect-bot', 'connect')
+    }
+  })
+
+  $('#new-command-button').click(function () {
+    $('#container').load('../../src/pages/new-command.html', function () {
+      renderNewCommand()
+    })
+  })
+
+  $('#configuration-button').click(function () {
+    $('#container').load('../../src/pages/configuration.html', function () {
+      renderConfigure()
+    })
+  })
 }
 
-let isConnected = remote.getGlobal('isConnected')
-
-let connectedLabel = $('#connection-state-status')
-connectedLabel.text(isConnected ? 'Connected' : 'Disconnected')
-connectedLabel.css('padding', '0px 8px 0px 0px')
-
-let connectButton = $('#connection-state-action')
-connectButton.attr('class', isConnected ? 'btn btn-danger' : 'btn btn-success')
-connectButton.text(isConnected ? 'Disconnect' : 'Connect')
-
-renderCommands()
-
-// Wire up the button click handlers
-
-connectButton.click(function () {
-  if (isConnected) {
-    ipcRenderer.send('disconnect-bot', 'disconnect')
-  } else {
-    ipcRenderer.send('connect-bot', 'connect')
-  }
-})
-
-$('#new-command-button').click(function () {
-  remote.getCurrentWindow().loadFile('src/pages/new-command.html')
-})
-
-$('#configuration-button').click(function () {
-  remote.getCurrentWindow().loadFile('src/pages/configuration.html')
-})
+module.exports = {
+  renderCommands
+}
