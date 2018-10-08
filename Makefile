@@ -15,7 +15,7 @@ package: clean
 	 ${ELECTRON_PACKAGER} --overwrite --icon=${ICON_FILE} .
 
 all_platforms:
-	 ${ELECTRON_PACKAGER} --platform=all --overwrite --icon=${ICON_FILE} .
+	 ${ELECTRON_PACKAGER} --platform=all --overwrite .
 
 darwin:
 	${ELECTRON_PACKAGER} . --overwrite --platform=darwin --arch=x64 --icon=${ICON_FILE} --prune=true --out=release-builds
