@@ -15,6 +15,7 @@ function renderCommands () {
     table.deleteRow(1)
   }
 
+  let prefix = remote.getGlobal('config').prefix
   var commands = remote.getGlobal('commands')
   let tbody = $('tbody:last')
   for (let i = 0; i < commands.length; i++) {
@@ -35,7 +36,7 @@ function renderCommands () {
     }
     tr.append(enabledTD)
 
-    tr.append(`<td>!${c.name}</td>`)
+    tr.append(`<td>${prefix}${c.name}</td>`)
     tr.append(`<td>${c.description}</td>`)
     tbody.append(tr)
 

@@ -5,21 +5,23 @@ var $ = require('jQuery')
 
 function renderConfigure () {
   let c = remote.getGlobal('config')
-  document.querySelector('#channel-name').value = c.name
-  document.querySelector('#channel-bot').value = c.bot
-  document.querySelector('#channel-oauth').value = c.oauth
-  document.querySelector('#channel-autoconnect').checked = c.autoconnect
-  document.querySelector('#channel-notifications').checked = c.silent
-  document.querySelector('#channel-notification-break').checked = c.standupReminder
+  $('#channel-name').val(c.name)
+  $('#channel-bot').val(c.bot)
+  $('#channel-oauth').val(c.oauth)
+  $('#channel-command-prefix').val(c.prefix)
+  $('#channel-autoconnect').prop('checked', c.autoconnect)
+  $('#channel-notifications').prop('checked', c.silent)
+  $('#channel-notification-break').prop('checked', c.standupReminder)
 
   $('#new-configuration-submit').click(function () {
     var c = {
       name: $('#channel-name').val().toLowerCase(),
       bot: $('#channel-bot').val().toLowerCase(),
       oauth: $('#channel-oauth').val(),
-      autoconnect: document.querySelector('#channel-autoconnect').checked,
-      silent: document.querySelector('#channel-notifications').checked,
-      standupReminder: document.querySelector('#channel-notification-break').checked
+      prefix: $('#channel-command-prefix').val(),
+      autoconnect: $('#channel-autoconnect').is(':checked'),
+      silent: $('#channel-notifications').is(':checked'),
+      standupReminder: $('#channel-notification-break').is(':checked')
     }
 
     if (!c.name) {

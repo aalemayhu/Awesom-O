@@ -12,7 +12,6 @@ var path = require('path')
 let mainWindow
 
 let chatClient
-let commandPrefix = '!'
 let builtinCommands = { echo, help, commands, joke }
 
 function useExampleCommands () {
@@ -116,7 +115,8 @@ function onMessageHandler (target, context, msg, self) {
   if (self) { return } // Ignore messages from the bot
 
   // This isn't a command since it has no prefix:
-  if (msg.substr(0, 1) !== commandPrefix && context.username !== global.config.name.replace('#', '')) {
+  if (msg.substr(0, 1) !== global.config.prefix &&
+      context.username !== global.config.name.replace('#', '')) {
     console.log(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
     displayNotification(`Message from @${context.username} ${msg}`)
     return
@@ -141,7 +141,7 @@ function onMessageHandler (target, context, msg, self) {
   }
 
   if (cmd.enabled === false) {
-    chatClient.say(target, `!${commandName} is disabled`)
+    chatClient.say(target, `${global.config.prefix}${commandName} is disabled`)
     return
   }
 
@@ -172,7 +172,7 @@ function onJoinHandler (channel, username, self) {
   })
   if (didGreetUser) { return }
   global.config.greetedUsers.push(username)
-  let msg = `Welcome @${username}, see !commands for chat commands ;-)`
+  let msg = `Welcome @${username}, see ${global.config.prefix}commands for chat commands ;-)`
   chatClient.whisper(channel, msg)
 }
 
@@ -204,7 +204,9 @@ function isValid (config) {
 }
 
 function loadCacheFiles () {
+  // Load the stored command
   global.commands = fsCache.load().commands
+  // Setup default ones if no command
   if (!global.commands || global.commands.length === 0) {
     useExampleCommands()
     global.commands = fsCache.load().commands
@@ -213,6 +215,12 @@ function loadCacheFiles () {
   if (global.config && !global.config.windowState) {
     global.config.windowState = {}
   }
+
+  if (!global.config.prefix) {
+    global.config.prefix = '!'
+  }
+
+  console.log('prefix is now ' + global.config.prefix)
 }
 
 function addStandupReminder () {
@@ -392,7 +400,7 @@ function commands (target, context, params) {
   for (var k in c) {
     let cmd = c[k]
     if (cmd.enabled) {
-      msg += `!${cmd.name} `
+      msg += `${global.config.prefix}${cmd.name} `
     }
   }
   sendMessage(target, context, msg)
@@ -408,11 +416,11 @@ function help (target, context, params) {
       if (cmd.name !== msg) {
         continue
       }
-      sendMessage(target, context, `'!${cmd.name} - ${cmd.description}`)
+      sendMessage(target, context, `'${global.config.prefix}${cmd.name} - ${cmd.description}`)
       break
     }
   } else {
-    sendMessage(target, context, 'USAGE: !help cmd (without !)')
+    sendMessage(target, context, `USAGE: ${global.config.prefix}help cmd (without ${global.config.prefix})`)
   }
 }
 
