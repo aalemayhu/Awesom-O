@@ -186,8 +186,6 @@ function onDisconnectedHandler (reason) {
   mainWindow.webContents.send('view', 'commands.html')
 }
 
-// ---
-
 function isValid (config) {
   return config && config.name && config.bot && config.oauth
 }
