@@ -390,7 +390,7 @@ function echo (target, context, params) {
 
 // Function called when the "joke" command is issued:
 function joke (target, context, params) {
-  randomJoke(function (joke) {
+  randomJoke('/usr/local/bin/pyjoke', function (joke) {
     sendMessage(target, context, joke)
   })
 }

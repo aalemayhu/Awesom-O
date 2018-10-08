@@ -2,8 +2,8 @@
 
 const { exec } = require('child_process')
 
-function randomJoke (callback) {
-  exec('/usr/local/bin/pyjoke', (err, stdout, stderr) => {
+function randomJoke (pyjokePath, callback) {
+  exec(pyjokePath, (err, stdout, stderr) => {
     if (err) {
       // node couldn't execute the command
       return
