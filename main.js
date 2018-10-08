@@ -333,13 +333,28 @@ ipcMain.on('delete-command', (event, cmdName) => {
   let index = commands.findIndex(function (e) {
     return e.name === cmdName
   })
+
   if (index) {
-    commands.splice(index, 1)
-    global.commands = commands
-    fsCache.save('commands', commands)
-    global.selectedCommand = null
+    dialog.showMessageBox({
+      type: 'warning',
+      title: `Deleting command ${cmdName}`,
+      message: 'This action is non revertible, do you want to continue?',
+      buttons: ['Delete', 'Cancel'],
+      defaultId: 1,
+      noLink: true
+    }, function (response, checkboxChecked) {
+      if (response === 0) {
+        commands.splice(index, 1)
+        global.commands = commands
+        fsCache.save('commands', commands)
+        mainWindow.webContents.send('view', 'commands.html')
+      }
+      console.log(`callback(${response}, ${checkboxChecked})`)
+    })
+  } else {
+    mainWindow.webContents.send('view', 'commands.html')
   }
-  mainWindow.webContents.send('view', 'commands.html')
+  global.selectedCommand = null
 })
 
 // Commands
