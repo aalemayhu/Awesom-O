@@ -1,18 +1,17 @@
 {
   "name": "Awesom-O",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Twitch bot",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/scanf/awesom-o",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Awesom-O",
+    "Twitch",
+    "Bot",
+    "notifications",
   ],
   "author": "GitHub",
   "license": "CC0-1.0",
