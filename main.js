@@ -49,6 +49,7 @@ function createWindow () {
   loadCacheFiles()
   let state = defaultWindowState()
   mainWindow = new BrowserWindow({
+    backgroundColor: '#22252A',
     x: state.x,
     y: state.y,
     width: state.width,
