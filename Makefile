@@ -1,4 +1,4 @@
-ELECTRON_PACKAGER=./node_modules/.bin/electron-packager
+ELECTRON_PACKAGER=electron-packager
 ICON_FILE=$(shell pwd)/assets/icons/mac/icon.icns
 
 install_deps:
