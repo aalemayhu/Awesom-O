@@ -122,6 +122,8 @@ function onMessageHandler (target, context, msg, self) {
     return
   }
 
+  if (msg.substr(0, 1) !== global.config.prefix) { return }
+
   // Split the message into individual words:
   const parse = msg.slice(1).split(' ')
   // The command name is the first (0th) one:
@@ -165,15 +167,15 @@ function onMessageHandler (target, context, msg, self) {
 
 function onJoinHandler (channel, username, self) {
   console.log(`onJoinHandler(${channel}, ${username}, ${self})`)
-  if (self || username === global.config.name.replace('#', '')) { return }
-  if (!global.config.greetedUsers) { global.config.greetedUsers = [] }
-  let didGreetUser = global.config.greetedUsers.find(function (u) {
-    if (u === username) { return u }
-  })
-  if (didGreetUser) { return }
-  global.config.greetedUsers.push(username)
-  let msg = `Welcome @${username}, see ${global.config.prefix}commands for chat commands ;-)`
-  chatClient.whisper(channel, msg)
+  // if (self || username === global.config.name.replace('#', '')) { return }
+  // if (!global.config.greetedUsers) { global.config.greetedUsers = [] }
+  // let didGreetUser = global.config.greetedUsers.find(function (u) {
+  //   if (u === username) { return u }
+  // })
+  // if (didGreetUser) { return }
+  // global.config.greetedUsers.push(username)
+  // let msg = `Welcome @${username}, see ${global.config.prefix}commands for chat commands ;-)`
+  // chatClient.whisper(channel, msg)
 }
 
 function onHostedHandler (channel, username, viewers, autohost) {
