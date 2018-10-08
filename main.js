@@ -50,6 +50,7 @@ function createWindow () {
   let state = defaultWindowState()
   mainWindow = new BrowserWindow({
     backgroundColor: '#22252A',
+    show: false,
     x: state.x,
     y: state.y,
     width: state.width,
@@ -83,6 +84,10 @@ function createWindow () {
   })
 
   configure()
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+  })
 }
 
 app.on('ready', createWindow)
