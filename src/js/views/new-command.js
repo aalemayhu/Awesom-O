@@ -12,6 +12,8 @@ function renderNewCommand () {
       }
     })
 
+    $('#command-name-hint').text(`lowercase it and no ${remote.getGlobal('config').prefix} prefix`)
+
     if (cmd) {
       console.log('prefix:')
       console.log(cmd)
