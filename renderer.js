@@ -9,6 +9,8 @@ const { renderConfigure } = require('./src/js/views/configuration.js')
 const { renderNewCommand } = require('./src/js/views/new-command.js')
 var $ = require('jQuery')
 const { version } = require('./package.json')
+const notifier = require('node-notifier')
+const path = require('path')
 
 // Set the app version in the UI
 $('#app-version').text(version)
@@ -43,12 +45,13 @@ ipcRenderer.on('view', function (event, view) {
 
 ipcRenderer.on('display-notification', function (event, notification) {
   console.log(`display-notification -> (${event}, ${notification})`)
-  console.log(`Notification.permission===${Notification.permission}`)
   let title = notification.title
   let body = notification.body
   let isSilent = remote.getGlobal('silent')
-  let n = new Notification(title, { body: body, silent: isSilent })
-  n.onclick = () => {
-    console.log('Notification clicked')
-  }
+  notifier.notify({
+    title: title,
+    message: body,
+    icon: path.join(__dirname, 'assets/icons/png/128x128.png'),
+    sound: !isSilent
+  })
 })
