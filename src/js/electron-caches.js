@@ -21,6 +21,8 @@ function exampleCommands () {
     { type: 'string', name: 'gitlab', description: 'Print GitHub profile URL', value: 'https://gitlab.com/scanf', enabled: true },
     { type: 'string', name: 'bashrc', description: 'my bash profile', value: 'https://github.com/scanf/dotfiles/tree/master/shell', enabled: true },
     { type: 'string', name: 'twitter', description: 'Link to my Twitter', value: 'https://twitter.com/ccscanf', enabled: true },
+    { type: 'string', name: 'youtube', description: 'Print out YouTube link', value: 'https://www.youtube.com/channel/UCumJa0eRO9_xtEsoAt3UCkQ', enabled: true },
+    { type: 'string', name: 'discord', description: 'Print out Discord link', value: 'https://discord.gg/fdRU6vm', enabled: true },
     { type: 'file', name: 'music', description: 'Currently playing music', value: '/var/folders/2d/2xkdk5xd64z4s_l27tcyrwdc0000gp/T/com.alemayhu.-000/file-for-obs.txt', enabled: true },
     { type: 'string', name: 'donate', description: 'Link to my donation page', value: 'https://streamlabs.com/ccscanf', enabled: true },
     { type: 'builtin', name: 'echo', description: 'Print out everything after echo', enabled: true },
