@@ -12,8 +12,10 @@ run:
 clean:
 	-rm -rvf Awesom-O* release-builds
 
-package: clean
+version:
 	npm version -f ${NEW_VERSION}
+
+package: clean version
 	${ELECTRON_PACKAGER} --overwrite --icon=${ICON_FILE} .
 
 all_platforms:
