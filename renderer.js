@@ -43,6 +43,7 @@ ipcRenderer.on('view', function (event, view) {
 
 ipcRenderer.on('display-notification', function (event, notification) {
   console.log(`display-notification -> (${event}, ${notification})`)
+  console.log(`Notification.permission===${Notification.permission}`)
   let title = notification.title
   let body = notification.body
   let isSilent = remote.getGlobal('silent')

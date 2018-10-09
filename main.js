@@ -27,6 +27,7 @@ function defaultWindowState () {
 }
 
 function createWindow () {
+  app.setAppUserModelId('ccscanf.twitch.awesom-o')
   loadCacheFiles()
   let state = defaultWindowState()
   mainWindow = new BrowserWindow({
