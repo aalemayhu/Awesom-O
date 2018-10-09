@@ -10,7 +10,7 @@ run:
 	electron .
 
 clean:
-	-rm -rvf Awesom-O* release-builds
+	-rm -rvf Awesom-O* release-builds dist
 
 version:
 	npm version -f ${NEW_VERSION}
@@ -19,10 +19,11 @@ package: clean version
 	${ELECTRON_PACKAGER} --overwrite --icon=${ICON_FILE} .
 
 all_platforms:
-	 ${ELECTRON_PACKAGER} --platform=all --overwrite .
-	 zip -r -9 Awesom-O-linux-x64.zip Awesom-O-linux-x64
-	 zip -r -9 Awesom-O-mas-x64.zip Awesom-O-mas-x64
-	 zip -r -9 Awesom-O-win32-x64.zip Awesom-O-win32-x64
+	mkdir -pv dist
+	${ELECTRON_PACKAGER} --platform=all --overwrite .
+	zip -r -9 dist/Awesom-O-linux-x64.zip Awesom-O-linux-x64
+	zip -r -9 dist/Awesom-O-mas-x64.zip Awesom-O-mas-x64
+	zip -r -9 dist/Awesom-O-win32-x64.zip Awesom-O-win32-x64
 
 darwin:
 	${ELECTRON_PACKAGER} . --overwrite --platform=darwin --arch=x64 --icon=${ICON_FILE} --prune=true --out=release-builds
