@@ -213,6 +213,11 @@ function configure () {
     mainWindow.webContents.send('view', 'configuration.html')
   } else {
     setupClient()
+    if (global.config.autoconnect && chatClient) {
+      chatClient.connect()
+    } else {
+      displayNotification('Error', 'Chat client not configured')
+    }
   }
 }
 
