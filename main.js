@@ -27,7 +27,7 @@ function useExampleCommands () {
     { type: 'builtin', name: 'echo', description: 'Print out everything after echo', enabled: true },
     { type: 'builtin', name: 'commands', description: 'List all of the supported commands', enabled: true },
     { type: 'builtin', name: 'help', description: 'Show description for a command', enabled: true },
-    { type: 'builtin', name: 'joke', description: 'Get a random joke ;-)', enabled: true }
+    { type: 'builtin', name: 'joke', description: 'Get a random joke ;-)', enabled: false }
   ]
   fsCache.save('commands', commands)
 }
