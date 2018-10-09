@@ -1,6 +1,6 @@
 'use strict'
 
-const { dialog, app, BrowserWindow, ipcMain, Notification } = require('electron')
+const { dialog, app, BrowserWindow, ipcMain } = require('electron')
 const { fsCache } = require('./src/js/electron-caches.js')
 const fs = require('fs')
 const { randomJoke } = require('./src/js/joker.js')
@@ -85,22 +85,17 @@ app.on('activate', function () {
   }
 })
 
-function displayNotification (title, body) {
-  let isSilent = global.config.silent
-  const n = new Notification({ title: title, body: body, silent: isSilent })
-  n.on('show', () => console.log('showed'))
-  n.on('click', () => console.info('clicked!!'))
-  n.show()
-}
-
 function onMessageHandler (target, context, msg, self) {
   if (self) { return } // Ignore messages from the bot
 
   // This isn't a command since it has no prefix:
   if (msg.substr(0, 1) !== global.config.prefix &&
-      context.username !== global.config.name.replace('#', '')) {
+  context.username !== global.config.name.replace('#', '')) {
     console.log(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
-    displayNotification(`Message from @${context.username} ${msg}`)
+    mainWindow.webContents.send('display-notification', {
+      title: `Message from @${context.username}`,
+      body: msg
+    })
     return
   }
 
@@ -173,11 +168,17 @@ function onHostedHandler (channel, username, viewers, autohost) {
 function onConnectedHandler (addr, port) {
   console.log(`* Connected to ${addr}:${port}`)
   global.isConnected = true
+  mainWindow.webContents.send('display-notification', {
+    title: 'Awesom-O connected', body: ''
+  })
+  // TODO: remove the below?
   mainWindow.webContents.send('view', 'commands.html')
 }
 
 function onDisconnectedHandler (reason) {
-  displayNotification('Awesom-O disconnected', reason)
+  mainWindow.webContents.send('display-notification', {
+    title: 'Awesom-O disconnected', body: reason
+  })
   if (global.config.autoConnect && chatClient) {
     console.log('Reconnecting attempt')
     chatClient.connect()
@@ -202,7 +203,9 @@ function addStandupReminder () {
     let date = Date()
     let f = dateFormat(date, 'MM')
     if (f === '00' && isValid(global.config)) {
-      displayNotification('Reminder', 'Time to standup and stretch out ;-)')
+      mainWindow.webContents.send('display-notification', {
+        title: 'Reminder', body: 'Time to standup and stretch out ;-)'
+      })
     }
   }, 60000)
 }
@@ -216,7 +219,9 @@ function configure () {
     if (global.config.autoconnect && chatClient) {
       chatClient.connect()
     } else {
-      displayNotification('Error', 'Chat client not configured')
+      mainWindow.webContents.send('display-notification', {
+        title: 'Error', body: 'Chat client not configured'
+      })
     }
   }
 }
@@ -242,7 +247,9 @@ ipcMain.on('connect-bot', (event, arg) => {
   if (chatClient) {
     chatClient.connect()
   } else {
-    displayNotification('Error', 'Chat client not configured')
+    mainWindow.webContents.send('display-notification', {
+      title: 'Error', body: 'Chat client not configured'
+    })
   }
 })
 
@@ -293,7 +300,9 @@ ipcMain.on('save-configuration', (event, config) => {
   if (chatClient) {
     chatClient.connect()
   } else {
-    displayNotification('Error', 'Chat client not configured')
+    mainWindow.webContents.send('display-notification', {
+      title: 'Error', body: 'Chat client not configured'
+    })
   }
   mainWindow.webContents.send('view', 'commands.html')
 })

@@ -3,7 +3,7 @@
 // This file is required by the index.html file and will
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
-const { ipcRenderer } = require('electron')
+const { remote, ipcRenderer } = require('electron')
 const { renderCommands } = require('./src/js/views/index.js')
 const { renderConfigure } = require('./src/js/views/configuration.js')
 const { renderNewCommand } = require('./src/js/views/new-command.js')
@@ -35,7 +35,19 @@ function pickViewToRender (view) {
 }
 
 // View changes from the main process
+
 ipcRenderer.on('view', function (event, view) {
   console.log(`view -> (${event}, ${view})`)
   pickViewToRender(view)
+})
+
+ipcRenderer.on('display-notification', function (event, notification) {
+  console.log(`display-notification -> (${event}, ${notification})`)
+  let title = notification.title
+  let body = notification.body
+  let isSilent = remote.getGlobal('silent')
+  let n = new Notification(title, { body: body, silent: isSilent })
+  n.onclick = () => {
+    console.log('Notification clicked')
+  }
 })

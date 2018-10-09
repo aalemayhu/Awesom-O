@@ -54,6 +54,14 @@ function renderConfigure () {
   $('#import-configuration-button').click(function () {
     ipcRenderer.send('import-command', '')
   })
+
+  $('#test-notification').click(function () {
+    console.log('testing notification')
+    remote.getCurrentWindow().webContents.send('display-notification', {
+      title: 'The title',
+      body: 'The body'
+    })
+  })
 }
 
 module.exports = {
