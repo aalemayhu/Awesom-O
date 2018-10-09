@@ -37,7 +37,6 @@ function pickViewToRender (view) {
 }
 
 // View changes from the main process
-
 ipcRenderer.on('view', function (event, view) {
   console.log(`view -> (${event}, ${view})`)
   pickViewToRender(view)
