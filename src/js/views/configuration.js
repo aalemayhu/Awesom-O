@@ -12,6 +12,7 @@ function renderConfigure () {
   $('#channel-autoconnect').prop('checked', c.autoconnect)
   $('#channel-notifications').prop('checked', c.silent)
   $('#channel-notification-break').prop('checked', c.standupReminder)
+  $('#channel-greet-user').prop('checked', c.shouldGreetUser)
 
   $('#new-configuration-submit').click(function () {
     var c = {
@@ -21,7 +22,8 @@ function renderConfigure () {
       prefix: $('#channel-command-prefix').val(),
       autoconnect: $('#channel-autoconnect').is(':checked'),
       silent: $('#channel-notifications').is(':checked'),
-      standupReminder: $('#channel-notification-break').is(':checked')
+      standupReminder: $('#channel-notification-break').is(':checked'),
+      shouldGreetUser: $('#channel-greet-user').is(':checked')
     }
 
     if (!c.name) {
