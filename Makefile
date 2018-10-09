@@ -22,8 +22,8 @@ package: clean version
 all_platforms:
 	mkdir -pv dist
 	${ELECTRON_PACKAGER} --platform=all --overwrite .
-	zip -r -9 dist/Awesom-O-linux-x64.zip Awesom-O-linux-x64
-	zip -r -9 dist/Awesom-O-mas-x64.zip Awesom-O-mas-x64
+	#zip -r -9 dist/Awesom-O-linux-x64.zip Awesom-O-linux-x64
+	#zip -r -9 dist/Awesom-O-mas-x64.zip Awesom-O-mas-x64
 	zip -r -9 dist/Awesom-O-win32-x64.zip Awesom-O-win32-x64
 
 prerelease: version all_platforms
