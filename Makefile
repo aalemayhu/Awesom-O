@@ -11,7 +11,7 @@ run:
 	electron .
 
 clean:
-	-rm -rvf Awesom-O* release-builds dist
+	-rm -rvf Awesom-O* release-builds dist *.zip
 
 version:
 	npm version -f ${NEW_VERSION}
