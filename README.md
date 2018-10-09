@@ -12,6 +12,12 @@ Hour long videos available on [YouTube](https://www.youtube.com/playlist?list=PL
     make install_deps
     make run
 
+or
+
+	git clone https://github.com/scanf/Awesom-o /tmp/Awesom-o && \
+        npm install /tmp/Awesom-o && \
+	electron /tmp/Awesom-o
+
 ## Features
 
 The bot supports adding user defined commands which could be values like your
