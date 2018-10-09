@@ -165,6 +165,19 @@ function onMessageHandler (target, context, msg, self) {
   console.log(`* Executed ${commandName} command for ${context.username}`)
 }
 
+function onJoinHandler (channel, username, self) {
+  console.log(`onJoinHandler(${channel}, ${username}, ${self})`)
+  if (self || username === global.config.name.replace('#', '')) { return }
+  if (!global.config.greetedUsers) { global.config.greetedUsers = [] }
+  let didGreetUser = global.config.greetedUsers.find(function (u) {
+    if (u === username) { return u }
+  })
+  if (didGreetUser) { return }
+  global.config.greetedUsers.push(username)
+  let msg = `Welcome @${username}, see ${global.config.prefix}commands for chat commands ;-)`
+  chatClient.whisper(username, msg)
+}
+
 function onHostedHandler (channel, username, viewers, autohost) {
   let msg = `${channel} is hosted by ${username} viewers=${viewers}`
   chatClient.say(channel, msg)
@@ -244,6 +257,7 @@ function setupClient () {
   chatClient.on('message', onMessageHandler)
   chatClient.on('connected', onConnectedHandler)
   chatClient.on('disconnected', onDisconnectedHandler)
+  chatClient.on('join', onJoinHandler)
   chatClient.on('hosted', onHostedHandler)
 }
 
