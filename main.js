@@ -14,27 +14,9 @@ let mainWindow
 let chatClient
 let builtinCommands = { echo, help, commands, joke }
 
-function useExampleCommands () {
-  var commands = [
-    { type: 'string', name: 'what', description: 'Print out the current project', value: 'Twitch bot', enabled: true },
-    { type: 'string', name: 'when', description: 'Print stream schedule', value: 'From 5PM to roughly 7PM (GMT+2)', enabled: true },
-    { type: 'string', name: 'github', description: 'Print GitHub profile URL', value: 'https://github.com/scanf', enabled: true },
-    { type: 'string', name: 'gitlab', description: 'Print GitHub profile URL', value: 'https://gitlab.com/scanf', enabled: true },
-    { type: 'string', name: 'bashrc', description: 'my bash profile', value: 'https://github.com/scanf/dotfiles/tree/master/shell', enabled: true },
-    { type: 'string', name: 'twitter', description: 'Link to my Twitter', value: 'https://twitter.com/ccscanf', enabled: true },
-    { type: 'file', name: 'music', description: 'Currently playing music', value: '/var/folders/2d/2xkdk5xd64z4s_l27tcyrwdc0000gp/T/com.alemayhu.-000/file-for-obs.txt', enabled: true },
-    { type: 'string', name: 'donate', description: 'Link to my donation page', value: 'https://streamlabs.com/ccscanf', enabled: true },
-    { type: 'builtin', name: 'echo', description: 'Print out everything after echo', enabled: true },
-    { type: 'builtin', name: 'commands', description: 'List all of the supported commands', enabled: true },
-    { type: 'builtin', name: 'help', description: 'Show description for a command', enabled: true },
-    { type: 'builtin', name: 'joke', description: 'Get a random joke ;-)', enabled: false }
-  ]
-  fsCache.save('commands', commands)
-}
-
 function defaultWindowState () {
   var state = { x: 0, y: 0, width: 640, height: 320 }
-  if (global.config && global.config.windowState) {
+  if (global.config.windowState) {
     let ws = global.config.windowState
     state.x = ws.x ? ws.x : state.x
     state.y = ws.y ? ws.y : state.y
@@ -67,7 +49,7 @@ function createWindow () {
   })
 
   mainWindow.on('close', function () {
-    fsCache.saveSecret({ 'config': global.config })
+    fsCache.saveConfig({ 'config': global.config })
   })
 
   mainWindow.on('move', () => {
@@ -167,6 +149,11 @@ function onMessageHandler (target, context, msg, self) {
 
 function onJoinHandler (channel, username, self) {
   console.log(`onJoinHandler(${channel}, ${username}, ${self})`)
+  if (!global.config.shouldGreetUser) {
+    console.log('skipping greeting user')
+    return
+  }
+  // TODO: empty out the greetedUsers array once a day?
   if (self || username === global.config.name.replace('#', '')) { return }
   if (!global.config.greetedUsers) { global.config.greetedUsers = [] }
   let didGreetUser = global.config.greetedUsers.find(function (u) {
@@ -204,26 +191,8 @@ function isValid (config) {
 }
 
 function loadCacheFiles () {
-  // Load the stored command
-  global.commands = fsCache.load().commands
-  // Setup default ones if no command
-  if (!global.commands || global.commands.length === 0) {
-    useExampleCommands()
-    global.commands = fsCache.load().commands
-  }
-  global.config = fsCache.secrets()['config']
-  if (!global.config) {
-    global.config = {}
-  }
-  if (global.config && !global.config.windowState) {
-    global.config.windowState = {}
-  }
-
-  if (!global.config.prefix) {
-    global.config.prefix = '!'
-  }
-
-  console.log('prefix is now ' + global.config.prefix)
+  global.commands = fsCache.commands()
+  global.config = fsCache.config()
 }
 
 function addStandupReminder () {
@@ -309,7 +278,7 @@ ipcMain.on('selected-command', (event, cmd) => {
 ipcMain.on('save-configuration', (event, config) => {
   let newConfig = config
   newConfig.windowState = global.config.windowState
-  fsCache.saveSecret({ 'config': config })
+  fsCache.saveConfig({ 'config': config })
   loadCacheFiles()
 
   if (chatClient) {
@@ -350,7 +319,7 @@ ipcMain.on('import-command', (event, arg) => {
     }
     let path = filePaths.toString()
     global.commands = fsCache.readAll(path).commands
-    fsCache.saveAll({ 'commands': global.commands })
+    fsCache.save('commands', global.commands)
     mainWindow.webContents.send('view', 'commands.html')
   })
 })
