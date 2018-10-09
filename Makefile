@@ -1,6 +1,6 @@
 ELECTRON_PACKAGER=electron-packager
 ICON_FILE=$(shell pwd)/assets/icons/mac/icon.icns
-NEW_VERSION=$(shell git describe --tags --dirty)
+NEW_VERSION ?=$(shell git describe --tags --dirty)
 
 install_deps:
 	npm install .
@@ -13,7 +13,7 @@ clean:
 	-rm -rvf Awesom-O-* release-builds
 
 package: clean
-	npm version --no-git-tag-version -f ${NEW_VERSION}
+	npm version -f ${NEW_VERSION}
 	${ELECTRON_PACKAGER} --overwrite --icon=${ICON_FILE} .
 
 all_platforms:
