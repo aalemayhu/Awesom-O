@@ -31,6 +31,7 @@ function createWindow () {
   loadCacheFiles()
   let state = defaultWindowState()
   mainWindow = new BrowserWindow({
+    titleBarStyle: 'hidden',
     backgroundColor: '#22252A',
     show: false,
     x: state.x,
