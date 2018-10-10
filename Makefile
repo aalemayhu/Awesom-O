@@ -28,6 +28,10 @@ package: clean
 	${ELECTRON_INSTALLER_DMG} --icon=${INSTALLER_ICON_FILE} \
 	  --background=${BACKGROUND_FILE} Awesom-O-darwin-x64/Awesom-O.app/ dist/Awesom-O
 
+package_linux: clean
+	electron-packager . Awesom-O --platform linux --arch x64 --out .
+	electron-installer-debian --src Awesom-O-linux-x64/ --dest dist --arch amd64
+
 all_platforms: clean
 	${ELECTRON_PACKAGER} --platform=all --overwrite .
 	#zip -r -9 dist/Awesom-O-linux-x64.zip Awesom-O-linux-x64
