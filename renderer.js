@@ -47,6 +47,12 @@ ipcRenderer.on('display-notification', function (event, notification) {
   let title = notification.title
   let body = notification.body
   let isSilent = remote.getGlobal('silent')
+
+  if (process.platform === 'darwin') {
+    let n = new Notification(title, { body: body, silent: isSilent })
+    return
+  }
+
   notifier.notify({
     title: title,
     message: body,
