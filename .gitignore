@@ -6,6 +6,7 @@ Awesom-O-linux-x64
 Awesom-O-mas-x64
 Awesom-O-win32-x64
 *.zip
+dist
 
 # vim
 *.swp

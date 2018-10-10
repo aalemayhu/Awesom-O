@@ -1,4 +1,5 @@
 ELECTRON_PACKAGER=electron-packager
+ELECTRON_INSTALLER_DMG=electron-installer-dmg
 ICON_FILE=$(shell pwd)/assets/icons/mac/icon.icns
 NEW_VERSION ?=$(shell git describe --tags --dirty)
 REPOSITORY=scanf/awesom-o
@@ -15,15 +16,16 @@ clean:
 	-rm -rvf release-builds 
 	-rm -rvf dist 
 	-rm *.zip
+	mkdir -pv dist
 
 version:
 	npm version -f ${NEW_VERSION}
 
 package: clean
 	${ELECTRON_PACKAGER} --overwrite --icon=${ICON_FILE} .
+	${ELECTRON_INSTALLER_DMG} Awesom-O-darwin-x64/Awesom-O.app/ dist/Awesom-O
 
-all_platforms:
-	mkdir -pv dist
+all_platforms: clean
 	${ELECTRON_PACKAGER} --platform=all --overwrite .
 	#zip -r -9 dist/Awesom-O-linux-x64.zip Awesom-O-linux-x64
 	#zip -r -9 dist/Awesom-O-mas-x64.zip Awesom-O-mas-x64
