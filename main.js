@@ -3,7 +3,6 @@
 const { dialog, app, BrowserWindow, ipcMain } = require('electron')
 const { fsCache } = require('./src/js/electron-caches.js')
 const fs = require('fs')
-const { randomJoke } = require('./src/js/joker.js')
 const Chatbot = require('./src/js/chatbot.js')
 
 var dateFormat = require('dateformat')
@@ -341,6 +340,19 @@ ipcMain.on('import-command', (event, arg) => {
   })
 })
 
+ipcMain.on('import-jokes-file', (event, arg) => {
+  dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [
+      { extensions: ['txt'] }
+    ]
+  }, function (filePaths, bookmarks) {
+    if (!filePaths) { return }
+    let path = filePaths.toString()
+    mainWindow.webContents.send('selected-jokes-file', path)
+  })
+})
+
 ipcMain.on('delete-command', (event, cmdName) => {
   let commands = global.commands
   let index = commands.findIndex(function (e) {
@@ -386,11 +398,25 @@ function echo (target, context, params) {
   }
 }
 
+// Helper function for getting random number
+function getRandomInt (min, max) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  let date = new Date()
+  let seed = date.getMonth() + date.getFullYear() + date.getMinutes() + date.getMilliseconds() + date.getSeconds()
+  return Math.floor(Math.random(seed) * (max - min)) + min
+}
+
 // Function called when the "joke" command is issued:
 function joke (target, context, params) {
-  randomJoke('/usr/local/bin/pyjoke', function (joke) {
-    sendMessage(target, context, joke)
-  })
+  if (!global.config.jokesFilePath) {
+    sendMessage(target, context, 'Sorry, jokes not configured yet.')
+    return
+  }
+  let msg = fs.readFileSync(global.config.jokesFilePath, 'utf-8')
+  let jokes = msg.split('\n')
+  let index = getRandomInt(0, jokes.length - 1)
+  sendMessage(target, context, jokes[index])
 }
 
 // Function called when the "commands" command is issued:

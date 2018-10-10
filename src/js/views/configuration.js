@@ -13,6 +13,7 @@ function renderConfigure () {
   $('#channel-notifications').prop('checked', c.silent)
   $('#channel-notification-break').prop('checked', c.standupReminder)
   $('#channel-greet-user').prop('checked', c.shouldGreetUser)
+  $('#channel-jokes-file').val(c.jokesFilePath)
 
   $('#new-configuration-submit').click(function () {
     var c = {
@@ -23,7 +24,8 @@ function renderConfigure () {
       autoconnect: $('#channel-autoconnect').is(':checked'),
       silent: $('#channel-notifications').is(':checked'),
       standupReminder: $('#channel-notification-break').is(':checked'),
-      shouldGreetUser: $('#channel-greet-user').is(':checked')
+      shouldGreetUser: $('#channel-greet-user').is(':checked'),
+      jokesFilePath: $('#channel-jokes-file').val()
     }
 
     if (!c.name) {
@@ -61,6 +63,14 @@ function renderConfigure () {
       title: 'The title',
       body: 'The body'
     })
+  })
+
+  $('#channel-jokes-file').click(function () {
+    ipcRenderer.send('import-jokes-file', '')
+  })
+
+  ipcRenderer.on('selected-jokes-file', function (event, jokesFilePath) {
+    $('#channel-jokes-file').val(jokesFilePath)
   })
 }
 
