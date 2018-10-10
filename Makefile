@@ -36,7 +36,7 @@ windows:
 	electron-packager . Awesom-O --platform win32 --arch x64 --out .
 
 all_platforms: clean linux windows macOS
-	zip -9 dist/Awesom-O_0.0.7_amd64.deb.zip Awesom-O_0.0.7_amd64.deb
+	zip -9 dist/Awesom-O_${NEW_VERSION}_amd64.deb.zip Awesom-O_${NEW_VERSION}_amd64.deb
 	zip -9 dist/Awesom-O.dmg.zip Awesom-O.dmg
 	zip -r -9 dist/Awesom-O-win32-x64.zip Awesom-O-win32-x64
 
