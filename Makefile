@@ -23,19 +23,21 @@ clean:
 version:
 	npm version -f ${NEW_VERSION}
 
-package: clean
-	${ELECTRON_PACKAGER} --overwrite --icon=${ICON_FILE} .
+macOS: 
+	${ELECTRON_PACKAGER} --icon=${ICON_FILE} . Awesom-O --platform darwin --arch x64 --out .
 	${ELECTRON_INSTALLER_DMG} --icon=${INSTALLER_ICON_FILE} \
-	  --background=${BACKGROUND_FILE} Awesom-O-darwin-x64/Awesom-O.app/ dist/Awesom-O
+	  --background=${BACKGROUND_FILE} Awesom-O-darwin-x64/Awesom-O.app/ Awesom-O
 
-package_linux: clean
+linux: 
 	electron-packager . Awesom-O --platform linux --arch x64 --out .
-	electron-installer-debian --src Awesom-O-linux-x64/ --dest dist --arch amd64
+	electron-installer-debian --src Awesom-O-linux-x64/ --dest . --arch amd64
 
-all_platforms: clean
-	${ELECTRON_PACKAGER} --platform=all --overwrite .
-	#zip -r -9 dist/Awesom-O-linux-x64.zip Awesom-O-linux-x64
-	#zip -r -9 dist/Awesom-O-mas-x64.zip Awesom-O-mas-x64
+windows: 
+	electron-packager . Awesom-O --platform win32 --arch x64 --out .
+
+all_platforms: clean linux windows macOS
+	zip -9 dist/Awesom-O_0.0.7_amd64.deb.zip Awesom-O_0.0.7_amd64.deb
+	zip -9 dist/Awesom-O.dmg.zip Awesom-O.dmg
 	zip -r -9 dist/Awesom-O-win32-x64.zip Awesom-O-win32-x64
 
 prerelease: version all_platforms
