@@ -4,7 +4,7 @@
 // be executed in the renderer process for that window.
 // All of the Node.js APIs are available in this process.
 const { remote, ipcRenderer } = require('electron')
-const { renderCommands } = require('./src/js/views/index.js')
+const { renderCommands } = require('./src/js/views/commands.js')
 const { renderConfigure } = require('./src/js/views/configuration.js')
 const { renderNewCommand } = require('./src/js/views/new-command.js')
 var $ = require('jQuery')
