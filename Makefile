@@ -1,5 +1,6 @@
 ELECTRON_PACKAGER=electron-packager
 ELECTRON_INSTALLER_DMG=electron-installer-dmg
+BACKGROUND_FILE=$(shell pwd)/assets/background.png
 ICON_FILE=$(shell pwd)/assets/icons/mac/icon.icns
 NEW_VERSION ?=$(shell git describe --tags --dirty)
 REPOSITORY=scanf/awesom-o
@@ -23,7 +24,7 @@ version:
 
 package: clean
 	${ELECTRON_PACKAGER} --overwrite --icon=${ICON_FILE} .
-	${ELECTRON_INSTALLER_DMG} Awesom-O-darwin-x64/Awesom-O.app/ dist/Awesom-O
+	${ELECTRON_INSTALLER_DMG} --background=${BACKGROUND_FILE} Awesom-O-darwin-x64/Awesom-O.app/ dist/Awesom-O
 
 all_platforms: clean
 	${ELECTRON_PACKAGER} --platform=all --overwrite .
