@@ -41,26 +41,14 @@ function renderCommands () {
     tbody.append(tr)
 
     // Callback handling
+    tr.click(function () {
+      ipcRenderer.send('selected-command', c.name)
+    })
     tr.mouseenter(function () {
-      let button = $(`<p>Edit</p>`)
-      let descriptionNode = $(this).find('td:last')
-      descriptionNode.append(button)
-      descriptionNode.find('p:last').click(function () {
-        // Using row.id here so we avoid the # sign
-        ipcRenderer.send('selected-command', c.name)
-      })
-
-      button.attr('class', 'btn-sm')
-      button.css('float', 'right')
-
-      // margin-top, margin-right, margin-bottom, and margin-left.
-      button.css('font-size', '1rem')
-      button.css('color', 'green')
-      button.css('margin', '0px -15px 0px 0px')
+      tr.css('color', 'green')
     })
     tr.mouseleave(function () {
-      let descriptionNode = $(this).find('td:last')
-      descriptionNode.find('p:last').remove()
+      tr.css('color', 'white')
     })
   }
 
