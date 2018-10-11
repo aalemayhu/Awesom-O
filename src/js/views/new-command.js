@@ -26,6 +26,7 @@ function renderNewCommand () {
         $('#form-group-command-type').remove()
         $('#command-name').prop('readonly', true)
         $('#command-description').prop('readonly', true)
+        $('#new-command-delete').hide()
       } else {
         document.querySelector('.custom-select').selectedIndex = cmd.type === 'string' ? 0 : 1
         $('#command-value').val(cmd.value)
