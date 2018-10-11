@@ -20,22 +20,36 @@ title.css('text-align', 'center')
 // This is required for the initial load of the index.html file
 $('#container').load('../../src/pages/commands.html', function () {
   renderCommands()
+  updateHeight()
 })
 
 function pickViewToRender (view) {
   if (view.endsWith('commands.html')) {
     $('#container').load('../../src/pages/commands.html', function () {
       renderCommands()
+      updateHeight()
     })
   } else if (view.endsWith('new-command.html')) {
     $('#container').load('../../src/pages/new-command.html', function () {
       renderNewCommand(renderCommands)
+      updateHeight()
     })
   } else if (view.endsWith('configuration.html')) {
     $('#container').load('../../src/pages/configuration.html', function () {
       renderConfigure()
+      updateHeight()
     })
   }
+}
+
+function updateHeight () {
+  // Set the default minimum height
+  var height = 0
+  $.each($('body').children(), function (i, v) {
+    height += $(v).outerHeight(true)
+  })
+  console.log(height)
+  ipcRenderer.send('set-height', ~~(height * 1.1))
 }
 
 // View changes from the main process

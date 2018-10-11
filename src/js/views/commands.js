@@ -72,15 +72,11 @@ function renderCommands () {
   })
 
   $('#new-command-button').click(function () {
-    $('#container').load('../../src/pages/new-command.html', function () {
-      renderNewCommand()
-    })
+    remote.getCurrentWindow().webContents.send('view', 'new-command.html')
   })
 
   $('#configuration-button').click(function () {
-    $('#container').load('../../src/pages/configuration.html', function () {
-      renderConfigure()
-    })
+    remote.getCurrentWindow().webContents.send('view', 'configuration.html')
   })
 }
 

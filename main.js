@@ -37,7 +37,7 @@ function createWindow () {
     y: state.y,
     width: state.width,
     height: state.height,
-    'minWidth': 512,
+    'minWidth': 550,
     'minHeight': 320,
     icon: path.join(__dirname, 'assets/icons/png/64x64.png')
   })
@@ -243,6 +243,12 @@ function setupClient () {
 }
 
 // Handle renderer messages
+
+ipcMain.on('set-height', (event, height) => {
+  console.log(`set-height(${height})`)
+  mainWindow.setSize(global.config.windowState.width, height)
+  mainWindow.setMinimumSize(mainWindow.getMinimumSize()[0], height)
+})
 
 ipcMain.on('connect-bot', (event, arg) => {
   if (!global.config) { setupClient() }
