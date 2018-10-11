@@ -62,10 +62,12 @@ ipcRenderer.on('display-notification', function (event, notification) {
   console.log(`display-notification -> (${event}, ${notification})`)
   let title = notification.title
   let body = notification.body
+  let icon = notification.icon
   let isSilent = remote.getGlobal('silent')
 
   if (process.platform === 'darwin') {
-    let n = new Notification(title, { body: body, silent: isSilent })
+    // TODO: use the avatar for user
+    let n = new Notification(title, { body: body, silent: isSilent, icon: icon})
     return
   }
 
@@ -73,6 +75,7 @@ ipcRenderer.on('display-notification', function (event, notification) {
     title: title,
     message: body,
     icon: path.join(__dirname, 'assets/icons/png/128x128.png'),
+    contentImage: icon,
     sound: !isSilent
   })
 })
