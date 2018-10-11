@@ -173,7 +173,6 @@ function onConnectedHandler (addr, port) {
   mainWindow.webContents.send('display-notification', {
     title: 'Awesom-O connected', body: ''
   })
-  // TODO: remove the below?
   mainWindow.webContents.send('view', 'commands.html')
 }
 
