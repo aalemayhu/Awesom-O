@@ -9,7 +9,7 @@ var dateFormat = require('dateformat')
 var path = require('path')
 
 let mainWindow
-
+let clientId = 'tutlj043hnk4iyttxwj1gvoicguhta'
 let chatClient
 let builtinCommands = { echo, help, commands, joke }
 
@@ -90,6 +90,16 @@ app.on('activate', function () {
 
 function onMessageHandler (target, context, msg, self) {
   if (self) { return } // Ignore messages from the bot
+  chatClient.api({
+    url: `https://api.twitch.tv/kraken/channels/${context.username}`,
+    method: 'GET',
+    headers: { 'Client-ID': clientId }
+  }, function (err, res, body) {
+    if (err) { return }
+    if (!fsCache.hasImage(body.logo)) {
+      global.config.avatars[context.username] = fsCache.saveImage(body.logo)
+    }
+  })
 
   // This isn't a command since it has no prefix:
   if (msg.substr(0, 1) !== global.config.prefix &&
@@ -97,7 +107,8 @@ function onMessageHandler (target, context, msg, self) {
     console.log(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
     mainWindow.webContents.send('display-notification', {
       title: `Message from @${context.username}`,
-      body: msg
+      body: msg,
+      icon: global.config.avatars[context.username]
     })
     return
   }

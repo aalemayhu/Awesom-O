@@ -2,6 +2,8 @@
 
 const { app } = require('electron')
 const fs = require('fs')
+const path = require('path')
+const request = require('request')
 
 const directory = app.getPath('home') // /home folder on OS X
 const cacheDirectory = `${directory}/twitch-bot-cache` // /home/twitch-bot-cache/
@@ -64,6 +66,10 @@ const fsCache = {
     if (config.shouldGreetUser === undefined) {
       config.shouldGreetUser = false
     }
+    // Default value for avatars
+    if (config.avatars === undefined) {
+      config.avatars = {}
+    }
 
     return config
   },
@@ -107,6 +113,17 @@ const fsCache = {
       console.log('Error in Cache:', err)
     }
     return data
+  },
+  hasImage (url) {
+    let imageName = url.slice(url.lastIndexOf('/') + 1)
+    let imagePath = path.join(cacheDirectory, imageName)
+    return fs.existsSync(imagePath)
+  },
+  saveImage (url) {
+    let imageName = url.slice(url.lastIndexOf('/') + 1)
+    let imagePath = path.join(cacheDirectory, imageName)
+    request(url).pipe(fs.createWriteStream(imagePath))
+    return imagePath
   }
 }
 
