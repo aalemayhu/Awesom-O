@@ -13,7 +13,9 @@ const notifier = require('node-notifier')
 const path = require('path')
 
 // Set the app version in the UI
-$('#app-version').text(version)
+let title = $('#app-version')
+title.text(`Awesom-O v${version}`)
+title.css('text-align', 'center')
 
 // This is required for the initial load of the index.html file
 $('#container').load('../../src/pages/commands.html', function () {

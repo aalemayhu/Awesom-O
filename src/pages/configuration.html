@@ -1,49 +1,55 @@
 <br />
-<form>
-  <div class="form-group">
-    <label for="channel-name">Channel</label>
-    <input type="text" class="form-control" id="channel-name" placeholder="#mychannel" required>
+<div class="d-flex flex-column bd-highlight mb-3">
+  <div class="p-2 bd-highlight">
+    <button id="new-configuration-cancel" class="btn btn-secondary">＜</button>
+    <div class="float-right">
+      <button type="button" id="export-configuration-button" class="btn btn-secondary">Export</button>
+      <button type="button" id="import-configuration-button" class="btn btn-secondary">Import</button>
+      <button id="test-notification" class="btn btn-secondary">Notification</button>
+    </div>
   </div>
-  <div class="form-group">
-    <label class="my-1 mr-2" for="channel-bot">Bot username</label>
-    <input type="text" class="form-control" id="channel-bot" placeholder="mychannel_bot" required>
-  </div>
-  <div class="form-group">
-    <label for="channel-oauth">Auth token</label>
-    <input type="password" class="form-control" id="channel-oauth" placeholder="oauth:xyz" required>
-  </div>
-  <div class="form-group">
-    <label for="channel-name">Command prefix</label>
-    <input type="text" class="form-control" id="channel-command-prefix" placeholder="!" required>
-  </div>
-  <div class="form-group">
-    <label for="channel-name">Jokes file</label>
-    <input type="text" class="form-control" id="channel-jokes-file" placeholder="" required>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="channel-autoconnect">
-    <label class="form-check-label" for="channel-autoconnect">Autoconnect</label>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="channel-notifications">
-    <label class="form-check-label" for="channel-notifications">Silent</label>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="channel-notification-break">
-    <label class="form-check-label" for="channel-notification-break">Stand up reminder</label>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="channel-greet-user">
-    <label class="form-check-label" for="channel-greet-user">Should greet users</label>
-  </div>
-</form>
 
-
-<div class="btn-group" role="group">
-  <button type="button" id="export-configuration-button" class="btn btn-info">Export</button>
-  <button type="button" id="import-configuration-button" class="btn btn-info">Import</button>
-  <button id="new-configuration-submit" type="submit" class="btn btn-success">Save</button>
-  <button id="new-configuration-cancel" class="btn btn-secondary">Back</button>
-
-  <button id="test-notification" class="btn btn-secondary">notification test</button>
+  <div class="p-2 bd-highlight">
+    <form>
+      <div class="form-group">
+        <label for="channel-name">Channel</label>
+        <input type="text" class="form-control" id="channel-name" placeholder="#mychannel" required>
+      </div>
+      <div class="form-group">
+        <label class="my-1 mr-2" for="channel-bot">Bot username</label>
+        <input type="text" class="form-control" id="channel-bot" placeholder="mychannel_bot" required>
+      </div>
+      <div class="form-group">
+        <label for="channel-oauth">Auth token</label>
+        <input type="password" class="form-control" id="channel-oauth" placeholder="oauth:xyz" required>
+      </div>
+      <div class="form-group">
+        <label for="channel-name">Command prefix</label>
+        <input type="text" class="form-control" id="channel-command-prefix" placeholder="!" required>
+      </div>
+      <div class="form-group">
+        <label for="channel-name">Jokes file</label>
+        <input type="text" class="form-control" id="channel-jokes-file" placeholder="" required>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="channel-autoconnect">
+        <label class="form-check-label" for="channel-autoconnect">Autoconnect</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="channel-notifications">
+        <label class="form-check-label" for="channel-notifications">Silent</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="channel-notification-break">
+        <label class="form-check-label" for="channel-notification-break">Stand up reminder</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="channel-greet-user">
+        <label class="form-check-label" for="channel-greet-user">Should greet users</label>
+      </div>
+    </form>
+  </div>
+  <div class="p-2 bd-highlight">
+    <button id="new-configuration-submit" type="submit" class="btn btn-success btn-lg btn-block">Save</button>
+  </div>
 </div>
