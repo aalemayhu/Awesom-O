@@ -31,6 +31,8 @@ function renderNewCommand () {
         $('#command-value').val(cmd.value)
       }
     }
+  } else {
+    $('#new-command-delete').hide()
   }
 
   $('#new-command-submit').click(function () {
