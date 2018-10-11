@@ -38,6 +38,7 @@ function createWindow () {
     width: state.width,
     height: state.height,
     'minWidth': 512,
+    'minHeight': 320,
     icon: path.join(__dirname, 'assets/icons/png/64x64.png')
   })
 
