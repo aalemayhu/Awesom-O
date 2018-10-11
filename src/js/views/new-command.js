@@ -64,7 +64,7 @@ function renderNewCommand () {
   })
 
   $('#new-command-delete').click(function () {
-    ipcRenderer.send('delete-command', $('#channel-name').val())
+    ipcRenderer.send('delete-command', $('#command-name').val())
   })
 }
 

@@ -359,7 +359,7 @@ ipcMain.on('delete-command', (event, cmdName) => {
     return e.name === cmdName
   })
 
-  if (index) {
+  if (index >= 0) {
     dialog.showMessageBox({
       type: 'warning',
       title: `Deleting command ${cmdName}`,
