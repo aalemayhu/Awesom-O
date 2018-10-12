@@ -6,7 +6,7 @@ Built live on [Twitch][c]. Hour long videos available on [YouTube][0].
 
 ## Releases
 
-Builds for Windows, Linux and macOS are availble, please visit the [release
+Builds for Windows, Linux and macOS are available, please visit the [release
 page][1].
 
 ## Development
