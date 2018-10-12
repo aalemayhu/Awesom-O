@@ -25,7 +25,7 @@ or
 The bot supports adding user defined commands which could be values like your
 Twitter profile URL or text files to show what music is currently being played.
 
-![Image of all views](Screenshots/screenshot.png)
+![Screenshot](Screenshots/screenshot.png)
 
 ## License
 
