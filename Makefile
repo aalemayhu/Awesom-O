@@ -1,14 +1,19 @@
-ELECTRON_PACKAGER=electron-packager
-ELECTRON_INSTALLER_DMG=electron-installer-dmg
-BACKGROUND_FILE=$(shell pwd)/assets/background.png
-ICON_FILE=$(shell pwd)/assets/icons/mac/icon.icns
-INSTALLER_ICON_FILE=$(shell pwd)/assets/icons/png/48x48.png
+ELECTRON_PACKAGER ?=electron-packager
+ELECTRON_INSTALLER_DMG ?=electron-installer-dmg
+ELECTRON_INSTALLER_DEBIAN ?=electron-installer-debian
+BACKGROUND_FILE ?=$(shell pwd)/assets/background.png
+ICON_FILE ?=$(shell pwd)/assets/icons/mac/icon.icns
+INSTALLER_ICON_FILE ?=$(shell pwd)/assets/icons/png/48x48.png
 NEW_VERSION ?=$(shell git describe --tags --dirty)
-REPOSITORY=scanf/awesom-o
+REPOSITORY ?=scanf/awesom-o
 
 install_deps:
+	# Install the package helpers
+	sudo npm install -g ${ELECTRON_PACKAGER} ${ELECTRON_INSTALLER_DMG} ${ELECTRON_INSTALLER_DEBIAN}
+	# Install tool for uploading release binaries to GitHub
+	pip install githubrelease
+	# Install all of the app dependencies
 	npm install .
-	pip install pyjokes
 
 run:
 	electron .
@@ -29,11 +34,11 @@ macOS:
 	  --background=${BACKGROUND_FILE} Awesom-O-darwin-x64/Awesom-O.app/ Awesom-O
 
 linux: 
-	electron-packager . Awesom-O --platform linux --arch x64 --out .
-	electron-installer-debian --src Awesom-O-linux-x64/ --dest . --arch amd64
+	${ELECTRON_PACKAGER} . Awesom-O --platform linux --arch x64 --out .
+	${ELECTRON_INSTALLER_DEBIAN} --src Awesom-O-linux-x64/ --dest . --arch amd64
 
 windows: 
-	electron-packager . Awesom-O --platform win32 --arch x64 --out .
+	${ELECTRON_PACKAGER} . Awesom-O --platform win32 --arch x64 --out .
 
 all_platforms: clean linux windows macOS
 	zip -9 dist/Awesom-O_${NEW_VERSION}_amd64.deb.zip Awesom-O_${NEW_VERSION}_amd64.deb
@@ -46,7 +51,7 @@ prerelease: version all_platforms
 	git push github --tags
 
 darwin:
-	${ELECTRON_PACKAGER} . --overwrite --platform=darwin --arch=x64 --icon=${ICON_FILE} --prune=true --out=release-builds
+	${ELECTRON_PACKAGER} . --overwrite --platform=darwin --arch=x64 --icon=${ICON_FILE} --prune=true --out .
 
 purge:
 	rm ~/twitch-bot-cache/data.json
