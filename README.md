@@ -25,6 +25,10 @@ or
 The bot supports adding user defined commands which could be values like your
 Twitter profile URL or text files to show what music is currently being played.
 
+Some commands are builtin like `help`, `joke`, and `commands`. These can not be
+edited but can be disabled. The `joke` command can be configured further from
+the configure page to set the text file to use for jokes.
+
 ![Screenshot](Screenshots/screenshot.png)
 
 ## License
