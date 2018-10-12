@@ -52,8 +52,5 @@ prerelease: version all_platforms
 	githubrelease release ${REPOSITORY} create ${NEW_VERSION} --publish --name "Awesom-o ${NEW_VERSION}" "${DIST_DIR}/*"
 	git push github --tags
 
-darwin:
-	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} . --overwrite --platform=darwin --arch=x64 --icon=${ICON_FILE} --prune=true --out ${BUILD_DIR}
-
 purge:
 	rm ~/twitch-bot-cache/data.json
