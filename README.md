@@ -1,11 +1,13 @@
 # Awesom-o
 
-> Note: this is a work in progress, use at your own risk!
-
 A Twitch bot to receive chat messages as native notifications on macOS.
 
 This app was mostly built live on https://www.twitch.tv/ccscanf
 Hour long videos available on [YouTube](https://www.youtube.com/playlist?list=PL6ETvzpSGtt3XnmnBtmAldrpGA0lK6uAG)
+
+## Releases
+
+TODO: fill this out
 
 ## Running locally
 
