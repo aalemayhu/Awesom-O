@@ -7,7 +7,7 @@ INSTALLER_ICON_FILE ?=$(shell pwd)/assets/icons/png/48x48.png
 NEW_VERSION ?=$(shell git describe --tags --dirty)
 REPOSITORY ?=scanf/awesom-o
 BUILD_DIR ?=builds
-DIST_DIR ?=dist
+DIST_DIR ?=githubrelease
 IGNORE_STUFF ?="(\.git|${BUILD_DIR}|${DIST_DIR})"
 
 install_deps:
@@ -30,7 +30,7 @@ clean:
 version:
 	npm version -f ${NEW_VERSION}
 
-macOS: 
+mac%:
 	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --icon=${ICON_FILE} . Awesom-O --platform darwin --arch x64 --out ${BUILD_DIR}
 	${ELECTRON_INSTALLER_DMG} --icon=${INSTALLER_ICON_FILE} \
 	  --background=${BACKGROUND_FILE} ${BUILD_DIR}/Awesom-O-darwin-x64/Awesom-O.app/ ${BUILD_DIR}/Awesom-O
