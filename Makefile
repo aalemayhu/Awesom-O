@@ -41,7 +41,9 @@ all_platforms: clean linux windows macOS
 	zip -r -9 dist/Awesom-O-win32-x64.zip Awesom-O-win32-x64
 
 prerelease: version all_platforms
+	git push github master
 	githubrelease release ${REPOSITORY} create ${NEW_VERSION} --publish --name "Awesom-o ${NEW_VERSION}" "dist/*"
+	git push github --tags
 
 darwin:
 	${ELECTRON_PACKAGER} . --overwrite --platform=darwin --arch=x64 --icon=${ICON_FILE} --prune=true --out=release-builds
