@@ -1,9 +1,8 @@
 # Awesom-o
 
-A Twitch bot to receive chat messages as native notifications on macOS.
+A Twitch bot to receive chat messages as native notifications on your desktop.
 
-This app was mostly built live on [Twitch][c]. Hour long videos available on
-[YouTube][0].
+Built live on [Twitch][c]. Hour long videos available on [YouTube][0].
 
 ## Releases
 
