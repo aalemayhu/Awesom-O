@@ -9,7 +9,7 @@ Built live on [Twitch][c]. Hour long videos available on [YouTube][0].
 Builds for Windows, Linux and macOS are availble, please visit the [release
 page][1].
 
-## Running locally
+## Development
 
     make install_deps
     make run
