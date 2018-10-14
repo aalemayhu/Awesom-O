@@ -1,6 +1,7 @@
 body {
   padding: 10px;
   user-select: none;
+  -webkit-app-region: drag;
 }
 
 button {
