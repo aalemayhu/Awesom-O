@@ -1,12 +1,17 @@
 body {
   padding: 10px;
   user-select: none;
-  -webkit-app-region: drag;
+
 }
 
 button {
   padding: 5px;
   margin: 5px;
+}
+
+#app-version {
+  -webkit-app-region: drag;
+  height: 48px;
 }
 
 
