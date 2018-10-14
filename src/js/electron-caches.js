@@ -17,7 +17,7 @@ function createCacheDirectory () {
 
 function exampleCommands () {
   return [
-    { type: 'string', name: 'what', description: 'Print out the current project', value: 'Twitch bot', enabled: true },
+    { type: 'string', name: 'what', description: 'Print out the current project', value: '[S]uper [N]ot [A]wesome [K]nockout [E]agle - SNAKE https://github.com/scanf/snake', enabled: true },
     { type: 'string', name: 'when', description: 'Print stream schedule', value: 'From 5PM to roughly 7PM (GMT+2)', enabled: true },
     { type: 'string', name: 'github', description: 'Print GitHub profile URL', value: 'https://github.com/scanf', enabled: true },
     { type: 'string', name: 'gitlab', description: 'Print GitHub profile URL', value: 'https://gitlab.com/scanf', enabled: true },
