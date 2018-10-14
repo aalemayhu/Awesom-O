@@ -4,6 +4,8 @@ A Twitch bot to receive chat messages as native notifications on your desktop.
 
 Built live on [Twitch][c]. Hour long videos available on [YouTube][0].
 
+AppStore link coming soon.
+
 ## Releases
 
 Builds for Windows, Linux and macOS are available, please visit the [release
