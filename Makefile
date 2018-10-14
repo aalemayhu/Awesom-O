@@ -22,6 +22,7 @@ run:
 	electron .
 
 clean:
+	find . -name "*.DS_Store" -type f -delete
 	-rm -rvf ${DIST_DIR} 
 	-rm -rvf ${BUILD_DIR}
 	mkdir -pv ${DIST_DIR} 
