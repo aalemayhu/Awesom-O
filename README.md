@@ -31,6 +31,11 @@ Some commands are builtin like `help`, `joke`, and `commands`. These can not be
 edited but can be disabled. The `joke` command can be configured further from
 the configure page to set the text file to use for jokes.
 
+## Contributing
+
+Feel free to [open a issue][2] for feature request or discovered bugs.  If you
+have the time, make a [pull request][3].
+
 ![Screenshot](Screenshots/screenshot.png)
 
 ## License
@@ -40,3 +45,5 @@ the configure page to set the text file to use for jokes.
 [c]: https://www.twitch.tv/ccscanf
 [0]: https://www.youtube.com/playlist?list=PL6ETvzpSGtt3XnmnBtmAldrpGA0lK6uAG
 [1]: https://github.com/scanf/Awesom-o/releases
+[2]: https://github.com/scanf/Awesom-O/issues/new
+[3]: https://github.com/scanf/Awesom-O/compare
