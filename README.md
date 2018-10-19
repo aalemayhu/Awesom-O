@@ -44,6 +44,6 @@ the configure page to set the text file to use for jokes.
 
 [c]: https://www.twitch.tv/ccscanf
 [0]: https://www.youtube.com/playlist?list=PL6ETvzpSGtt3XnmnBtmAldrpGA0lK6uAG
-[1]: https://github.com/scanf/Awesom-o/releases
+[1]: https://github.com/scanf/Awesom-O/releases/latest
 [2]: https://github.com/scanf/Awesom-O/issues/new
 [3]: https://github.com/scanf/Awesom-O/compare
