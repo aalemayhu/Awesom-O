@@ -242,7 +242,7 @@ function addMenuItem () {
       role: 'help',
       submenu: [
         {
-          label: 'Contribute',
+          label: 'View on GitHub',
           click () { require('electron').shell.openExternal('https://github.com/scanf/awesom-o') }
         }
       ]
