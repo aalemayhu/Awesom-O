@@ -11,6 +11,13 @@ AppStore link coming soon.
 Builds for Windows, Linux and macOS are available, please visit the [release
 page][1].
 
+## Contributing
+
+Feel free to [open a issue][2] for feature request or discovered bugs.  If you
+have the time, make a [pull request][3].
+
+![Screenshot](Screenshots/screenshot.png)
+
 ## Development
 
     make install_deps
@@ -30,13 +37,6 @@ Twitter profile URL or text files to show what music is currently being played.
 Some commands are builtin like `help`, `joke`, and `commands`. These can not be
 edited but can be disabled. The `joke` command can be configured further from
 the configure page to set the text file to use for jokes.
-
-## Contributing
-
-Feel free to [open a issue][2] for feature request or discovered bugs.  If you
-have the time, make a [pull request][3].
-
-![Screenshot](Screenshots/screenshot.png)
 
 ## License
 
