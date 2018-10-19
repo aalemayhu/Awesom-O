@@ -1,6 +1,6 @@
 'use strict'
 
-const { dialog, app, BrowserWindow, ipcMain } = require('electron')
+const { Menu, dialog, app, BrowserWindow, ipcMain } = require('electron')
 const { fsCache } = require('./src/js/electron-caches.js')
 const fs = require('fs')
 const Chatbot = require('./src/js/chatbot.js')
@@ -223,7 +223,61 @@ function addStandupReminder () {
   }, 60000)
 }
 
+function addMenuItem () {
+  const template = [
+    {
+      label: 'View',
+      submenu: [
+        { role: 'togglefullscreen' }
+      ]
+    },
+    {
+      role: 'window',
+      submenu: [
+        { role: 'minimize' },
+        { role: 'close' }
+      ]
+    },
+    {
+      role: 'help',
+      submenu: [
+        {
+          label: 'Contribute',
+          click () { require('electron').shell.openExternal('https://github.com/scanf/awesom-o') }
+        }
+      ]
+    }
+  ]
+
+  if (process.platform === 'darwin') {
+    template.unshift({
+      label: app.getName(),
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    })
+
+    // Window menu
+    template[3].submenu = [
+      { role: 'close' },
+      { role: 'minimize' },
+      { role: 'zoom' },
+      { type: 'separator' },
+      { role: 'front' }
+    ]
+  }
+
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
+}
+
 function configure () {
+  addMenuItem()
   addStandupReminder()
   if (!isValid(global.config)) {
     mainWindow.webContents.send('view', 'configuration.html')
