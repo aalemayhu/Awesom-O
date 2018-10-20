@@ -357,7 +357,7 @@ ipcMain.on('save-command', (event, cmd) => {
 
 ipcMain.on('selected-command', (event, cmd) => {
   global.selectedCommand = cmd
-  mainWindow.webContents.send('view', 'new-command.html')
+  mainWindow.webContents.send('view', 'command-detailview.html')
 })
 
 ipcMain.on('save-configuration', (event, config) => {

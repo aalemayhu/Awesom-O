@@ -15,6 +15,8 @@ function renderConfigure () {
   $('#channel-greet-user').prop('checked', c.shouldGreetUser)
   $('#channel-jokes-file').val(c.jokesFilePath)
 
+  $('#configuration-page-title').css('padding', '16px 8px 0px 0px')
+
   $('#new-configuration-submit').click(function () {
     var c = {
       name: $('#channel-name').val().toLowerCase(),
@@ -55,14 +57,6 @@ function renderConfigure () {
 
   $('#import-configuration-button').click(function () {
     ipcRenderer.send('import-command', '')
-  })
-
-  $('#test-notification').click(function () {
-    console.log('testing notification')
-    remote.getCurrentWindow().webContents.send('display-notification', {
-      title: 'The title',
-      body: 'The body'
-    })
   })
 
   $('#channel-jokes-file').click(function () {

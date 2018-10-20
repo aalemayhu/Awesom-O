@@ -6,16 +6,16 @@
 const { remote, ipcRenderer } = require('electron')
 const { renderCommands } = require('./src/js/views/commands.js')
 const { renderConfigure } = require('./src/js/views/configuration.js')
-const { renderNewCommand } = require('./src/js/views/new-command.js')
+const { renderNewCommand } = require('./src/js/views/command-detailview.js')
 var $ = require('jQuery')
 const { version } = require('./package.json')
 const notifier = require('node-notifier')
 const path = require('path')
 
 // Set the app version in the UI
-let title = $('#app-version')
-title.text(`Awesom-O v${version}`)
-title.css('text-align', 'center')
+$('#app-version').text(`${version}`)
+$('#app-header').css('text-align', 'center')
+$('#app-header').css('color', 'gray')
 
 // This is required for the initial load of the index.html file
 $('#container').load('../../src/pages/commands.html', function () {
@@ -29,8 +29,8 @@ function pickViewToRender (view) {
       renderCommands()
       updateHeight()
     })
-  } else if (view.endsWith('new-command.html')) {
-    $('#container').load('../../src/pages/new-command.html', function () {
+  } else if (view.endsWith('command-detailview.html')) {
+    $('#container').load('../../src/pages/command-detailview.html', function () {
       renderNewCommand(renderCommands)
       updateHeight()
     })

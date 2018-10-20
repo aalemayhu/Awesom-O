@@ -1,7 +1,6 @@
 body {
   padding: 10px;
   user-select: none;
-
 }
 
 button {
@@ -9,7 +8,7 @@ button {
   margin: 5px;
 }
 
-#app-version {
+#app-header {
   -webkit-app-region: drag;
   height: 48px;
 }

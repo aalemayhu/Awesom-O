@@ -1,8 +1,6 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
-const { renderConfigure } = require('./configuration.js')
-const { renderNewCommand } = require('./new-command.js')
 
 var $ = require('jQuery')
 
@@ -26,7 +24,8 @@ function renderCommands () {
     enabledTD.css('text-align', 'center')
     let checkBox = $(`<input type="checkbox">`)
     checkBox.attr('checked', c.enabled)
-    checkBox.click(function () {
+    checkBox.click(function (e) {
+      e.stopPropagation()
       c.enabled = !c.enabled
       ipcRenderer.send('save-command', c)
     })
@@ -71,8 +70,8 @@ function renderCommands () {
     }
   })
 
-  $('#new-command-button').click(function () {
-    remote.getCurrentWindow().webContents.send('view', 'new-command.html')
+  $('#command-detailview-button').click(function () {
+    remote.getCurrentWindow().webContents.send('view', 'command-detailview.html')
   })
 
   $('#configuration-button').click(function () {
