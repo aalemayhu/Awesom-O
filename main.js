@@ -162,8 +162,13 @@ function handle (cmd, target, context, params) {
     if (cmd.type.toLowerCase() === 'string') {
       sendMessage(target, context, cmd.value)
     } else if (cmd && cmd.type.toLowerCase() === 'file') {
-      let msg = fs.readFileSync(cmd.value, 'utf-8')
-      chatClient.say(target, msg)
+      try {
+        let msg = fs.readFileSync(cmd.value, 'utf-8')
+        chatClient.say(target, msg)
+      } catch (e) {
+        // TODO: write the error into the event log
+        sendMessage(target, context, `Sorry, ${cmd.name} not configured yet.`)
+      }
     }
   }
 }
