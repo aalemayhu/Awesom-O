@@ -4,6 +4,7 @@ const { Menu, dialog, app, BrowserWindow, ipcMain } = require('electron')
 const { fsCache } = require('./src/js/electron-caches.js')
 const fs = require('fs')
 const Chatbot = require('./src/js/chatbot.js')
+// const { COMMAND_TYPES } = require('./src/js/model/command_types.js')
 
 var dateFormat = require('dateformat')
 var path = require('path')
@@ -138,6 +139,17 @@ function onMessageHandler (target, context, msg, self) {
     return
   }
 
+  if (cmd.type !== 'alias') {
+    handle(cmd, target, context, params)
+  } else {
+    handleAliasCommand(cmd, target, context, params)
+  }
+  console.log(`* Executed ${commandName} command for ${context.username}`)
+}
+
+function handle (cmd, target, context, params) {
+  console.log('handling ', cmd, target, context, params)
+  const commandName = cmd.name
   // Handle the builtin commands
   if (commandName in builtinCommands) {
     const commandHandler = builtinCommands[commandName]
@@ -145,15 +157,33 @@ function onMessageHandler (target, context, msg, self) {
       commandHandler(target, context, params)
     }
   } else {
+    // TODO: use the COMMAND_TYPES enum
     // Handle the user defined commands
-    if (cmd && cmd.type === 'string') {
+    if (cmd.type.toLowerCase() === 'string') {
       sendMessage(target, context, cmd.value)
-    } else if (cmd && cmd.type === 'file') {
+    } else if (cmd && cmd.type.toLowerCase() === 'file') {
       let msg = fs.readFileSync(cmd.value, 'utf-8')
       chatClient.say(target, msg)
     }
   }
-  console.log(`* Executed ${commandName} command for ${context.username}`)
+}
+
+function handleAliasCommand (aliasCmd, target, context, params) {
+  // TODO: don't assume the commands are split via comma
+  let commands = aliasCmd.value.split(',')
+  let msg = commands.map(commandName => {
+    let cmd = global.commands.find(function (e) {
+      if (e.name.toLowerCase() === commandName.trim().toLowerCase()) {
+        return e
+      }
+    })
+    // TODO: support other command types in the alias. Disabled for now due to IRC
+    // throttling
+    if (cmd.type === 'string') {
+      return `[${cmd.name}: ${cmd.value}]`
+    }
+  }).join(',')
+  chatClient.say(target, msg)
 }
 
 function onJoinHandler (channel, username, self) {

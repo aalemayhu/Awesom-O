@@ -1,6 +1,7 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
+const { COMMAND_TYPES } = require('../model/command_types.js')
 var $ = require('jQuery')
 
 function renderNewCommand () {
@@ -24,7 +25,7 @@ function renderNewCommand () {
       $('#command-description').prop('readonly', true)
       $('#command-detailview-delete').hide()
     } else {
-      document.querySelector('.custom-select').selectedIndex = cmd.type === 'string' ? 0 : 1
+      document.querySelector('.custom-select').selectedIndex = COMMAND_TYPES[cmd.type]
       $('#command-value').val(cmd.value)
     }
   } else {
