@@ -1,7 +1,7 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
-const { COMMAND_TYPES } = require('../model/command_types.js')
+const { types, isBuiltin } = require('../commands/types.js')
 var $ = require('jQuery')
 
 function renderNewCommand () {
@@ -18,14 +18,14 @@ function renderNewCommand () {
     $('#command-name').val(cmd.name.replace(remote.getGlobal('config').prefix, ''))
     $('#command-description').val(cmd.description)
 
-    if (cmd.type === 'builtin') {
+    if (isBuiltin(cmd)) {
       $('#form-group-command-value').remove()
       $('#form-group-command-type').remove()
       $('#command-name').prop('readonly', true)
       $('#command-description').prop('readonly', true)
       $('#command-detailview-delete').hide()
     } else {
-      document.querySelector('.custom-select').selectedIndex = COMMAND_TYPES[cmd.type]
+      document.querySelector('.custom-select').selectedIndex = types[cmd.type]
       $('#command-value').val(cmd.value)
     }
   } else {
