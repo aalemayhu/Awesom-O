@@ -21,6 +21,7 @@ button {
   padding: 14px 28px;
   font-size: 16px;
   cursor: pointer;
+  border-radius: 9px;
 }
 
 .btn-success {
