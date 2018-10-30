@@ -1,8 +1,7 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
-
-var $ = require('jQuery')
+var $ = require('jquery')
 
 function renderConfigure () {
   let c = remote.getGlobal('config')

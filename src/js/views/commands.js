@@ -1,8 +1,10 @@
 'use strict'
 
 const { colorsFor } = require('./../util/colour_palettes.js')
+const { renderConfigure } = require('./configuration.js')
+const { renderNewCommand } = require('./new-command.js')
 const { remote, ipcRenderer } = require('electron')
-var $ = require('jQuery')
+var $ = require('jquery')
 
 function renderCommands () {
   const paletteName = remote.getGlobal('config').colourPalette

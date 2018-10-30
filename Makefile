@@ -1,6 +1,7 @@
 ELECTRON_PACKAGER ?=electron-packager
 ELECTRON_INSTALLER_DMG ?=electron-installer-dmg
 ELECTRON_INSTALLER_DEBIAN ?=electron-installer-debian
+ELECTRON_BUILDER ?=electron-builder
 BACKGROUND_FILE ?=$(shell pwd)/assets/background.png
 ICON_FILE ?=$(shell pwd)/assets/icons/mac/icon.icns
 INSTALLER_ICON_FILE ?=$(shell pwd)/assets/icons/png/48x48.png
@@ -12,9 +13,9 @@ IGNORE_STUFF ?="(\.git|${BUILD_DIR}|${DIST_DIR})"
 
 install_deps:
 	# Install the package helpers
-	sudo npm install -g ${ELECTRON_PACKAGER} ${ELECTRON_INSTALLER_DMG} ${ELECTRON_INSTALLER_DEBIAN}
+	sudo npm install -g ${ELECTRON_PACKAGER} ${ELECTRON_INSTALLER_DMG} ${ELECTRON_INSTALLER_DEBIAN} ${ELECTRON_BUILDER}
 	# Install tool for uploading release binaries to GitHub
-	pip install githubrelease
+	pip install githubrelease setuptools
 	# Install all of the app dependencies
 	npm install .
 
@@ -39,6 +40,11 @@ mac%:
 linux: 
 	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} . Awesom-O --platform linux --arch x64 --out ${BUILD_DIR}
 	${ELECTRON_INSTALLER_DEBIAN} --src ${BUILD_DIR}/Awesom-O-linux-x64/ --dest ${BUILD_DIR} --arch amd64
+
+
+appimage:
+	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} . Awesom-O --platform linux --arch x64 --out ${BUILD_DIR}
+	${ELECTRON_BUILDER} -l AppImage
 
 windows: 
 	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} . Awesom-O --platform win32 --arch x64 --out ${BUILD_DIR}

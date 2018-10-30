@@ -8,7 +8,7 @@ const { remote, ipcRenderer } = require('electron')
 const { version } = require('./package.json')
 const notifier = require('node-notifier')
 const path = require('path')
-var $ = require('jQuery')
+var $ = require('jquery')
 
 // Set the app version in the UI
 $('#app-version').text(`${version}`)
