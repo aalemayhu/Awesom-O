@@ -1,8 +1,6 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
-const path = require('path')
-const { valueForPalette } = require(path.join(__dirname, '../util/colour_palettes.js'))
 
 var $ = require('jQuery')
 

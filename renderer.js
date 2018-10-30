@@ -1,16 +1,14 @@
 'use strict'
 
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
-const { remote, ipcRenderer } = require('electron')
-const { renderCommands } = require('./src/js/views/commands.js')
-const { renderConfigure } = require('./src/js/views/configuration.js')
 const { renderNewCommand } = require('./src/js/views/command-detailview.js')
-var $ = require('jQuery')
+const { renderConfigure } = require('./src/js/views/configuration.js')
+const { colorsFor } = require('./src/js/util/colour_palettes.js')
+const { renderCommands } = require('./src/js/views/commands.js')
+const { remote, ipcRenderer } = require('electron')
 const { version } = require('./package.json')
 const notifier = require('node-notifier')
 const path = require('path')
+var $ = require('jQuery')
 
 // Set the app version in the UI
 $('#app-version').text(`${version}`)
@@ -20,33 +18,47 @@ $('#app-header').css('color', 'gray')
 // This is required for the initial load of the index.html file
 $('#container').load('../../src/pages/commands.html', function () {
   renderCommands()
-  updateHeight()
+  updateView('commands.html')
 })
 
 function pickViewToRender (view) {
   if (view.endsWith('commands.html')) {
     $('#container').load('../../src/pages/commands.html', function () {
       renderCommands()
-      updateHeight()
+      updateView(view)
     })
   } else if (view.endsWith('command-detailview.html')) {
     $('#container').load('../../src/pages/command-detailview.html', function () {
       renderNewCommand(renderCommands)
-      updateHeight()
+      updateView(view)
     })
   } else if (view.endsWith('configuration.html')) {
     $('#container').load('../../src/pages/configuration.html', function () {
       renderConfigure()
-      updateHeight()
+      updateView(view)
     })
   }
 }
 
-function updateHeight () {
+function updateView (view) {
+  // Load the colour palette
+  const paletteName = remote.getGlobal('config').colourPalette
+  const colors = colorsFor(paletteName)
+  const b = $('body')
+
+  if (view.endsWith('commands.html')) {
+    $('#commands-table').css('background', colors.background)
+    $('#commands-table').css('color', colors.text)
+  }
+
+  b.css('background', colors.background)
+
   // Set the default minimum height
   var height = 0
-  $.each($('body').children(), function (i, v) {
+  $.each(b.children(), function (i, v) {
     height += $(v).outerHeight(true)
+    $(v).css('background', colors.background)
+    $(v).css('color', colors.text)
   })
   console.log(height)
   ipcRenderer.send('set-height', ~~(height * 1.1))
