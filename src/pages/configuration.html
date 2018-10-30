@@ -31,43 +31,44 @@
     </div>
 
     <div class="form-group">
-      <label for="colour-palette">Colour palette</label>
-      <div class="dropdown">
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
-        <a class="dropdown-item" href="#">Something else here</a>
-      </div>
-      </div>
+      <label for="colour-palette-select">Colour palette</label>
+      <select id="colour-palette-select">
+        <option value="black">Black</option>
+        <option value="hipster">A hipsters summer night dream</option>
+        <option value="macish">Macish</option>
+        <option value="<><">&lt;&gt;&lt;</option>
+        <option value="[robot]">[robot]</option>
+      </select>
     </div>
   </div>
-  <div class="p-2 bd-highlight">
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="channel-autoconnect">
-      <label class="form-check-label" for="channel-autoconnect">Autoconnect</label>
+</div>
+<div class="p-2 bd-highlight">
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="channel-autoconnect">
+    <label class="form-check-label" for="channel-autoconnect">Autoconnect</label>
+  </div>
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="channel-notifications">
+    <label class="form-check-label" for="channel-notifications">Silent</label>
+  </div>
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="channel-notification-break">
+    <label class="form-check-label" for="channel-notification-break">Stand up reminder</label>
+  </div>
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" id="channel-greet-user">
+    <label class="form-check-label" for="channel-greet-user">Should greet users</label>
+  </div>
+</div>
+<div class="p-2 bd-highlight">
+  <br />
+  <div class="row text-center">
+    <div class="col-6">
+      <button id="new-configuration-cancel" class="btn btn-secondary btn-md btn-block btn-lg">Cancel</button>
     </div>
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="channel-notifications">
-      <label class="form-check-label" for="channel-notifications">Silent</label>
-    </div>
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="channel-notification-break">
-      <label class="form-check-label" for="channel-notification-break">Stand up reminder</label>
-    </div>
-    <div class="form-check">
-      <input type="checkbox" class="form-check-input" id="channel-greet-user">
-      <label class="form-check-label" for="channel-greet-user">Should greet users</label>
+    <div class="col-6">
+      <button id="new-configuration-submit" type="submit" class="btn btn-success btn-lg btn-block">Save</button>
     </div>
   </div>
-  <div class="p-2 bd-highlight">
-    <br />
-    <div class="row text-center">
-      <div class="col-6">
-        <button id="new-configuration-cancel" class="btn btn-secondary btn-md btn-block btn-lg">Cancel</button>
-      </div>
-      <div class="col-6">
-        <button id="new-configuration-submit" type="submit" class="btn btn-success btn-lg btn-block">Save</button>
-      </div>
-    </div>
-  </div>
+</div>
 </div>

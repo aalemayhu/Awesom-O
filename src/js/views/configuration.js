@@ -1,6 +1,9 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
+const path = require('path')
+const { valueForPalette } = require(path.join(__dirname, '../util/colour_palettes.js'))
+
 var $ = require('jQuery')
 
 function renderConfigure () {
@@ -14,6 +17,7 @@ function renderConfigure () {
   $('#channel-notification-break').prop('checked', c.standupReminder)
   $('#channel-greet-user').prop('checked', c.shouldGreetUser)
   $('#channel-jokes-file').val(c.jokesFilePath)
+  $('#colour-palette-select').val(c.colourPalette)
 
   $('#configuration-page-title').css('padding', '16px 8px 0px 0px')
 
@@ -27,7 +31,8 @@ function renderConfigure () {
       silent: $('#channel-notifications').is(':checked'),
       standupReminder: $('#channel-notification-break').is(':checked'),
       shouldGreetUser: $('#channel-greet-user').is(':checked'),
-      jokesFilePath: $('#channel-jokes-file').val()
+      jokesFilePath: $('#channel-jokes-file').val(),
+      colourPalette: $('#colour-palette-select option:selected').val()
     }
 
     if (!c.name) {
