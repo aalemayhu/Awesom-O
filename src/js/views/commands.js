@@ -4,7 +4,7 @@ const { remote, ipcRenderer } = require('electron')
 const { renderConfigure } = require('./configuration.js')
 const { renderNewCommand } = require('./new-command.js')
 
-var $ = require('jQuery')
+var $ = require('jquery')
 
 function renderCommands () {
   // Get the table

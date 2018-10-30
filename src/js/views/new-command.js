@@ -1,7 +1,7 @@
 'use strict'
 
 const { remote, ipcRenderer } = require('electron')
-var $ = require('jQuery')
+var $ = require('jquery')
 
 function renderNewCommand () {
   let selectedCommand = remote.getGlobal('selectedCommand')
