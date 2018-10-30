@@ -1,7 +1,7 @@
 'use strict'
 
 const { Menu, dialog, app, BrowserWindow, ipcMain } = require('electron')
-const { fsCache, CACHE_DIRECTORY } = require('./src/js/util/electron-caches.js')
+const { fsCache, LOG_DIRECTORY } = require('./src/js/util/electron-caches.js')
 const { LogHelper } = require('./src/js/util/log_helper.js')
 const fs = require('fs')
 const Chatbot = require('./src/js/chatbot.js')
@@ -14,7 +14,7 @@ let mainWindow
 let clientId = 'tutlj043hnk4iyttxwj1gvoicguhta'
 let chatClient
 let builtinCommands = { echo, help, commands, joke }
-let logger = new LogHelper(CACHE_DIRECTORY)
+let logger = new LogHelper(LOG_DIRECTORY)
 
 function defaultWindowState () {
   var state = { x: 0, y: 0, width: 640, height: 320 }
