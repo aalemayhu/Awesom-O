@@ -6,12 +6,12 @@ const path = require('path')
 const request = require('request')
 
 const directory = app.getPath('home') // /home folder on OS X
-const cacheDirectory = `${directory}/twitch-bot-cache` // /home/twitch-bot-cache/
-const cacheDataFile = `${cacheDirectory}/data.json` // /home/twitch-bot-cache/data.json
+const CACHE_DIRECTORY = `${directory}/twitch-bot-cache` // /home/twitch-bot-cache/
+const cacheDataFile = `${CACHE_DIRECTORY}/data.json` // /home/twitch-bot-cache/data.json
 
 function createCacheDirectory () {
-  if (fs.existsSync(cacheDirectory) === false) {
-    fs.mkdirSync(cacheDirectory)
+  if (fs.existsSync(CACHE_DIRECTORY) === false) {
+    fs.mkdirSync(CACHE_DIRECTORY)
   }
 }
 
@@ -36,7 +36,7 @@ function exampleCommands () {
 
 const fsCache = {
   config () {
-    let data = this.readAll(`${cacheDirectory}/secret.json`)
+    let data = this.readAll(`${CACHE_DIRECTORY}/secret.json`)
     var config = {}
 
     if (data && data.config) {
@@ -74,7 +74,7 @@ const fsCache = {
     return config
   },
   commands () {
-    let data = this.readAll(`${cacheDirectory}/data.json`)
+    let data = this.readAll(`${CACHE_DIRECTORY}/data.json`)
     var commands = []
     if (data && data.commands !== undefined) {
       commands = data.commands
@@ -88,11 +88,11 @@ const fsCache = {
   },
   saveConfig (data) {
     createCacheDirectory()
-    fs.writeFileSync(`${cacheDirectory}/secret.json`, JSON.stringify(data, null, 2))
+    fs.writeFileSync(`${CACHE_DIRECTORY}/secret.json`, JSON.stringify(data, null, 2))
   },
   save (name, value) {
     createCacheDirectory()
-    let newData = this.readAll(`${cacheDirectory}/data.json`)
+    let newData = this.readAll(`${CACHE_DIRECTORY}/data.json`)
     newData[name] = value
     fs.writeFileSync(cacheDataFile, JSON.stringify(newData, null, 2))
   },
@@ -116,17 +116,18 @@ const fsCache = {
   },
   hasImage (url) {
     let imageName = url.slice(url.lastIndexOf('/') + 1)
-    let imagePath = path.join(cacheDirectory, imageName)
+    let imagePath = path.join(CACHE_DIRECTORY, imageName)
     return fs.existsSync(imagePath)
   },
   saveImage (url) {
     let imageName = url.slice(url.lastIndexOf('/') + 1)
-    let imagePath = path.join(cacheDirectory, imageName)
+    let imagePath = path.join(CACHE_DIRECTORY, imageName)
     request(url).pipe(fs.createWriteStream(imagePath))
     return imagePath
   }
 }
 
 module.exports = {
-  fsCache
+  fsCache,
+  CACHE_DIRECTORY
 }
