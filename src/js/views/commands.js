@@ -1,17 +1,12 @@
 'use strict'
 
+const { colorsFor } = require('./../util/colour_palettes.js')
 const { remote, ipcRenderer } = require('electron')
-
 var $ = require('jQuery')
 
 function renderCommands () {
-  // Get the table
-  var table = document.getElementById('commands-table')
-  var rowCount = table.rows.length
-  // For now just clear out the table
-  for (var i = 1; i < rowCount; i++) {
-    table.deleteRow(1)
-  }
+  const paletteName = remote.getGlobal('config').colourPalette
+  const colors = colorsFor(paletteName)
 
   let prefix = remote.getGlobal('config').prefix
   var commands = remote.getGlobal('commands')
@@ -44,10 +39,10 @@ function renderCommands () {
       ipcRenderer.send('selected-command', c.name)
     })
     tr.mouseenter(function () {
-      tr.css('color', 'green')
+      tr.css('color', colors.button)
     })
     tr.mouseleave(function () {
-      tr.css('color', 'white')
+      tr.css('color', colors.text)
     })
   }
 

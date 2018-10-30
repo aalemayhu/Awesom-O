@@ -1,8 +1,8 @@
-const black = { background: 'black', text: 'white', button: 'green' }
-const hipster = { background: 'blue', text: 'white', button: 'white' }
-const macish = { background: 'white', text: 'black', button: 'gray' }
+const black = { background: '#1F2125', text: 'white', button: 'green' }
+const hipster = { background: 'blue', text: 'white', button: 'green' }
+const macish = { background: 'white', text: 'black', button: 'lightgray' }
 const fish = { background: 'green', text: 'white', button: 'blue' }
-const robot = { background: 'gray', text: 'blue', button: 'gray' }
+const robot = { background: 'lightgray', text: 'blue', button: 'purple' }
 
 function colorsFor (name) {
   if (!name) { return black }
