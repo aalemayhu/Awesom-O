@@ -38,7 +38,7 @@ macOS:
 
 linux: 
 	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} . Awesom-O --platform linux --arch x64 --out ${BUILD_DIR}
-	${ELECTRON_BUILDER} --src ${BUILD_DIR}/Awesom-O-linux-x64/ --dest ${BUILD_DIR} --arch amd64
+	${ELECTRON_INSTALLER_DEBIAN} --src ${BUILD_DIR}/Awesom-O-linux-x64/ --dest ${BUILD_DIR} --arch amd64
 
 
 appimage:
