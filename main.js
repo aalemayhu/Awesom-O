@@ -13,7 +13,7 @@ var path = require('path')
 let mainWindow
 let clientId = 'tutlj043hnk4iyttxwj1gvoicguhta'
 let chatClient
-let builtinCommands = { echo, help, commands, joke }
+let runner
 let logger = new LogHelper(LOG_DIRECTORY)
 
 function defaultWindowState () {
@@ -104,9 +104,7 @@ function onMessageHandler (target, context, msg, self) {
     }
   })
 
-  // This isn't a command since it has no prefix:
-  if (msg.substr(0, 1) !== global.config.prefix &&
-  context.username !== global.config.name.replace('#', '')) {
+  runner.parse(target, context, msg, () => {
     logger.info(`[${target} (${context['message-type']})] ${context.username}: ${msg}`)
     mainWindow.webContents.send('display-notification', {
       title: `Message from @${context.username}`,
@@ -114,67 +112,6 @@ function onMessageHandler (target, context, msg, self) {
       icon: global.config.avatars[context.username]
     })
   })
-
-  if (!cmd) {
-    logger.info(`* Unknown command ${commandName} from ${context.username}`)
-    return
-  }
-
-  if (cmd.enabled === false) {
-    chatClient.say(target, `${global.config.prefix}${commandName} is disabled`)
-    return
-  }
-
-  if (cmd.type !== 'alias') {
-    handle(cmd, target, context, params)
-  } else {
-    handleAliasCommand(cmd, target, context, params)
-  }
-  logger.info(`* Executed ${commandName} command for ${context.username}`)
-}
-
-function handle (cmd, target, context, params) {
-  logger.info('handling ', cmd, target, context, params)
-  const commandName = cmd.name
-  // Handle the builtin commands
-  if (commandName in builtinCommands) {
-    const commandHandler = builtinCommands[commandName]
-    if (commandHandler) {
-      commandHandler(target, context, params)
-    }
-  } else {
-    // TODO: use the COMMAND_TYPES enum
-    // Handle the user defined commands
-    if (cmd.type.toLowerCase() === 'string') {
-      sendMessage(target, context, cmd.value)
-    } else if (cmd && cmd.type.toLowerCase() === 'file') {
-      try {
-        let msg = fs.readFileSync(cmd.value, 'utf-8')
-        chatClient.say(target, msg)
-      } catch (e) {
-        // TODO: write the error into the event log
-        sendMessage(target, context, `Sorry, ${cmd.name} not configured yet.`)
-      }
-    }
-  }
-}
-
-function handleAliasCommand (aliasCmd, target, context, params) {
-  // TODO: don't assume the commands are split via comma
-  let commands = aliasCmd.value.split(',')
-  let msg = commands.map(commandName => {
-    let cmd = global.commands.find(function (e) {
-      if (e.name.toLowerCase() === commandName.trim().toLowerCase()) {
-        return e
-      }
-    })
-    // TODO: support other command types in the alias. Disabled for now due to IRC
-    // throttling
-    if (cmd.type === 'string') {
-      return `[${cmd.name}: ${cmd.value}]`
-    }
-  }).join(',')
-  chatClient.say(target, msg)
 }
 
 function onJoinHandler (channel, username, self) {
@@ -488,80 +425,3 @@ ipcMain.on('delete-command', (event, cmdName) => {
   }
   global.selectedCommand = null
 })
-
-// Commands
-
-// Function called when the "echo" command is issued:
-function echo (target, context, params) {
-  logger.info('echo(...)')
-  // If there's something to echo:
-  if (params.length) {
-    // Join the params into a string:
-    const msg = params.join(' ')
-    // Send it back to the correct place:
-    sendMessage(target, context, msg)
-  } else { // Nothing to echo
-    logger.info(`* Nothing to echo`)
-  }
-}
-
-// Helper function for getting random number
-function getRandomInt (min, max) {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  let date = new Date()
-  let seed = date.getMonth() + date.getFullYear() + date.getMinutes() + date.getMilliseconds() + date.getSeconds()
-  return Math.floor(Math.random(seed) * (max - min)) + min
-}
-
-// Function called when the "joke" command is issued:
-function joke (target, context, params) {
-  if (!global.config.jokesFilePath) {
-    sendMessage(target, context, 'Sorry, jokes not configured yet.')
-    return
-  }
-  let msg = fs.readFileSync(global.config.jokesFilePath, 'utf-8')
-  let jokes = msg.split('\n')
-  let index = getRandomInt(0, jokes.length - 1)
-  sendMessage(target, context, jokes[index])
-}
-
-// Function called when the "commands" command is issued:
-function commands (target, context, params) {
-  var msg = ''
-  let c = global.commands
-  for (var k in c) {
-    let cmd = c[k]
-    if (cmd.enabled) {
-      msg += `${global.config.prefix}${cmd.name} `
-    }
-  }
-  sendMessage(target, context, msg)
-}
-
-// Function called when the "help" command is issued:
-function help (target, context, params) {
-  if (params.length) {
-    const msg = params.join(' ')
-    let c = global.commands
-    for (var k in c) {
-      let cmd = c[k]
-      if (cmd.name !== msg) {
-        continue
-      }
-      sendMessage(target, context, `'${global.config.prefix}${cmd.name} - ${cmd.description}`)
-      break
-    }
-  } else {
-    sendMessage(target, context, `USAGE: ${global.config.prefix}help cmd (without ${global.config.prefix})`)
-  }
-}
-
-// Helper function to send the correct type of message:
-function sendMessage (target, context, message) {
-  if (context['message-type'] === 'whisper') {
-    chatClient.whisper(target, message)
-  } else {
-    chatClient.say(target, message)
-  }
-}
