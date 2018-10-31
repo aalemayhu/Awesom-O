@@ -49,7 +49,8 @@ appimage:
 windows: 
 	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} . Awesom-O --platform win32 --arch x64 --out ${BUILD_DIR}
 
-all_platforms: clean linux windows macOS
+all_platforms: clean linux windows macOS appimage
+	zip -9 ${DIST_DIR}/Awesom-O-${NEW_VERSION}-x86_64.AppImage.zip dist/Awesom-O-${NEW_VERSION}-x86_64.AppImage
 	zip -9 ${DIST_DIR}/Awesom-O_${NEW_VERSION}_amd64.deb.zip ${BUILD_DIR}/Awesom-O_${NEW_VERSION}_amd64.deb
 	zip -9 ${DIST_DIR}/Awesom-O.dmg.zip ${BUILD_DIR}/Awesom-O.dmg
 	zip -r -9 ${DIST_DIR}/Awesom-O-win32-x64.zip ${BUILD_DIR}/Awesom-O-win32-x64
