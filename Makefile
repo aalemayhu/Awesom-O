@@ -5,7 +5,8 @@ ELECTRON_INSTALLER_DEBIAN ?=electron-installer-debian
 ELECTRON_BUILDER ?=electron-builder
 BACKGROUND_FILE ?=$(shell pwd)/assets/background.png
 MAC_ICON_FILE ?=$(shell pwd)/assets/icons/mac/icon.icns
-ICON_FILE ?=$(shell pwd)/assets/icons/png/64x64.png
+LINUX_ICON_FILE ?=$(shell pwd)/assets/icons/png/512x512.png
+WINDOWS_ICON_FILE ?=assets/icons/win/icon.ico
 INSTALLER_MAC_ICON_FILE ?=$(shell pwd)/assets/icons/png/48x48.png
 NEW_VERSION ?=$(shell git describe --tags --dirty)
 REPOSITORY ?=scanf/awesom-o
@@ -40,7 +41,7 @@ mac%:
 	  --background=${BACKGROUND_FILE} ${BUILD_DIR}/Awesom-O-darwin-x64/Awesom-O.app/ ${BUILD_DIR}/Awesom-O
 
 linux: 
-	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --icon=${ICON_FILE} . Awesom-O --platform linux --arch x64 --out ${BUILD_DIR}
+	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --icon=${LINUX_ICON_FILE} . Awesom-O --platform linux --arch x64 --out ${BUILD_DIR}
 	${ELECTRON_INSTALLER_DEBIAN} --src ${BUILD_DIR}/Awesom-O-linux-x64/ --dest ${BUILD_DIR} --arch amd64
 
 
@@ -49,7 +50,7 @@ appimage:
 	${ELECTRON_BUILDER} -l AppImage
 
 windows: 
-	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --icon=${ICON_FILE} . Awesom-O --platform win32 --arch x64 --out ${BUILD_DIR}
+	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --icon=${WINDOWS_ICON_FILE} . Awesom-O --platform win32 --arch x64 --out ${BUILD_DIR}
 
 all_platforms: clean linux windows macOS appimage
 	zip -9 -j ${DIST_DIR}/Awesom-O-${NEW_VERSION}-x86_64.AppImage.zip dist/Awesom-O-${NEW_VERSION}-x86_64.AppImage
