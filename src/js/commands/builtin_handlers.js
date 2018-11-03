@@ -37,10 +37,18 @@ function joke (target, context, params, sendMessage) {
     sendMessage(target, context, 'Sorry, jokes not configured yet.')
     return
   }
-  let msg = fs.readFileSync(global.config.jokesFilePath, 'utf-8')
-  let jokes = msg.split('\n')
-  let index = getRandomInt(0, jokes.length - 1)
-  sendMessage(target, context, jokes[index])
+
+  // In the unlikely case user has deleted the joke file, handle the not found
+  // exception.
+  const jokesFilePath = global.config.jokesFilePath ;
+  try {
+    let msg = fs.readFileSync(jokesFilePath, 'utf-8')
+    let jokes = msg.split('\n')
+    let index = getRandomInt(0, jokes.length - 1)
+    sendMessage(target, context, jokes[index])
+  } catch (e) {
+    sendMessage(target, context, `Sorry, issues reading the joke file (${jokesFilePath}) error (${e})`)
+  }
 }
 
 // Function called when the "commands" command is issued:
