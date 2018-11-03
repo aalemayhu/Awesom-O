@@ -36,21 +36,25 @@ version:
 	npm version -f ${NEW_VERSION}
 
 mac%:
-	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --icon=${MAC_ICON_FILE} . Awesom-O --platform darwin --arch x64 --out ${BUILD_DIR}
+	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --overwrite --asar --prune=true \
+	  --icon=${MAC_ICON_FILE} . Awesom-O --platform darwin --arch x64 --out ${BUILD_DIR}
 	${ELECTRON_INSTALLER_DMG} --icon=${INSTALLER_MAC_ICON_FILE} \
 	  --background=${BACKGROUND_FILE} ${BUILD_DIR}/Awesom-O-darwin-x64/Awesom-O.app/ ${BUILD_DIR}/Awesom-O
 
 linux: 
-	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --icon=${LINUX_ICON_FILE} . Awesom-O --platform linux --arch x64 --out ${BUILD_DIR}
+	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --overwrite --asar --prune=true \
+	  --icon=${LINUX_ICON_FILE} . Awesom-O --platform linux --arch x64 --out ${BUILD_DIR}
 	${ELECTRON_INSTALLER_DEBIAN} --src ${BUILD_DIR}/Awesom-O-linux-x64/ --dest ${BUILD_DIR} --arch amd64
 
 
 appimage:
-	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --icon=${ICON_FILE} . Awesom-O --platform linux --arch x64 --out ${BUILD_DIR}
+	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --overwrite --asar --prune=true \
+	  --icon=${ICON_FILE} . Awesom-O --platform linux --arch x64 --out ${BUILD_DIR}
 	${ELECTRON_BUILDER} -l AppImage
 
 windows: 
-	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --icon=${WINDOWS_ICON_FILE} . Awesom-O --platform win32 --arch x64 --out ${BUILD_DIR}
+	${ELECTRON_PACKAGER} --ignore=${IGNORE_STUFF} --overwrite --asar --prune=true \
+	  --icon=${WINDOWS_ICON_FILE} . Awesom-O --platform win32 --arch x64 --out ${BUILD_DIR}
 
 all_platforms: clean linux windows macOS appimage
 	zip -9 -j ${DIST_DIR}/Awesom-O-${NEW_VERSION}-x86_64.AppImage.zip dist/Awesom-O-${NEW_VERSION}-x86_64.AppImage
