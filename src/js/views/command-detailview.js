@@ -2,7 +2,7 @@
 
 const { remote, ipcRenderer } = require('electron')
 const { types, isBuiltin } = require('../commands/types.js')
-var $ = require('jQuery')
+var $ = require('jquery')
 
 function renderNewCommand () {
   let selectedCommand = remote.getGlobal('selectedCommand')
