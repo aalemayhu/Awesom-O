@@ -1,3 +1,4 @@
+ELECTRON ?=node_modules/.bin/electron
 ELECTRON_PACKAGER ?=electron-packager
 ELECTRON_INSTALLER_DMG ?=electron-installer-dmg
 ELECTRON_INSTALLER_DEBIAN ?=electron-installer-debian
@@ -20,7 +21,7 @@ install_deps:
 	npm install .
 
 run:
-	electron .
+	${ELECTRON} .
 
 clean:
 	find . -name "*.DS_Store" -type f -delete
