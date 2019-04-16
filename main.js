@@ -141,7 +141,7 @@ function onConnectedHandler (addr, port) {
   logger.info(`* Connected to ${addr}:${port}`)
   global.isConnected = true
   mainWindow.webContents.send('display-notification', {
-    title: 'Awesom-O connected', body: ''
+    title: 'Awesom-O connected', body: "Bot is ready, verify by running !commands"
   })
   mainWindow.webContents.send('view', 'commands.html')
 }
