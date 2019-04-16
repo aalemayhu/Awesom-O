@@ -3,6 +3,7 @@ node_modules
 # Packaging
 builds
 githubrelease
+dist
 
 # vim
 *.swp
