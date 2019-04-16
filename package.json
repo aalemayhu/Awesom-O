@@ -1,6 +1,6 @@
 {
   "name": "Awesom-O",
-  "version": "0.9.8-1",
+  "version": "0.9.8-2-g9fafb4c3676d-1-gee1e7be57cd5-1-g709a43724bc2",
   "description": "Twitch bot",
   "main": "main.js",
   "scripts": {
