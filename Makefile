@@ -62,6 +62,7 @@ all_platforms: clean linux windows macOS appimage
 	zip -9 -j ${DIST_DIR}/Awesom-O.dmg.zip ${BUILD_DIR}/Awesom-O.dmg
 	zip -r -j -9 ${DIST_DIR}/Awesom-O-win32-x64.zip ${BUILD_DIR}/Awesom-O-win32-x64
 
+# Usage: NEW_VERSION=<semver> make prerelease
 prerelease: version all_platforms
 	git push github master
 	githubrelease release ${REPOSITORY} create ${NEW_VERSION} --publish --name "Awesom-o ${NEW_VERSION}" "${DIST_DIR}/*"

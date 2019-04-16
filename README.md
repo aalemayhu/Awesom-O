@@ -11,9 +11,15 @@ AppStore link coming soon.
 Builds for Windows, Linux and macOS are available, please visit the [release
 page][1].
 
+To make a new release simply run the below command:
+
+    NEW_VERSION=x.y.z make prerelease
+
+NB: **Make sure all changes have been committed and that the new version is unused.**
+
 ## Contributing
 
-Feel free to [open a issue][2] for feature request or discovered bugs.  If you
+Feel free to [open a issue][2] for feature request or discovered bugs. If you
 have the time, make a [pull request][3].
 
 ![Screenshot](Screenshots/screenshot.png)
@@ -25,9 +31,9 @@ have the time, make a [pull request][3].
 
 or
 
-	git clone https://github.com/scanf/Awesom-o /tmp/Awesom-o && \
-	npm install /tmp/Awesom-o && \
-	electron /tmp/Awesom-o
+    git clone https://github.com/scanf/Awesom-o /tmp/Awesom-o && \
+    npm install /tmp/Awesom-o && \
+    electron /tmp/Awesom-o
 
 ## Features
 
