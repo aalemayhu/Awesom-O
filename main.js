@@ -99,7 +99,7 @@ function onMessageHandler (target, context, msg, self) {
     headers: { 'Client-ID': clientId }
   }, function (err, res, body) {
     if (err) { return }
-    if (!fsCache.hasImage(body.logo)) {
+    if (body.logo && !fsCache.hasImage(body.logo)) {
       global.config.avatars[context.username] = fsCache.saveImage(body.logo)
     }
   })
